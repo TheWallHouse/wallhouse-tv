@@ -58,7 +58,7 @@ fun WelcomeScreen(askLocalNetwork: Boolean, onContinue: () -> Unit, onSkip: () -
             Modifier.fillMaxSize().padding(pad).verticalScroll(rememberScrollState()).padding(horizontal = 16.dp, vertical = 48.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            // The launcher icon's own teal in both themes, like the home screen and the splash.
+            // The launcher icon's own black in both themes, like the home screen and the splash.
             Box(
                 Modifier.size(72.dp).clip(MaterialTheme.shapes.extraLarge).background(colorResource(R.color.splash_icon_background)),
                 contentAlignment = Alignment.Center,

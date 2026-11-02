@@ -1,38 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- A telescope whose wide end is a TV screen. The art is scaled to 72% about the centre so it stays inside the 66 dp safe zone. -->
+<!-- WallHouse TV "Trayectoria": a TV screen crossed by a launch trajectory that fades in from the lower left.
+     Scaled to 68% about the centre so the whole trajectory stays inside the 66 dp safe zone under any mask. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <group android:translateX="51" android:translateY="56">
-        <group android:scaleX="0.72" android:scaleY="0.72">
+    <group android:translateX="54" android:translateY="54">
+        <group android:scaleX="0.68" android:scaleY="0.68">
             <group android:translateX="-54" android:translateY="-54">
+                <!-- Screen -->
+                <path
+                    android:strokeColor="#FFFFFFFF"
+                    android:strokeWidth="3.4"
+                    android:pathData="M33.5,39h41a2.5,2.5 0,0 1,2.5 2.5v25a2.5,2.5 0,0 1,-2.5 2.5h-41a2.5,2.5 0,0 1,-2.5 -2.5v-25a2.5,2.5 0,0 1,2.5 -2.5z" />
                 <!-- Stand -->
                 <path
                     android:strokeColor="#FFFFFFFF"
-                    android:strokeWidth="4.5"
+                    android:strokeWidth="3.4"
                     android:strokeLineCap="round"
-                    android:pathData="M50,62L40,84M50,62L60,84" />
-                <group android:rotation="-30" android:pivotX="54" android:pivotY="54">
-                    <!-- Eyepiece -->
-                    <path
-                        android:fillColor="#FFFFFFFF"
-                        android:pathData="M18.5,50h4a2.5,2.5 0,0 1,2.5 2.5v4a2.5,2.5 0,0 1,-2.5 2.5h-4a2.5,2.5 0,0 1,-2.5 -2.5v-4a2.5,2.5 0,0 1,2.5 -2.5z" />
-                    <!-- Tube -->
-                    <path
-                        android:fillColor="#FFFFFFFF"
-                        android:strokeColor="#FFFFFFFF"
-                        android:strokeWidth="3"
-                        android:strokeLineJoin="round"
-                        android:pathData="M28,49.5L52,46v17l-24,-3.5z" />
-                    <!-- Screen -->
-                    <path
-                        android:fillColor="#FF9CF1F2"
-                        android:strokeColor="#FFFFFFFF"
-                        android:strokeWidth="5"
-                        android:pathData="M63.5,40h21a4.5,4.5 0,0 1,4.5 4.5v20a4.5,4.5 0,0 1,-4.5 4.5h-21a4.5,4.5 0,0 1,-4.5 -4.5v-20a4.5,4.5 0,0 1,4.5 -4.5z" />
-                </group>
+                    android:pathData="M46,74.5h16" />
+                <!-- A black gap so the trajectory reads in front of the screen -->
+                <path
+                    android:fillColor="#FF000000"
+                    android:strokeColor="#FF000000"
+                    android:strokeWidth="5"
+                    android:strokeLineJoin="round"
+                    android:pathData="M20,84C38,62 60,42 92,25C64,46 42,64 20,84Z" />
+                <!-- Trajectory -->
+                <path android:pathData="M20,84C38,62 60,42 92,25C64,46 42,64 20,84Z">
+                    <aapt:attr name="android:fillColor">
+                        <gradient
+                            android:type="linear"
+                            android:startX="20"
+                            android:startY="84"
+                            android:endX="92"
+                            android:endY="25">
+                            <item android:offset="0" android:color="#00FFFFFF" />
+                            <item android:offset="0.55" android:color="#E6FFFFFF" />
+                            <item android:offset="1" android:color="#FFFFFFFF" />
+                        </gradient>
+                    </aapt:attr>
+                </path>
             </group>
         </group>
     </group>
