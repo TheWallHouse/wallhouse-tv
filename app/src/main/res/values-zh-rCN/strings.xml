@@ -55,6 +55,7 @@
     <string name="copy_explain_leave_undo_service">在“历史记录”中撤消即可将 %1$s 重新设为主屏幕，并重新启用其服务。</string>
     <string name="copy_explain_home">按主页键时打开 %1$s（%2$s），然后停用 %3$s（%4$s），使电视无法自行切换回去。在“历史记录”中撤消即可重新启用 %3$s 并将其设回主屏幕。</string>
     <string name="copy_explain_fire_home">通过 %1$s（%2$s）的无障碍服务让主页键打开它。Fire OS 不允许停用或替换 %3$s，因此它保持启用，其他一切不变。在“历史记录”中撤消即可关闭该服务。</string>
+    <string name="copy_explain_google_home">通过 %1$s(%2$s)的无障碍服务让主屏幕键打开它。在这台 Google TV 上关闭 %3$s 会让主屏幕落到设置向导的空白画面,而该向导也负责 Cast,所以两者都保持开启。电视开机后会先显示 %3$s,直到按下主屏幕键。在历史记录中撤销会关闭该服务。</string>
     <string name="copy_explain_first_home">按主页键时打开 %1$s（%2$s）。电视目前没有默认主屏幕，也不会停用其他任何内容。</string>
     <string name="copy_service_title">要启用 %1$s 的无障碍服务吗？</string>
     <string name="copy_explain_service">它能让主页键始终打开 %1$s。如果不启用，此电视的主页键可能仍会打开 %2$s。\n\n无障碍服务可以看到屏幕上的内容。请仅在信任 %1$s 时启用。\n\n在“历史记录”中撤消，或将其他启动器设为主屏幕，都会将其关闭。</string>
@@ -574,6 +575,7 @@
     <string name="data_failed_uninstall">电视无法卸载 %1$s</string>
     <string name="data_tv_refused">电视拒绝了</string>
     <string name="data_offline">%1$s 处于离线状态</string>
+    <string name="data_no_redirect">无法让 %1$s 接管 Google TV 的主屏幕</string>
     <string name="data_no_service">%1$s 没有无障碍服务</string>
     <string name="data_service_not_on">%1$s 现在是主屏幕，但其无障碍服务未能启用，因此电视的主页键可能仍会打开电视自带的启动器</string>
     <string name="data_service_still_on">%1$s 的无障碍服务仍处于开启状态。请在电视的“设置”→“无障碍”中将其关闭</string>

@@ -5,6 +5,7 @@ import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class ActionsTest {
@@ -367,6 +368,16 @@ class ActionsTest {
             Actions(sh).makeHome("com.spocky.projengmenu"),
         )
         assertTrue(sh.ran.none { it.startsWith("pm enable") })
+    }
+
+    @Test fun aGoogleTvWithItsSetupWizardOnIsGuarded() = runTest {
+        fun tv(wizard: String) = FakeShell(mapOf(
+            "pm path com.google.android.apps.tv.launcherx" to ok("package:/system/priv-app/LauncherX/LauncherX.apk\n"),
+            "pm list packages -e com.google.android.tungsten.setupwraith" to ok(wizard),
+        ))
+        assertTrue(Actions(tv("package:com.google.android.tungsten.setupwraith\n")).googleTvGuarded())
+        assertFalse(Actions(tv("")).googleTvGuarded()) // wizard off or absent: Google TV can be turned off
+        assertFalse(Actions(FakeShell()).googleTvGuarded()) // not a Google TV
     }
 
     @Test fun homeCheckFailsNothingDisabled() = runTest {

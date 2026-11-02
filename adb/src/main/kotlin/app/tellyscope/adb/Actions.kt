@@ -228,6 +228,15 @@ class Actions(private val shell: AdbShell) {
     }
 
     /** `pm path` names an installed package's APK and prints nothing for one that isn't. */
+    /**
+     * A Google TV whose setup wizard (setupwraith) is on: turning Google TV's launcher off there hands Home to the
+     * wizard's RecoveryActivity, an empty screen (seen on a Google TV Streamer, Android 14), and the wizard also holds
+     * the Cast credentials, so neither may go off. Home moves by a launcher's accessibility service instead.
+     */
+    suspend fun googleTvGuarded(): Boolean =
+        installed(GOOGLE_TV_HOME) && shell.shell("pm list packages -e $SETUP_WIZARD 2>/dev/null").output
+            .lineSequence().any { it.trim() == "package:$SETUP_WIZARD" }
+
     suspend fun installed(pkg: String): Boolean {
         require(PACKAGE.matches(pkg)) { "not a package name: $pkg" }
         return shell.shell("pm path $pkg 2>/dev/null").output.lineSequence().any { it.startsWith("package:") }
@@ -347,3 +356,6 @@ class Actions(private val shell: AdbShell) {
 /** How often, and how far apart, [Actions.makeHome] tries Home again once the old launcher is off. */
 private const val SETTLE_TRIES = 4
 private const val SETTLE_MS = 750L
+
+private const val GOOGLE_TV_HOME = "com.google.android.apps.tv.launcherx"
+private const val SETUP_WIZARD = "com.google.android.tungsten.setupwraith"

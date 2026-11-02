@@ -55,6 +55,7 @@
     <string name="copy_explain_leave_undo_service">履歴で元に戻すと、%1$s が再びホームになり、そのサービスも有効に戻ります。</string>
     <string name="copy_explain_home">ホームボタンで %1$s（%2$s）が開くようにし、テレビが勝手に元に戻らないよう %3$s（%4$s）を無効にします。履歴で元に戻すと、%3$s が再び有効になり、ホームに戻ります。</string>
     <string name="copy_explain_fire_home">ユーザー補助サービスを使って、ホームボタンで %1$s（%2$s）が開くようにします。Fire OS では %3$s を無効にしたり置き換えたりできないため、有効のままで、ほかには何も変わりません。履歴で元に戻すと、サービスが無効になります。</string>
+    <string name="copy_explain_google_home">%1$s(%2$s)のユーザー補助サービスでホームを開くようにします。この Google TV では %3$s をオフにするとホームが空のセットアップ画面になり、その画面は Cast も担うため、どちらもオンのままです。テレビの起動後はホームを押すまで %3$s が表示されます。履歴の「元に戻す」でサービスをオフにします。</string>
     <string name="copy_explain_first_home">ホームボタンで %1$s（%2$s）が開くようにします。現在テレビにはデフォルトのホーム画面がなく、ほかに無効にするものはありません。</string>
     <string name="copy_service_title">%1$s のユーザー補助サービスを有効にしますか？</string>
     <string name="copy_explain_service">ホームボタンで %1$s が開く状態を維持します。これがないと、このテレビのホームボタンで %2$s が開くことがあります。\n\nユーザー補助サービスは画面の内容を読み取れます。%1$s を信頼できる場合のみ有効にしてください。\n\n履歴で元に戻すか、別のランチャーをホームにすると無効になります。</string>
@@ -574,6 +575,7 @@
     <string name="data_failed_uninstall">テレビが %1$s をアンインストールしませんでした</string>
     <string name="data_tv_refused">テレビが拒否しました</string>
     <string name="data_offline">%1$s はオフラインです</string>
+    <string name="data_no_redirect">%1$s に Google TV からホームを引き継がせられませんでした</string>
     <string name="data_no_service">%1$s にはユーザー補助サービスがありません</string>
     <string name="data_service_not_on">%1$s がホームになりましたが、ユーザー補助サービスが有効にならなかったため、テレビのホームボタンで内蔵のランチャーが開くことがあります</string>
     <string name="data_service_still_on">%1$s のユーザー補助サービスがまだ有効です。テレビの [設定] → [ユーザー補助] で無効にしてください</string>

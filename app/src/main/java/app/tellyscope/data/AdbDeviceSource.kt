@@ -409,7 +409,7 @@ class AdbDeviceSource(context: Context) : DeviceSource {
         val names = appNames.names(key(deviceId), listed, LabelHelper(session, helperDex)::describe)
         val keep = keep[key(deviceId)].orEmpty()
         // Fire OS keeps Amazon's launcher the default; a launcher whose service is on holds Home instead.
-        val held = if (fireOs(deviceId, FIRE_TV_LAUNCHER in system)) Actions(shell).fireServiceHolder(serviceLaunchers)?.first else null
+        val held = if (serviceHome(deviceId, FIRE_TV_LAUNCHER in system, Actions(shell))) Actions(shell).fireServiceHolder(serviceLaunchers)?.first else null
         // On a launcher the user added, offer the way back to the one it replaced.
         val own = homeOptions?.let { builtIns(system, disabled, it) }.orEmpty()
         val back = homeOptions?.current?.takeIf { it !in system }
@@ -565,8 +565,9 @@ class AdbDeviceSource(context: Context) : DeviceSource {
         fireHomes -= deviceId
         val key = key(deviceId)
         val actions = Actions(session(deviceId))
-        if (packageName in serviceLaunchers && fireOs(deviceId, actions.installed(FIRE_TV_LAUNCHER))) {
-            return fireServiceHome(actions, packageName, withService, ::labelOf) { previous ->
+        if (packageName in serviceLaunchers && serviceHome(deviceId, actions.installed(FIRE_TV_LAUNCHER), actions)) {
+            val redirect: suspend (String) -> Unit = { service -> if (actions.googleTvGuarded()) redirectToService(session(deviceId), packageName, service) }
+            return fireServiceHome(actions, packageName, withService, ::labelOf, redirect) { previous ->
                 book.record(key, System.currentTimeMillis(), Action.Home, packageName, labelOf(packageName), Action.Enable.takeIf { previous.isNotEmpty() }, undoing, previous)
             }
         }
@@ -579,6 +580,43 @@ class AdbDeviceSource(context: Context) : DeviceSource {
 
     /** A Fire TV by its model, or any TV with Amazon's launcher: [amazonLauncher] says whether it has one. */
     private fun fireOs(deviceId: String, amazonLauncher: Boolean) = amazonLauncher || deviceKind(device(deviceId)) == DeviceKind.FireTv
+
+    /**
+     * Where a launcher's accessibility service holds Home and the TV's own launcher stays the default: Fire OS, and
+     * a Google TV whose setup wizard takes Home when Google TV is turned off ([Actions.googleTvGuarded]).
+     */
+    private suspend fun serviceHome(deviceId: String, amazonLauncher: Boolean, actions: Actions) =
+        fireOs(deviceId, amazonLauncher) || actions.googleTvGuarded()
+
+    /**
+     * On a guarded Google TV, a CleanYourTV launcher's HomeKeyService only sends Home on while its theme names the
+     * launcher it redirects from (`stock_home_redirect`): written through the launcher's theme provider, which only
+     * the adb shell may use, keeping the rest of its config.json. The remote's YouTube and Netflix buttons, which
+     * Google TV handled, are added as `app_keys` when the theme has none for them. Other launchers' services hold
+     * Home on their own. Then [service] restarts, so it reads the new theme.
+     */
+    private suspend fun redirectToService(session: AdbSession, pkg: String, service: String) {
+        if (!service.endsWith("/com.gathin.tvhome.HomeKeyService")) return
+        require(PACKAGE.matches(pkg)) { "not a package name: $pkg" }
+        val uri = "content://$pkg.theme/config.json"
+        val now = session.shell("content read --uri '$uri' 2>/dev/null").output
+        val json = runCatching { org.json.JSONObject(now) }.getOrElse { org.json.JSONObject() }
+        if (json.optString("stock_home_redirect") != GOOGLE_TV_LAUNCHER) {
+            json.put("stock_home_redirect", GOOGLE_TV_LAUNCHER)
+            val keys = json.optJSONArray("app_keys") ?: org.json.JSONArray()
+            val taken = (0 until keys.length()).map { keys.optString(it).substringBefore(':') }.toSet()
+            for ((code, app) in GOOGLE_TV_APP_KEYS) {
+                if (code !in taken && Actions(session).installed(app)) keys.put("$code:$app")
+            }
+            if (keys.length() > 0) json.put("app_keys", keys)
+            val tmp = "/data/local/tmp/wallhouse-config.json"
+            session.push(json.toString(2).toByteArray(), tmp)
+            val wrote = session.shell("content write --uri '$uri' < $tmp 2>&1; echo \"exit=$?\"; rm -f $tmp")
+            if ("exit=0" !in wrote.output || "Error" in wrote.output) throw ActionFailed(UiText(R.string.data_no_redirect, labelOf(pkg)), wrote.output.trim())
+        }
+        // Read again on connect: off first if it is on, then the grant turns it back on.
+        if (Actions(session).serviceOn(service)) Actions(session).setService(service, false)
+    }
 
     /** Undo of a first home: [launcher] stays Home, as there's none to go back to; its [service] goes off. */
     private suspend fun firstHomeServiceOff(deviceId: String, launcher: String, service: String, undoing: Long): HistoryEntry {
@@ -616,12 +654,12 @@ class AdbDeviceSource(context: Context) : DeviceSource {
         val system = Parsers.packages(shell.shell("pm list packages -s").output).map { it.name }.toSet()
         val disabled = Parsers.packages(shell.shell("pm list packages -d").output).map { it.name }.toSet()
         val nothing = UiText(R.string.data_no_home_to_switch_back)
-        if (fireOs(deviceId, FIRE_TV_LAUNCHER in system)) Actions(shell).fireServiceHolder(serviceLaunchers)?.let { held ->
+        if (serviceHome(deviceId, FIRE_TV_LAUNCHER in system, Actions(shell))) Actions(shell).fireServiceHolder(serviceLaunchers)?.let { held ->
             val (added, _) = held
             // Reverses the Make Home that turned the service on, so Restore leaves it alone.
             val home = undoing ?: book.entries(key).filter { it.action == Action.Home && it.undoneAt == null && it.firstHomeService != null && it.packageName == added }.maxByOrNull { it.id }?.id
             return fireHomeBack(Actions(shell), held, ::labelOf) { to, previous ->
-                book.record(key, System.currentTimeMillis(), Action.HomeBack, added, to?.let(::labelOf) ?: labelOf(FIRE_TV_LAUNCHER), Action.Home, home, previous)
+                book.record(key, System.currentTimeMillis(), Action.HomeBack, added, to?.let(::labelOf) ?: labelOf(if (FIRE_TV_LAUNCHER in system) FIRE_TV_LAUNCHER else GOOGLE_TV_LAUNCHER), Action.Home, home, previous)
             }
         }
         val options = Actions(shell).homeOptions() ?: throw UiTextException(nothing)
@@ -1251,11 +1289,16 @@ internal suspend fun fireServiceHome(
     pkg: String,
     withService: Boolean,
     label: (String) -> String,
+    /** Before the service goes on: a Google TV's redirect, which may turn the service off to restart it. */
+    prepare: suspend (service: String) -> Unit = {},
     record: (previous: Map<String, String?>) -> HistoryEntry,
 ): HistoryEntry {
     if (!withService) throw UiTextException(fireNeedsService(label(pkg)))
     val service = actions.homeService(pkg) ?: throw UiTextException(UiText(R.string.data_no_service, label(pkg)))
+    val wasOn = actions.serviceOn(service)
+    prepare(service)
     val previous: Map<String, String?> = if (actions.serviceOn(service)) emptyMap()
+    else if (wasOn && actions.grant(service)) emptyMap()
     else if (actions.grant(service)) mapOf("service" to service)
     else throw UiTextException(fireServiceNotOn(label(pkg)))
     // Amazon's launcher isn't stopped: it stays the default, and the service sends Home on from it.
@@ -1390,3 +1433,9 @@ internal suspend fun uninstallAfterHomeBack(switchBack: suspend () -> HistoryEnt
     }
     return uninstall().also { dropUndo(back.id) }
 }
+
+/** Google TV's own launcher. */
+internal const val GOOGLE_TV_LAUNCHER = "com.google.android.apps.tv.launcherx"
+
+/** The Google TV remote's YouTube and Netflix buttons (BUTTON_3 and BUTTON_4), for a redirected Home. */
+internal val GOOGLE_TV_APP_KEYS = listOf("190" to "com.google.android.youtube.tv", "191" to "com.netflix.ninja")

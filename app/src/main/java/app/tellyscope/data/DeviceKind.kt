@@ -21,6 +21,14 @@ fun deviceKind(d: Device): DeviceKind = kindOf(listOfNotNull(d.manufacturer, d.h
 const val FIRE_TV_LAUNCHER = "com.amazon.tv.launcher"
 
 /** Fire OS: a Fire TV by name, or any TV with Amazon's launcher. No Play Store there. */
+/**
+ * A Google TV whose setup wizard is on: turning Google TV off there leaves Home to the wizard's empty screen, so a
+ * launcher's accessibility service holds Home instead (Actions.googleTvGuarded, the same check on the TV).
+ */
+fun isGoogleTvGuarded(apps: List<AppInfo>) =
+    apps.any { it.packageName == "com.google.android.apps.tv.launcherx" && it.enabled } &&
+        apps.any { it.packageName == "com.google.android.tungsten.setupwraith" && it.enabled }
+
 fun isFireOs(d: Device, apps: List<AppInfo>) = deviceKind(d) == DeviceKind.FireTv || apps.any { it.packageName == FIRE_TV_LAUNCHER }
 
 /** The same guess for a debloat list, from its maker (see [listMakers]) and model name. */

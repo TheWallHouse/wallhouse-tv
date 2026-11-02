@@ -86,6 +86,7 @@ import app.tellyscope.data.LauncherRelease
 import app.tellyscope.data.PROJECTIVY
 import app.tellyscope.data.PROJECTIVY_RELEASES
 import app.tellyscope.data.DirectLauncher
+import app.tellyscope.data.isGoogleTvGuarded
 import app.tellyscope.data.directLauncher
 import app.tellyscope.data.UiText
 import app.tellyscope.data.asUiText
@@ -316,7 +317,8 @@ fun LauncherScreen(
                 LauncherFlow.Step.Installed -> {
                     Hero(Icons.Default.Check, c.secondaryContainer, c.onSecondaryContainer)
                     val explain = if (app != null && current != null && app.homeInstead != null) {
-                        " " + if (flow.fire != null) Copy.explainFireHome(app.label, app.packageName, current).resolve()
+                        " " + if (flow.fire != null && flow.fireOs) Copy.explainFireHome(app.label, app.packageName, current).resolve()
+                        else if (app.homeService && isGoogleTvGuarded(apps)) Copy.explainGoogleHome(app.label, app.packageName, current).resolve()
                         else Copy.explainHome(app.label, app.packageName, current, app.homeInstead, app.homeService).resolve()
                     } else {
                         ""

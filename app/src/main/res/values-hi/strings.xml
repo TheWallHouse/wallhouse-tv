@@ -55,6 +55,7 @@
     <string name="copy_explain_leave_undo_service">इतिहास में पहले जैसा करें दबाने पर %1$s फिर से Home बन जाता है और उसकी सेवा फिर से चालू हो जाती है।</string>
     <string name="copy_explain_home">Home दबाने पर %1$s (%2$s) खुलेगा, फिर %3$s (%4$s) को बंद किया जाएगा ताकि TV अपने-आप वापस न बदल सके। इतिहास में पहले जैसा करें दबाने पर %3$s फिर से चालू होकर Home बन जाता है।</string>
     <string name="copy_explain_fire_home">Home अब %1$s (%2$s) को उसकी सुलभता सेवा के ज़रिए खोलेगा। Fire OS %3$s को बंद करने या बदलने नहीं देता, इसलिए वह चालू रहता है और कुछ और नहीं बदलता। इतिहास में पहले जैसा करें दबाने पर सेवा बंद हो जाती है।</string>
+    <string name="copy_explain_google_home">%1$s (%2$s) को उसकी सुलभता सेवा से होम पर खोलता है। इस Google TV पर %3$s बंद करने से होम सेटअप विज़ार्ड की खाली स्क्रीन पर चला जाता है, और वही विज़ार्ड Cast भी चलाता है, इसलिए दोनों चालू रहते हैं। TV चालू होने पर होम दबाने तक %3$s दिखता है। इतिहास में पूर्ववत करें सेवा बंद करता है।</string>
     <string name="copy_explain_first_home">Home दबाने पर %1$s (%2$s) खुलेगा। अभी TV में कोई डिफ़ॉल्ट होम स्क्रीन नहीं है, और कुछ और बंद नहीं किया जाता।</string>
     <string name="copy_service_title">%1$s की सुलभता सेवा चालू करें?</string>
     <string name="copy_explain_service">इससे Home बटन दबाने पर %1$s ही खुलता रहता है। इसके बिना, इस TV का Home बटन अब भी %2$s खोल सकता है।\n\nसुलभता सेवा देख सकती है कि स्क्रीन पर क्या है। इसे तभी चालू करें, जब आपको %1$s पर भरोसा हो।\n\nइतिहास में पहले जैसा करने पर, या किसी दूसरे लॉन्चर को Home बनाने पर, यह बंद हो जाती है।</string>
@@ -606,6 +607,7 @@
     <string name="data_failed_uninstall">TV ने %1$s को अनइंस्टॉल नहीं किया</string>
     <string name="data_tv_refused">TV ने मना कर दिया</string>
     <string name="data_offline">%1$s ऑफ़लाइन है</string>
+    <string name="data_no_redirect">%1$s को Google TV से होम लेने के लिए सेट नहीं किया जा सका</string>
     <string name="data_no_service">%1$s में कोई सुलभता सेवा नहीं है</string>
     <string name="data_service_not_on">%1$s अब Home है, लेकिन इसकी सुलभता सेवा चालू नहीं हुई, इसलिए TV का Home बटन अब भी उसका अपना लॉन्चर खोल सकता है</string>
     <string name="data_service_still_on">%1$s की सुलभता सेवा अब भी चालू है। इसे TV की सेटिंग्स → सुलभता में बंद करें</string>

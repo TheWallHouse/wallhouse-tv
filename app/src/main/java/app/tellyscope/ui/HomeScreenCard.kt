@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import app.tellyscope.R
 import app.tellyscope.data.Action
 import app.tellyscope.data.AppInfo
+import app.tellyscope.data.isGoogleTvGuarded
 import app.tellyscope.data.resolve
 
 /** The launchers the Home screen card lists: the one on Home, then the ones the user added, then the TV's own. */
@@ -192,6 +193,8 @@ private fun MakeHomeDialog(app: AppInfo, action: Action, current: AppInfo?, apps
     val text = when {
         action == Action.HomeBack && current != null -> Copy.explainLeave(app.label, off = !app.enabled, current.label, currentService, service = false).resolve()
         fire && action == Action.Home && app.homeService && current != null -> Copy.explainFireHome(app.label, app.packageName, current.label).resolve()
+        action == Action.Home && app.homeService && current != null && current.system && isGoogleTvGuarded(apps) ->
+            Copy.explainGoogleHome(app.label, app.packageName, current.label).resolve()
         current != null && !current.system -> Copy.explainLeave(app.label, off = false, current.label, currentService, app.homeService).resolve()
         replaced != null && app.homeInstead != null -> Copy.explainReplace(app.label, replaced, app.homeInstead, app.homeService).resolve()
         else -> Copy.explainFirstHome(app.label, app.packageName, app.homeService).resolve()

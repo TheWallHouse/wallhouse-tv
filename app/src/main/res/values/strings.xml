@@ -77,6 +77,7 @@
     <string name="copy_explain_home">Makes %1$s (%2$s) open when you press Home, then disables %3$s (%4$s) so the TV can\'t switch back by itself. Undo in History turns %3$s back on and makes it Home again.</string>
     <!-- Fire OS: %1$s (%2$s) the launcher and its package, %3$s Amazon's launcher; copy_next_service follows -->
     <string name="copy_explain_fire_home">Makes Home open %1$s (%2$s) through its accessibility service. Fire OS won\'t let %3$s be turned off or replaced, so it stays on and nothing else changes. Undo in History turns the service off.</string>
+    <string name="copy_explain_google_home">Makes Home open %1$s (%2$s) through its accessibility service. On this Google TV, turning %3$s off leaves Home to the setup wizard, an empty screen, and the wizard also runs Cast, so both stay on. After the TV starts it shows %3$s until you press Home. Undo in History turns the service off.</string>
     <string name="copy_explain_first_home">Makes %1$s (%2$s) open when you press Home. The TV has no default home screen now, and nothing else is turned off.</string>
 
     <string name="copy_service_title">Turn on %1$s\'s accessibility service?</string>
@@ -747,6 +748,7 @@
     <!-- %1$s is the TV's address. -->
     <string name="data_offline">%1$s is offline</string>
 
+    <string name="data_no_redirect">%1$s couldn\'t be told to take Home from Google TV</string>
     <string name="data_no_service">%1$s has no accessibility service</string>
     <string name="data_service_not_on">%1$s is Home now, but its accessibility service didn\'t turn on, so the TV\'s Home button may still open its own launcher</string>
     <string name="data_service_still_on">%1$s\'s accessibility service is still on. Turn it off in the TV\'s Settings → Accessibility</string>

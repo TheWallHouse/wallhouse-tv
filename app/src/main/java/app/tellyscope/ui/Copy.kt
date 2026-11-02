@@ -152,6 +152,9 @@ object Copy {
     )
 
     /** Fire OS: Amazon's launcher can't be turned off or replaced, so [app]'s accessibility service holds Home instead. */
+    /** A guarded Google TV ([isGoogleTvGuarded]): the service holds Home, Google TV and its setup wizard stay on. */
+    fun explainGoogleHome(app: String, pkg: String, current: String) = UiText(R.string.copy_explain_google_home, app, pkg, current)
+
     fun explainFireHome(app: String, pkg: String, current: String): UiText = UiText.Join(
         listOf(UiText(R.string.copy_explain_fire_home, app, pkg, current), UiText(R.string.copy_next_service)),
         "\n\n",

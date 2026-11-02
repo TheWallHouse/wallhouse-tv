@@ -55,6 +55,7 @@
     <string name="copy_explain_leave_undo_service">Deshacer en Historial vuelve a poner %1$s como inicio y reactiva su servicio.</string>
     <string name="copy_explain_home">Hace que %1$s (%2$s) se abra al pulsar Inicio y luego desactiva %3$s (%4$s) para que la TV no vuelva a él por su cuenta. Deshacer en Historial reactiva %3$s y lo vuelve a poner como inicio.</string>
     <string name="copy_explain_fire_home">Hace que Inicio abra %1$s (%2$s) mediante su servicio de accesibilidad. Fire OS no permite desactivar ni reemplazar %3$s, así que sigue activo y no cambia nada más. Deshacer en Historial desactiva el servicio.</string>
+    <string name="copy_explain_google_home">Hace que Inicio abra %1$s (%2$s) con su servicio de accesibilidad. En este Google TV, desactivar %3$s deja Inicio en manos del asistente de configuración, una pantalla vacía, y ese asistente también lleva el Cast, así que los dos siguen activos. Al encender la TV se ve %3$s hasta que pulses Inicio. Deshacer en Historial apaga el servicio.</string>
     <string name="copy_explain_first_home">Hace que %1$s (%2$s) se abra al pulsar Inicio. Ahora la TV no tiene pantalla de inicio predeterminada y no se desactiva nada más.</string>
     <string name="copy_service_title">¿Activar el servicio de accesibilidad de %1$s?</string>
     <string name="copy_explain_service">Hace que el botón Inicio siga abriendo %1$s. Sin él, el botón Inicio de esta TV puede seguir abriendo %2$s.\n\nUn servicio de accesibilidad puede ver lo que hay en la pantalla. Actívalo solo si confías en %1$s.\n\nSe desactiva con Deshacer en Historial o al poner otro launcher como inicio.</string>
@@ -638,6 +639,7 @@
     <string name="data_failed_uninstall">la TV no quiso desinstalar %1$s</string>
     <string name="data_tv_refused">la TV se negó</string>
     <string name="data_offline">%1$s está sin conexión</string>
+    <string name="data_no_redirect">No se pudo decir a %1$s que tome Inicio de Google TV</string>
     <string name="data_no_service">%1$s no tiene servicio de accesibilidad</string>
     <string name="data_service_not_on">%1$s ya es la pantalla de inicio, pero su servicio de accesibilidad no se activó, así que el botón Inicio de la TV puede seguir abriendo su propio launcher</string>
     <string name="data_service_still_on">El servicio de accesibilidad de %1$s sigue activado. Desactívalo en Ajustes → Accesibilidad de la TV</string>
