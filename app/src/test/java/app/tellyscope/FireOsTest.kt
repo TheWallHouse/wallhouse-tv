@@ -15,6 +15,7 @@ import app.tellyscope.data.DeviceState
 import app.tellyscope.data.FIRE_TV_LAUNCHER
 import app.tellyscope.data.FakeDeviceSource
 import app.tellyscope.data.HistoryEntry
+import app.tellyscope.data.DirectLauncher
 import app.tellyscope.data.LauncherDownload
 import app.tellyscope.data.LauncherRelease
 import app.tellyscope.data.NotProjectivy
@@ -113,13 +114,13 @@ private class FireTv(val tv: Device = amazon, val own: List<AppInfo> = listOf(fi
 private class FakeDownload(var signedByDeveloper: Boolean = true) : LauncherDownload {
     var fetched = 0
     var offline = false
-    override suspend fun latest() = if (offline) throw IOException("offline") else parseRelease(release())!!
-    override suspend fun fetch(release: LauncherRelease, onProgress: (Progress) -> Unit): PickedApp {
+    override suspend fun latest(d: DirectLauncher) = if (offline) throw IOException("offline") else parseRelease(release())!!
+    override suspend fun fetch(release: LauncherRelease, d: DirectLauncher, onProgress: (Progress) -> Unit): PickedApp {
         fetched++
         if (!signedByDeveloper) throw NotProjectivy()
         return PickedApp(listOf(File("projectivy.apk")), ApkInfo(PROJECTIVY, 97, release.version), "Projectivy Launcher")
     }
-    override suspend fun open(uri: Uri): PickedApp {
+    override suspend fun open(uri: Uri, d: DirectLauncher): PickedApp {
         if (!signedByDeveloper) throw NotProjectivy()
         return PickedApp(listOf(File("projectivy.apk")), ApkInfo(PROJECTIVY, 97, "4.72"), "Projectivy Launcher")
     }

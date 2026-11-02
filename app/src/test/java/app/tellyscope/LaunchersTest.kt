@@ -7,6 +7,12 @@ import app.tellyscope.data.KnownLauncher
 import app.tellyscope.data.SharedLists
 import app.tellyscope.data.parseLabels
 import app.tellyscope.data.parseLaunchers
+import app.tellyscope.data.directLauncher
+import app.tellyscope.data.isSignedBy
+import app.tellyscope.data.mergeLaunchers
+import app.tellyscope.data.parseCatalogue
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import app.tellyscope.ui.RECOMMENDED
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -29,7 +35,7 @@ class LaunchersTest {
 
     /** Named here on purpose, so a reviewer sees any launcher that gets to turn on an accessibility service. */
     @Test fun onlyTheBuiltInLaunchersMayTurnOnAnAccessibilityService() {
-        assertEquals(setOf("com.spocky.projengmenu", "com.overdevs.at4k", "com.spauldhaliwal.dispatch"), ACCESSIBILITY_LAUNCHERS.keys)
+        assertEquals(setOf("com.spocky.projengmenu", "com.overdevs.at4k", "com.spauldhaliwal.dispatch", "io.github.thewallhouse.nothingtv"), ACCESSIBILITY_LAUNCHERS.keys)
     }
 
     @Test fun theRecommendedOnesAreTheLaunchersWithAnAboutLineInFileOrder() {
@@ -71,4 +77,44 @@ class LaunchersTest {
         assertTrue(parseLaunchers(text.replace("\"schema\":1", "\"schema\":2")).isEmpty())
         assertTrue(parseLaunchers("{").isEmpty())
     }
+
+    /** The catalogue shipped in the app: every entry reads, each with a download pinned to a repo and signer. */
+    @Test fun theBundledCatalogueReadsWholeAndPinsItsDownloads() {
+        val text = File("src/main/resources/catalog/launchers.json").readText()
+        val launchers = parseCatalogue(text)
+        assertEquals(Regex("\"package\"").findAll(text).count(), launchers.size)
+        assertTrue(launchers.all { it.direct != null && it.direct!!.signers.isNotEmpty() })
+        val nothing = launchers.first { it.pkg == NOTHING }
+        assertEquals("TheWallHouse/cleanyourtv", nothing.direct?.repo)
+        assertFalse(nothing.direct!!.store)
+        assertEquals(nothing.direct, directLauncher(NOTHING)) // seeded from the bundled copy
+    }
+
+    @Test fun theCatalogueDropsBadDownloadsAndStorelessEntriesWithoutOne() {
+        fun one(fields: String) = parseCatalogue("""{"schema":1,"launchers":[{"package":"com.example.home","name":"Home",$fields}]}""")
+        val signer = "ab".repeat(32)
+        assertEquals("o/r", one(""""github":"o/r","signers":["$signer"]""").single().direct?.repo)
+        assertNull(one(""""github":"not a repo","signers":["$signer"]""").single().direct)
+        assertNull(one(""""github":"o/r","signers":["short"]""").single().direct)
+        assertTrue(one(""""github":"o/r","signers":[],"store":false""").isEmpty()) // nowhere to get it
+        assertTrue(one(""""store":true""").single().direct == null)
+        assertTrue(parseCatalogue("{").isEmpty())
+    }
+
+    @Test fun theCatalogueComesFirstAndWinsOverTheList() {
+        val cat = listOf(KnownLauncher("a.b", "Mine", "about"))
+        val list = listOf(KnownLauncher("c.d", "Theirs", "x"), KnownLauncher("a.b", "Old name", "y"))
+        assertEquals(listOf("Mine", "Theirs"), mergeLaunchers(cat, list).map { it.name })
+    }
+
+    @Test fun aDownloadMustBeThatPackageSignedOnlyByItsSigners() {
+        val d = directLauncher(NOTHING)!!
+        val signer = d.signers.single()
+        assertTrue(isSignedBy(d, NOTHING, setOf(signer)))
+        assertFalse(isSignedBy(d, NOTHING, setOf(signer, "0".repeat(64))))
+        assertFalse(isSignedBy(d, NOTHING, emptySet()))
+        assertFalse(isSignedBy(d, "com.gathin.tvhome", setOf(signer)))
+    }
 }
+
+private const val NOTHING = "io.github.thewallhouse.nothingtv"

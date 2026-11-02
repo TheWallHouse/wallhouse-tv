@@ -51,7 +51,7 @@ class ChangelogTest {
 
     @Test fun aPullRequestOpensOnTheMainRepo() {
         assertEquals(RELEASES.removeSuffix("/releases") + "/pull/249", Changelog.pullUrl(249))
-        assertTrue(Changelog.pullUrl(249).endsWith("/tellyscope/pull/249"))
+        assertTrue(Changelog.pullUrl(249).endsWith("/wallhouse-tv/pull/249"))
     }
 
     @Test fun aHeadingWithoutADateStillCounts() {

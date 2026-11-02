@@ -317,7 +317,7 @@ class LauncherScreenTest {
         val installs = mutableListOf<String>()
         var downloads = 0
         compose.setContent {
-            LauncherScreen(tv, LauncherFlow(pkg = PROJECTIVY), listOf(store, stock), LauncherActions(install = { installs += it }, fireCheck = { downloads++ }), direct = true)
+            LauncherScreen(tv, LauncherFlow(pkg = PROJECTIVY), listOf(store, stock), LauncherActions(install = { installs += it }, directCheck = { downloads++ }), direct = true)
         }
         compose.onNodeWithText(Copy.STORE_RECOMMENDED.text()).assertExists()
         compose.onNodeWithText(Copy.DOWNLOAD_DIRECTLY.text()).performClick()
@@ -327,6 +327,19 @@ class LauncherScreenTest {
         compose.onNodeWithText("FLauncher").performScrollTo().performClick()
         compose.onNodeWithText(Copy.DOWNLOAD_DIRECTLY.text()).assertDoesNotExist()
         compose.onNodeWithText(Copy.GET_FROM_STORE.text()).assertExists()
+    }
+
+    /** A launcher that isn't on the Play Store: only Download and install, no Store and no warning. */
+    @Test fun aStorelessLauncherOffersOnlyItsDownload() {
+        val checks = mutableListOf<String>()
+        val nothing = "io.github.thewallhouse.nothingtv"
+        compose.setContent {
+            LauncherScreen(tv, LauncherFlow(pkg = nothing), listOf(store, stock), LauncherActions(directCheck = { checks += it }), direct = true)
+        }
+        compose.onNodeWithText(Copy.GET_FROM_STORE.text()).assertDoesNotExist()
+        compose.onNodeWithText(Copy.STORE_RECOMMENDED.text()).assertDoesNotExist()
+        compose.onNodeWithText(Copy.DOWNLOAD_AND_INSTALL.text()).performClick()
+        assertEquals(listOf(nothing), checks)
     }
 
     @Test fun withoutADownloadOnlyTheStoreIsOffered() {

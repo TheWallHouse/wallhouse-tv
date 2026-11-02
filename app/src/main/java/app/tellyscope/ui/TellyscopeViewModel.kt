@@ -40,6 +40,7 @@ import app.tellyscope.data.NetworkInfo
 import app.tellyscope.data.NotAnApp
 import app.tellyscope.data.NotProjectivy
 import app.tellyscope.data.PROJECTIVY
+import app.tellyscope.data.directLauncher
 import app.tellyscope.data.PhoneStorage
 import app.tellyscope.data.PickedApp
 import app.tellyscope.data.RateLimited
@@ -936,15 +937,22 @@ class TellyscopeViewModel(
      * Install Projectivy on Fire OS, or Download directly in the picker: reads the latest release, for the
      * confirm dialog to show where it comes from.
      */
-    fun checkProjectivy() {
+    fun checkProjectivy() = checkDirect(_state.value.device.launcher?.takeIf { it.fire != null }?.pkg ?: PROJECTIVY)
+
+    /**
+     * Download directly on [pkg], a launcher with a pinned download ([directLauncher]): Projectivy, or one
+     * from the WallHouse catalogue, also those not on the Play Store. Reads its latest release for the confirm.
+     */
+    fun checkDirect(pkg: String) {
         val id = _state.value.selectedId ?: return
         val download = launcherDownload ?: return
+        val direct = directLauncher(pkg) ?: return
         val store = _state.value.device.launcher?.let { it.fire?.store ?: true } ?: return
         launcherJob?.cancel()
-        updateDevice(id) { d -> d.copy(launcher = d.launcher?.copy(pkg = PROJECTIVY, fire = FireInstall(FireInstall.Step.Checking, store = store))) }
+        updateDevice(id) { d -> d.copy(launcher = d.launcher?.copy(pkg = pkg, fire = FireInstall(FireInstall.Step.Checking, store = store))) }
         launcherJob = viewModelScope.launch {
             val release = try {
-                download.latest()
+                download.latest(direct)
             } catch (e: CancellationException) {
                 throw e
             } catch (e: RateLimited) {
@@ -964,11 +972,12 @@ class TellyscopeViewModel(
         val id = _state.value.selectedId ?: return
         val download = launcherDownload ?: return
         val release = _state.value.device.launcher?.fire?.takeIf { it.step == FireInstall.Step.Confirm }?.release ?: return
+        val direct = directLauncher(_state.value.device.launcher?.pkg ?: return) ?: return
         launcherJob?.cancel()
         setFire(id) { it.copy(step = FireInstall.Step.Downloading, progress = null, picked = false, size = null, until = null) }
         launcherJob = viewModelScope.launch {
             val app = try {
-                download.fetch(release) { p -> setFire(id) { it.copy(progress = p) } }
+                download.fetch(release, direct) { p -> setFire(id) { it.copy(progress = p) } }
             } catch (e: CancellationException) {
                 throw e
             } catch (_: NotProjectivy) {
@@ -976,7 +985,7 @@ class TellyscopeViewModel(
             } catch (_: Exception) {
                 return@launch setFire(id) { it.copy(step = FireInstall.Step.NoDownload) }
             }
-            installFetched(id, app)
+            installFetched(id, app, direct.pkg)
         }
     }
 
@@ -990,11 +999,12 @@ class TellyscopeViewModel(
         // The picker answers on its own timing: only from a step that offers it, never over a running install.
         val step = _state.value.device.launcher?.fire?.step
         if (step != FireInstall.Step.NoDownload && step != FireInstall.Step.NotProjectivy && step != FireInstall.Step.Refused) return
+        val direct = directLauncher(_state.value.device.launcher?.pkg ?: return) ?: return
         launcherJob?.cancel()
         setFire(id) { it.copy(step = FireInstall.Step.Reading, picked = true, progress = null, size = null) }
         launcherJob = viewModelScope.launch {
             val app = try {
-                download.open(uri)
+                download.open(uri, direct)
             } catch (e: CancellationException) {
                 throw e
             } catch (_: NotProjectivy) {
@@ -1002,12 +1012,12 @@ class TellyscopeViewModel(
             } catch (_: Exception) {
                 return@launch setFire(id) { it.copy(step = FireInstall.Step.Refused, error = Copy.CANT_READ_FILE) }
             }
-            installFetched(id, app)
+            installFetched(id, app, direct.pkg)
         }
     }
 
-    /** Projectivy, downloaded or picked and checked, onto the TV over adb like any sideload. */
-    private suspend fun installFetched(id: String, app: PickedApp) {
+    /** A pinned launcher ([pkg]), downloaded or picked and checked, onto the TV over adb like any sideload. */
+    private suspend fun installFetched(id: String, app: PickedApp, pkg: String) {
         setFire(id) { it.copy(step = FireInstall.Step.Installing, progress = null, size = app.sizeBytes) }
         val result = try {
             source.install(id, app.files, app.info, allowDowngrade = false) { p -> setFire(id) { it.copy(progress = p) } }
@@ -1018,11 +1028,11 @@ class TellyscopeViewModel(
         }
         when (result) {
             // The steps close with it: Installing would keep them up, and Close waits on that.
-            InstallResult.Done -> launcherInstalled(id, PROJECTIVY) { step ->
+            InstallResult.Done -> launcherInstalled(id, pkg) { step ->
                 updateDevice(id) { it.copy(launcher = it.launcher?.let { l -> l.copy(step = step, fire = if (l.fire?.store == true) null else FireInstall()) }) }
             }
             is InstallResult.Refused -> setFire(id) {
-                it.copy(step = FireInstall.Step.Refused, error = Copy.installRefused(result.reason, launcherName(PROJECTIVY)))
+                it.copy(step = FireInstall.Step.Refused, error = Copy.installRefused(result.reason, launcherName(pkg)))
             }
         }
     }

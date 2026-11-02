@@ -361,6 +361,7 @@ fun TellyscopeApp(vm: TellyscopeViewModel) {
                 open = vm::openLauncher,
                 later = vm::launcherLater,
                 fireCheck = vm::checkProjectivy,
+                directCheck = vm::checkDirect,
                 fireInstall = vm::installProjectivy,
                 fireDismiss = vm::dismissProjectivy,
                 firePick = { pickProjectivy.launch(arrayOf(InDownloads.APK)) },

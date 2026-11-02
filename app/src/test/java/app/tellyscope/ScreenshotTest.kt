@@ -664,7 +664,7 @@ class ScreenshotTest {
         compose.onNodeWithText("cleanyourtv").performClick()
         compose.onNodeWithText("How to use your own lists").performClick()
         assertEquals(listOf("https://github.com/Gathin23/cleanyourtv", RELEASES.removeSuffix("/releases") + "/blob/main/CONTRIBUTING.md#using-your-own-lists"), opened)
-        assertTrue(opened[1].startsWith("https://github.com/") && opened[1].contains("/tellyscope/blob/main/CONTRIBUTING.md"))
+        assertTrue(opened[1].startsWith("https://github.com/") && opened[1].contains("/wallhouse-tv/blob/main/CONTRIBUTING.md"))
         // It opens the existing source dialog, unchanged.
         compose.onNodeWithText("Use your own debloat lists").assertHasClickAction()
     }
@@ -1494,7 +1494,7 @@ class ScreenshotTest {
         }
         compose.onNodeWithText("XGIMI Horizon Pro (XK03H)").assertExists()
         compose.onNodeWithText(Reports.Connection.WIRELESS_DEBUGGING.option).assertExists()
-        compose.onNodeWithText("Tellyscope sends nothing by itself", substring = true).assertExists()
+        compose.onNodeWithText("WallHouse TV sends nothing by itself", substring = true).assertExists()
         compose.onNodeWithText("Open GitHub").performClick()
         assertTrue(opened.single().startsWith("https://github.com/") && "template=device_report.yml" in opened.single())
     }

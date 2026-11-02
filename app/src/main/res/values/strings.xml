@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">Tellyscope</string>
+    <string name="app_name" translatable="false">WallHouse TV</string>
 
     <!-- copy -->
 
@@ -58,7 +58,7 @@
     <string name="copy_make_home_title">Make %1$s the home screen?</string>
 
     <!-- explainReplace paragraphs; %1$s the new launcher, %2$s the TV's built-in one -->
-    <string name="copy_explain_replace_opens">Home opens %1$s. To stop the TV switching back by itself, Tellyscope turns off %2$s, the TV\'s built-in launcher.</string>
+    <string name="copy_explain_replace_opens">Home opens %1$s. To stop the TV switching back by itself, WallHouse TV turns off %2$s, the TV\'s built-in launcher.</string>
     <string name="copy_explain_replace_only">That\'s the only launcher it ever turns off. Launchers you added stay on, so you can switch between them any time.</string>
     <string name="copy_explain_replace_undo">Undo in History turns %1$s back on.</string>
     <!-- %1$s is the Google TV launcher being turned off -->
@@ -66,8 +66,8 @@
     <string name="copy_next_service">Next, you choose whether to turn on its accessibility service.</string>
 
     <!-- explainLeave; %1$s the launcher Home switches to, the other arg the current one -->
-    <string name="copy_explain_leave_turns_on">Tellyscope turns %1$s back on and makes it open when you press Home.</string>
-    <string name="copy_explain_leave_makes">Tellyscope makes %1$s open when you press Home.</string>
+    <string name="copy_explain_leave_turns_on">WallHouse TV turns %1$s back on and makes it open when you press Home.</string>
+    <string name="copy_explain_leave_makes">WallHouse TV makes %1$s open when you press Home.</string>
     <string name="copy_explain_leave_service">It also turns off %1$s\'s accessibility service, which would otherwise take Home straight back.</string>
     <string name="copy_explain_leave_stays">%1$s stays installed and on, so you can make it Home again any time.</string>
     <string name="copy_explain_leave_undo">Undo in History makes %1$s Home again.</string>
@@ -96,13 +96,13 @@
     <string name="copy_better_home">Get a better home screen</string>
     <!-- %1$s is the current launcher's name, or copy_the_tvs_home_screen -->
     <string name="copy_better_home_text">Swap %1$s for a launcher without ads. Free on the Play Store; switch back any time.</string>
-    <!-- Fire OS: there's no Play Store and Tellyscope installs it. %1$s as in copy_better_home_text -->
+    <!-- Fire OS: there's no Play Store and WallHouse TV installs it. %1$s as in copy_better_home_text -->
     <string name="copy_better_home_text_fire">Swap %1$s for a launcher without ads; switch back any time.</string>
     <string name="copy_the_tvs_home_screen">the TV\'s home screen</string>
     <string name="copy_choose_one">Choose one</string>
     <string name="copy_install_one">Install it</string>
     <string name="copy_choose_home">Choose a home screen</string>
-    <string name="copy_choose_home_text">Each one replaces the TV\'s home screen. Tellyscope opens it in the Play Store on the TV; you install it with the remote.</string>
+    <string name="copy_choose_home_text">Each one replaces the TV\'s home screen. WallHouse TV opens it in the Play Store on the TV; you install it with the remote.</string>
     <string name="copy_can_download">Some can also be downloaded directly.</string>
     <string name="copy_no_launcher_list">Couldn\'t load the list of home screens. Check the phone\'s internet and try again.</string>
     <string name="copy_recommended">Recommended</string>
@@ -114,16 +114,16 @@
     <string name="copy_no_service">Open source · no accessibility service</string>
     <!-- %1$s is copy_on_this_tv -->
     <string name="copy_other_launcher">Prefer another launcher? Install it from the Play Store on your TV, then come back here. It shows up under %1$s.</string>
-    <string name="copy_not_affiliated">Tellyscope isn\'t affiliated with any of these launchers or their developers.</string>
+    <string name="copy_not_affiliated">WallHouse TV isn\'t affiliated with any of these launchers or their developers.</string>
     <string name="copy_get_from_store">Get it from Play Store</string>
     <string name="copy_store_recommended">Play Store recommended: it updates itself</string>
     <string name="copy_download_directly">Download directly</string>
     <string name="copy_install_home">Install a home screen</string>
     <string name="copy_install_it">Install it on your TV</string>
-    <string name="copy_install_it_text">The Play Store is open on the TV, on %1$s\'s page. Use the remote to select Install. Tellyscope moves on by itself once it\'s installed.</string>
+    <string name="copy_install_it_text">The Play Store is open on the TV, on %1$s\'s page. Use the remote to select Install. WallHouse TV moves on by itself once it\'s installed.</string>
     <string name="copy_store_on">Play Store on %1$s</string>
     <string name="copy_waiting_install">Waiting for install…</string>
-    <string name="copy_downloads_take">Downloads can take a minute. Tellyscope can\'t see the download, only when it\'s done.</string>
+    <string name="copy_downloads_take">Downloads can take a minute. WallHouse TV can\'t see the download, only when it\'s done.</string>
     <string name="copy_open_store_again">Open Play Store again</string>
     <string name="copy_make_it_home">Make it the home screen?</string>
     <string name="copy_is_installed">%1$s is installed.</string>
@@ -133,7 +133,7 @@
     <string name="copy_launcher_is_home">%1$s is already your home screen.</string>
     <string name="copy_no_store">The Play Store didn\'t open</string>
     <!-- %1$s the TV's name, %2$s the launcher's -->
-    <string name="copy_no_store_text">%1$s didn\'t open the Play Store for Tellyscope. On the TV, open the Play Store yourself and search for %2$s. Tellyscope keeps watching and moves on once it\'s installed.</string>
+    <string name="copy_no_store_text">%1$s didn\'t open the Play Store for WallHouse TV. On the TV, open the Play Store yourself and search for %2$s. WallHouse TV keeps watching and moves on once it\'s installed.</string>
     <string name="copy_choose_another">Choose another</string>
     <string name="copy_not_installed">%1$s isn\'t installed</string>
     <string name="copy_wasnt_installed">%1$s wasn\'t installed</string>
@@ -141,17 +141,17 @@
 
     <!-- Installing Projectivy on Fire OS: downloaded from its developer's GitHub, installed over adb -->
     <string name="copy_install_projectivy">Install Projectivy</string>
-    <string name="copy_fire_install_text">A home screen without ads. Tellyscope installs it on the TV for you; there\'s nothing to do on the TV.</string>
+    <string name="copy_fire_install_text">A home screen without ads. WallHouse TV installs it on the TV for you; there\'s nothing to do on the TV.</string>
     <!-- %1$s the app's name -->
-    <string name="copy_downloads_from">Tellyscope downloads %1$s from the developer\'s own release page:</string>
+    <string name="copy_downloads_from">WallHouse TV downloads %1$s from the developer\'s own release page:</string>
     <!-- %1$s the version, %2$s its size (copy_size_*) -->
     <string name="copy_release">Release %1$s · %2$s</string>
     <string name="copy_where_from">Where it comes from</string>
-    <string name="copy_signed_check">Tellyscope checks it\'s signed by Projectivy\'s developer before installing it on the TV. Tellyscope isn\'t affiliated with Projectivy.</string>
+    <string name="copy_signed_check">WallHouse TV checks it\'s signed by %1$s\'s developer before installing it on the TV. WallHouse TV isn\'t affiliated with %1$s.</string>
     <string name="copy_download_and_install">Download and install</string>
     <!-- Download directly, on a TV with the Play Store; %1$s the app's name -->
     <string name="copy_download_directly_title">Download %1$s directly?</string>
-    <string name="copy_direct_check">Tellyscope checks the app carries the developer\'s signature. It does not scan the app for malicious code, and the app won\'t update on its own.</string>
+    <string name="copy_direct_check">WallHouse TV checks the app carries the developer\'s signature. It does not scan the app for malicious code, and the app won\'t update on its own.</string>
     <string name="copy_store_safer">Getting it from Play Store is safer and keeps it updated.</string>
     <string name="copy_download_anyway">Download anyway</string>
     <string name="copy_store_instead">Get it from the Play Store on the TV instead.</string>
@@ -161,11 +161,11 @@
     <!-- %1$d percent done, %2$s and %3$s sizes (copy_size_*) -->
     <string name="copy_downloading">Downloading · %1$d%% · %2$s of %3$s</string>
     <string name="copy_step_picked">Picked a file</string>
-    <string name="copy_step_check">Check it\'s Projectivy</string>
-    <string name="copy_step_checking">Checking it\'s Projectivy…</string>
-    <string name="copy_step_checked">It\'s Projectivy</string>
+    <string name="copy_step_check">Check it\'s %1$s</string>
+    <string name="copy_step_checking">Checking it\'s %1$s…</string>
+    <string name="copy_step_checked">It\'s %1$s</string>
     <string name="copy_step_checked_text">Signed by its developer</string>
-    <string name="copy_step_failed">Not Projectivy</string>
+    <string name="copy_step_failed">Not %1$s</string>
     <string name="copy_step_failed_text">Package name or signature didn\'t match</string>
     <string name="copy_install_on">Install on %1$s</string>
     <string name="copy_stop_title">Stop the download?</string>
@@ -174,13 +174,13 @@
     <string name="copy_keep_downloading">Keep downloading</string>
     <!-- %1$s the TV's name -->
     <string name="copy_installing_on">Installing on %1$s…</string>
-    <string name="copy_not_projectivy">That download isn\'t Projectivy</string>
-    <string name="copy_not_projectivy_text">The file from GitHub didn\'t match Projectivy\'s package name or its developer\'s signature, so Tellyscope installed nothing on the TV.</string>
-    <string name="copy_not_projectivy_file">That file isn\'t Projectivy</string>
-    <string name="copy_not_projectivy_file_text">It didn\'t match Projectivy\'s package name or its developer\'s signature, so Tellyscope installed nothing on the TV.</string>
-    <string name="copy_cant_read_file">Tellyscope couldn\'t read that file. Pick it again, or download it again.</string>
+    <string name="copy_not_projectivy">That download isn\'t %1$s</string>
+    <string name="copy_not_projectivy_text">The file from GitHub didn\'t match %1$s\'s package name or its developer\'s signature, so WallHouse TV installed nothing on the TV.</string>
+    <string name="copy_not_projectivy_file">That file isn\'t %1$s</string>
+    <string name="copy_not_projectivy_file_text">It didn\'t match %1$s\'s package name or its developer\'s signature, so WallHouse TV installed nothing on the TV.</string>
+    <string name="copy_cant_read_file">WallHouse TV couldn\'t read that file. Pick it again, or download it again.</string>
     <string name="copy_cant_install">Couldn\'t install %1$s</string>
-    <string name="copy_no_download">Couldn\'t download Projectivy</string>
+    <string name="copy_no_download">Couldn\'t download %1$s</string>
     <string name="copy_no_download_offline">The phone can\'t reach GitHub. Check its internet, then try again.</string>
     <!-- %1$s a clock time, like 18:44 -->
     <string name="copy_no_download_limited_until">GitHub is limiting downloads from your network until %1$s. Try again then, or download it yourself.</string>
@@ -188,8 +188,8 @@
     <string name="copy_or_yourself">Or download it yourself</string>
     <string name="copy_yourself_page">Download the app file (.apk) from the release page in your browser.</string>
     <!-- %1$s the release's file name, like Projectivy.apk -->
-    <string name="copy_yourself_pick_file">Come back and pick %1$s. Tellyscope checks it\'s Projectivy before installing it.</string>
-    <string name="copy_yourself_pick">Come back and pick it. Tellyscope checks it\'s Projectivy before installing it.</string>
+    <string name="copy_yourself_pick_file">Come back and pick %2$s. WallHouse TV checks it\'s %1$s before installing it.</string>
+    <string name="copy_yourself_pick">Come back and pick it. WallHouse TV checks it\'s %1$s before installing it.</string>
     <string name="copy_latest_release">Latest release</string>
     <string name="copy_pick_downloaded">Pick the downloaded file</string>
     <string name="copy_pick_another">Pick another file</string>
@@ -252,11 +252,11 @@
 
     <string name="copy_uninstall_title">Uninstall %1$s?</string>
     <!-- Uninstalling the launcher on Home: paragraphs; %1$s the launcher, the numbers are step numbers -->
-    <string name="copy_uninstall_home_intro">%1$s is your home screen. Before removing it, Tellyscope:</string>
+    <string name="copy_uninstall_home_intro">%1$s is your home screen. Before removing it, WallHouse TV:</string>
     <string name="copy_uninstall_home_back">1. Makes %1$s the home screen again, turning it back on if it\'s off.</string>
     <string name="copy_uninstall_home_service">2. Turns off %1$s\'s accessibility service.</string>
     <string name="copy_uninstall_home_remove">%1$d. Uninstalls it, with everything saved in it. This can\'t be undone.</string>
-    <string name="copy_uninstall_home_fails">If a step fails, Tellyscope stops there, says which one, and doesn\'t uninstall.</string>
+    <string name="copy_uninstall_home_fails">If a step fails, WallHouse TV stops there, says which one, and doesn\'t uninstall.</string>
 
     <string name="copy_system">System</string>
     <string name="copy_system_why">Needed by the TV · can\'t be changed</string>
@@ -295,10 +295,10 @@
     <string name="copy_unreachable">The TV didn\'t answer. Check it\'s on and on the same Wi-Fi as this phone, then try again.</string>
     <string name="copy_pair_instead">The TV didn\'t let this phone in yet. Pair it once with the code from the TV.</string>
     <string name="copy_logged_out">You were logged out</string>
-    <string name="copy_logged_out_why">The TV removed this phone\'s access. Tellyscope disconnected and stopped asking, so nothing pops up on the TV until you connect again.</string>
+    <string name="copy_logged_out_why">The TV removed this phone\'s access. WallHouse TV disconnected and stopped asking, so nothing pops up on the TV until you connect again.</string>
     <!-- Names of options in the TV's Developer options menu -->
     <string name="copy_logged_out_cause_revoke">Revoke USB debugging authorisations was chosen on the TV.</string>
-    <string name="copy_logged_out_cause_remove">Remove all other access was used from another phone, or from another Tellyscope build on this phone.</string>
+    <string name="copy_logged_out_cause_remove">Remove all other access was used from another phone, or from another WallHouse TV build on this phone.</string>
     <string name="copy_logged_out_of">Logged out of %1$s</string>
     <string name="copy_logged_out_just_now">Logged out just now</string>
     <!-- %1$s is a time of day, like 23:00 -->
@@ -336,7 +336,7 @@
     <string name="copy_install_kind_downgrade_versions">This is older than the one on the TV (%1$s here, %2$s on the TV). Android normally refuses that, and the app\'s saved data may not work with the older version.</string>
     <string name="copy_install_kind_downgrade">This is older than the one on the TV. Android normally refuses that, and the app\'s saved data may not work with the older version.</string>
     <string name="copy_allow_downgrade">Install the older version anyway</string>
-    <string name="copy_install_keep_open">Keep Tellyscope open until it\'s done.</string>
+    <string name="copy_install_keep_open">Keep WallHouse TV open until it\'s done.</string>
     <string name="copy_installed_update">Updated %1$s.</string>
     <string name="copy_installed_reinstall">Reinstalled %1$s.</string>
     <string name="copy_installed_new">Installed %1$s.</string>
@@ -368,14 +368,14 @@
     <string name="copy_cancelled_send">Cancelled. Nothing was left on the TV.</string>
     <string name="copy_cancelled_save">Cancelled. Nothing was saved.</string>
     <string name="copy_cant_read">Couldn\'t read that file on your phone.</string>
-    <string name="copy_cant_undo">This version of Tellyscope can\'t undo that setting.</string>
+    <string name="copy_cant_undo">This version of WallHouse TV can\'t undo that setting.</string>
     <string name="copy_files_lost">Couldn\'t read this folder. Check the TV is still connected.</string>
 
     <!-- Remote -->
     <string name="copy_key_refused">The TV didn\'t take that key.</string>
     <string name="copy_type_refused">The TV didn\'t take the text. Select a text box on the TV first, then send again.</string>
     <string name="copy_remote_lost">Lost the TV. Check it\'s still on and connected.</string>
-    <string name="copy_no_update_screen">This TV has no update screen Tellyscope can open. Look in its Settings, under System or About.</string>
+    <string name="copy_no_update_screen">This TV has no update screen WallHouse TV can open. Look in its Settings, under System or About.</string>
     <string name="copy_updates_opened">Opened the update screen on the TV. Look at the TV to check for updates.</string>
     <string name="copy_reboot_refused">The TV said no to restarting. Use its own remote or power button instead.</string>
     <string name="copy_reboot_ignored">The TV didn\'t restart. Use its own remote or power button instead.</string>
@@ -388,7 +388,7 @@
     <!-- Lower case: shown after copy_screen_off -->
     <string name="copy_screen_off_wake">tap any key to wake</string>
     <string name="copy_screen_off_tip">Turns off the TV\'s picture. The app stays connected; any key wakes it.</string>
-    <string name="copy_screen_off_refused">This TV can\'t turn its picture off from Tellyscope.</string>
+    <string name="copy_screen_off_refused">This TV can\'t turn its picture off from WallHouse TV.</string>
     <string name="copy_screen_on_refused">The TV\'s picture didn\'t come back on. Try again, or restart the TV.</string>
     <string name="copy_cant_type_empty">Type something first.</string>
     <plurals name="copy_cant_type_too_long">
@@ -403,9 +403,9 @@
 
     <string name="copy_remote_restart">Restart TV</string>
     <string name="copy_reboot_title">Restart the TV?</string>
-    <string name="copy_reboot_text">The TV turns off and on again. Tellyscope reconnects by itself when it\'s back, usually within a minute.</string>
+    <string name="copy_reboot_text">The TV turns off and on again. WallHouse TV reconnects by itself when it\'s back, usually within a minute.</string>
     <string name="copy_restarting_title">Restarting…</string>
-    <string name="copy_restarting_text">The TV is restarting. Tellyscope will reconnect by itself.</string>
+    <string name="copy_restarting_text">The TV is restarting. WallHouse TV will reconnect by itself.</string>
     <string name="copy_restart_late_title">The TV hasn\'t come back yet</string>
     <string name="copy_restart_late_status">Not back yet</string>
     <string name="copy_restart_late_text">It\'s been a minute. Some TVs take longer to start; Retry waits another minute.</string>
@@ -426,7 +426,7 @@
         <item quantity="one">%1$d app was uninstalled, so its button left the Remote.</item>
         <item quantity="other">%1$d apps were uninstalled, so their buttons left the Remote.</item>
     </plurals>
-    <string name="copy_restarting_soon">Tellyscope reconnects on its own when the TV is back, usually within a couple of minutes.</string>
+    <string name="copy_restarting_soon">WallHouse TV reconnects on its own when the TV is back, usually within a couple of minutes.</string>
     <string name="copy_restarting_long">Taking a while. Some TVs turn network debugging off when they restart. If it doesn\'t come back, turn it on again in the TV\'s Developer options.</string>
 
     <!-- TV tweaks -->
@@ -437,7 +437,7 @@
     <string name="copy_dns_state_off">Off. Turn on to block ads and trackers in every app on the TV.</string>
     <string name="copy_dns_too_old">Needs Android 9 or newer. This TV is older.</string>
     <string name="copy_dns_dialog">Block ads on the whole TV?</string>
-    <string name="copy_dns_text">The TV will look up every address through this ad-blocking DNS provider. AdGuard is free and needs no account. Tellyscope then checks the TV can still look addresses up, and puts it back if not. Undo is in History.</string>
+    <string name="copy_dns_text">The TV will look up every address through this ad-blocking DNS provider. AdGuard is free and needs no account. WallHouse TV then checks the TV can still look addresses up, and puts it back if not. Undo is in History.</string>
     <string name="copy_dns_field">DNS provider</string>
     <string name="copy_dns_bad">Enter a hostname like dns.adguard-dns.com. An IP address won\'t work here.</string>
     <string name="copy_dns_confirm">Turn on</string>
@@ -470,14 +470,14 @@
 
     <!-- Who has access -->
     <string name="copy_warning_title">Another computer is connected to this TV</string>
-    <string name="copy_warning_text">It can do everything Tellyscope can: install or remove apps, read files and control the screen.</string>
+    <string name="copy_warning_text">It can do everything WallHouse TV can: install or remove apps, read files and control the screen.</string>
     <string name="copy_its_mine">It\'s mine</string>
     <string name="copy_remove_access">Remove all other access…</string>
     <string name="copy_connected_now">Connected now</string>
     <string name="copy_who_has_access">Who has access</string>
     <string name="copy_history">History</string>
     <string name="copy_advanced_monitor">Advanced monitor</string>
-    <string name="copy_share">Share Tellyscope</string>
+    <string name="copy_share">Share WallHouse TV</string>
 
     <!-- Reset TV -->
     <string name="copy_reset_tv">Reset TV to how it shipped</string>
@@ -587,10 +587,10 @@
         <item quantity="other">%1$d apps still off</item>
     </plurals>
     <plurals name="copy_still_off_title">
-        <item quantity="one">%1$d app Tellyscope turned off is still off</item>
-        <item quantity="other">%1$d apps Tellyscope turned off are still off</item>
+        <item quantity="one">%1$d app WallHouse TV turned off is still off</item>
+        <item quantity="other">%1$d apps WallHouse TV turned off are still off</item>
     </plurals>
-    <string name="copy_still_off_text">Restore everything turns them back on. Apps that were off before Tellyscope\'s first change stay off.</string>
+    <string name="copy_still_off_text">Restore everything turns them back on. Apps that were off before WallHouse TV\'s first change stay off.</string>
     <plurals name="copy_others_connected">
         <item quantity="one">%1$d other connected now</item>
         <item quantity="other">%1$d others connected now</item>
@@ -614,14 +614,14 @@
     <string name="copy_waiting_text">An Allow prompt for it is on the TV now. It can\'t do anything until you choose Allow there. Not yours? Choose Deny.</string>
     <string name="copy_answer">Answer</string>
     <string name="copy_new_chip">New</string>
-    <string name="copy_new_key_text">Allowed on the TV while Tellyscope wasn\'t watching. Not yours? Remove all other access.</string>
+    <string name="copy_new_key_text">Allowed on the TV while WallHouse TV wasn\'t watching. Not yours? Remove all other access.</string>
     <string name="copy_allowed_computers">Allowed computers</string>
     <string name="copy_unnamed_computer">Unnamed computer</string>
     <string name="copy_cant_check_connected">This TV doesn\'t say who is connected.</string>
     <string name="copy_cant_check_allowed">This TV doesn\'t list its allowed computers.</string>
     <string name="copy_nobody_allowed">No computer is allowed. The next one to connect has to be allowed on the TV.</string>
     <string name="copy_access_foot_link">The TV doesn\'t say which allowed computer is behind a connection. If you don\'t recognise an address, remove all other access.</string>
-    <string name="copy_access_foot_all">Android can\'t remove one computer on its own: this clears every computer, then you allow Tellyscope again.</string>
+    <string name="copy_access_foot_all">Android can\'t remove one computer on its own: this clears every computer, then you allow WallHouse TV again.</string>
     <string name="copy_never_seen">Never seen</string>
     <string name="copy_last_seen_just_now">Last seen just now</string>
     <!-- %1$s is a time of day, like 23:00 -->
@@ -637,7 +637,7 @@
     <string name="copy_remove_title">Remove all other access</string>
     <string name="copy_confirm_title">Remove all other access?</string>
     <string name="copy_confirm_text">Every computer this TV has allowed loses access, your own computers too: they\'ll need allowing again.</string>
-    <string name="copy_confirm_remote">Tellyscope reconnects straight away. Keep the TV remote handy: the TV asks you to allow this phone.</string>
+    <string name="copy_confirm_remote">WallHouse TV reconnects straight away. Keep the TV remote handy: the TV asks you to allow this phone.</string>
     <string name="copy_confirm_button">Remove access</string>
     <string name="copy_cancel">Cancel</string>
     <string name="copy_revoking">Removing access…</string>
@@ -654,28 +654,28 @@
     <string name="copy_ask_again">Ask the TV again</string>
     <string name="copy_checking">Checking the TV…</string>
     <string name="copy_done_title">Only this phone has access</string>
-    <string name="copy_done_text">Tellyscope checked the TV again: this phone is the only allowed computer, and nothing else is connected.</string>
+    <string name="copy_done_text">WallHouse TV checked the TV again: this phone is the only allowed computer, and nothing else is connected.</string>
     <string name="copy_trust_warning">Only allow computers and apps you trust. Anything you allow can install apps, read files and control the TV.</string>
     <string name="copy_back_to">Back to %1$s</string>
     <string name="copy_still_title">Another computer is still connected</string>
     <!-- %1$s is copy_connection_from or a computer's name, %2$s the TV -->
-    <string name="copy_still_text">Tellyscope still sees %1$s on %2$s. It may have connected again straight away. Turn it off or unplug it from the network, then try again.</string>
-    <string name="copy_still_open_text">Tellyscope still sees %1$s on %2$s. Its access is gone, but the TV keeps a connection open until it ends. Restart the TV to end it.</string>
+    <string name="copy_still_text">WallHouse TV still sees %1$s on %2$s. It may have connected again straight away. Turn it off or unplug it from the network, then try again.</string>
+    <string name="copy_still_open_text">WallHouse TV still sees %1$s on %2$s. Its access is gone, but the TV keeps a connection open until it ends. Restart the TV to end it.</string>
     <string name="copy_check_again">Check again</string>
     <string name="copy_restart_tv">Restart the TV</string>
     <string name="copy_restarting_to_check">Restarting the TV…</string>
     <!-- %1$s is an IP address -->
     <string name="copy_connection_from">a connection from %1$s</string>
     <string name="copy_unconfirmed_title">Revoked on the TV</string>
-    <string name="copy_unconfirmed_text">Tellyscope can\'t check the list on this TV. Look under Developer options to confirm.</string>
+    <string name="copy_unconfirmed_text">WallHouse TV can\'t check the list on this TV. Look under Developer options to confirm.</string>
     <string name="copy_done">Done</string>
-    <string name="copy_manual_intro">This TV didn\'t take Tellyscope\'s request, so it\'s two steps on the TV. Afterwards only this phone can use ADB on it; your own computers will need allowing again.</string>
+    <string name="copy_manual_intro">This TV didn\'t take WallHouse TV\'s request, so it\'s two steps on the TV. Afterwards only this phone can use ADB on it; your own computers will need allowing again.</string>
     <string name="copy_manual_step_1">Open Developer options on the TV</string>
     <!-- Menu path in Android TV's settings -->
-    <string name="copy_manual_step_1_text">Tellyscope opens it for you. If nothing happens on the TV, go to Settings → Device Preferences → Developer options.</string>
+    <string name="copy_manual_step_1_text">WallHouse TV opens it for you. If nothing happens on the TV, go to Settings → Device Preferences → Developer options.</string>
     <string name="copy_open_on_tv">Open on TV</string>
     <string name="copy_manual_step_2">Choose “Revoke USB debugging authorisations”</string>
-    <string name="copy_manual_step_2_text">Then come back here, and Tellyscope asks the TV to allow this phone again.</string>
+    <string name="copy_manual_step_2_text">Then come back here, and WallHouse TV asks the TV to allow this phone again.</string>
     <string name="copy_manual_done">I\'ve revoked it</string>
     <string name="copy_dev_options_failed">Couldn\'t open Developer options on the TV. Go to Settings → Device Preferences → Developer options.</string>
 
@@ -733,7 +733,7 @@
     <string name="data_protected_tv_inputs_remote">your remote or HDMI inputs could stop working</string>
     <string name="data_protected_setup_wizard">the TV may get stuck on restart without it</string>
     <string name="data_protected_updates">the TV gets its updates through this</string>
-    <string name="data_protected_unknown_home">this TV didn\'t say which app is its home screen, so Tellyscope won\'t change anything</string>
+    <string name="data_protected_unknown_home">this TV didn\'t say which app is its home screen, so WallHouse TV won\'t change anything</string>
     <string name="data_protected_came_with_tv">it came with the TV, so it can only be disabled</string>
     <string name="data_protected_disabled_by_tv">the TV turned this off itself, so it can\'t be turned back on from here</string>
 
@@ -912,7 +912,7 @@
     <!-- Ticked apps in a group: "3 of 5" -->
     <string name="lists_group_count">%1$d of %2$d</string>
     <string name="lists_help_add_title">Not in the list? Help add this TV</string>
-    <string name="lists_help_add_text">Send its model and stock apps to cleanyourtv, where Tellyscope’s lists come from. You see the text first.</string>
+    <string name="lists_help_add_text">Send its model and stock apps to cleanyourtv, where WallHouse TV’s lists come from. You see the text first.</string>
     <string name="lists_help_add_button">Help add this TV</string>
     <string name="lists_not_this_tv">Not this TV?</string>
     <plurals name="lists_disable_apps_confirm">
@@ -922,10 +922,11 @@
     <string name="lists_disable_text">Each one is hidden and stops running. Nothing is deleted; every one shows in History, where you can turn it back on.</string>
     <string name="lists_disable_yes">Yes, disable them</string>
     <string name="lists_cancel">Cancel</string>
-    <string name="lists_about_title">About Tellyscope</string>
+    <string name="lists_about_title">About WallHouse TV</string>
     <string name="lists_about_version">Version %1$s</string>
     <string name="lists_about_website">Website</string>
     <string name="lists_about_demo">Watch the demo on YouTube</string>
+    <string name="lists_about_based_on">Based on Tellyscope by man15h (GPL v3)</string>
     <string name="lists_about_licence">Free software under the GNU GPL v3.</string>
     <!-- %1$s is the first 12 characters of a git commit -->
     <string name="lists_about_lists_commit">Device lists are adapted from cleanyourtv by Gathin (MIT licence), commit %1$s.</string>
@@ -981,12 +982,12 @@
     <string name="report_title_new_tv">Help add this TV</string>
     <string name="report_title_problem">Report a problem</string>
     <string name="report_subtitle_new_tv">Opens cleanyourtv’s “My TV” form on GitHub</string>
-    <string name="report_subtitle_problem">Opens an issue on Tellyscope’s GitHub</string>
+    <string name="report_subtitle_problem">Opens an issue on WallHouse TV’s GitHub</string>
     <string name="report_close">Close</string>
     <!-- Followed by report_note_rest or report_note_nothing_sent -->
     <string name="report_note_own_account">You post it from your own GitHub account.</string>
     <string name="report_note_rest">What doesn’t fit the link can go in a comment after you post.</string>
-    <string name="report_note_nothing_sent">Tellyscope sends nothing by itself.</string>
+    <string name="report_note_nothing_sent">WallHouse TV sends nothing by itself.</string>
     <string name="report_open_github">Open GitHub</string>
     <string name="report_reading_tv">Reading the TV…</string>
     <string name="report_no_tv">No TV connected</string>
@@ -1010,7 +1011,7 @@
     <!-- %1$s is a GitHub repository, like owner/tellyscope -->
     <string name="report_add_rest_note">Opens your newest issue on %1$s. If it’s not the right one, pick yours from the list there.</string>
     <string name="report_copy_and_open">Copy and open your issue</string>
-    <string name="report_add_rest_text">This is the comment. GitHub can’t fill in a comment from a link, so Tellyscope copies it and opens your issue: tap the comment box there and paste.</string>
+    <string name="report_add_rest_text">This is the comment. GitHub can’t fill in a comment from a link, so WallHouse TV copies it and opens your issue: tap the comment box there and paste.</string>
     <string name="report_posted_title">Posted it? Add the rest as a comment</string>
     <plurals name="report_posted_apps_cut">
         <item quantity="one">%1$d apps didn’t fit in the link. Adding them helps cleanyourtv write the full list.</item>
@@ -1039,17 +1040,17 @@
         <item quantity="one">Turn %1$d app back on?</item>
         <item quantity="other">Turn %1$d apps back on?</item>
     </plurals>
-    <string name="device_restore_text">Turns back on every app Tellyscope disabled on this TV. Apps that were already off before Tellyscope\'s first change stay off.</string>
+    <string name="device_restore_text">Turns back on every app WallHouse TV disabled on this TV. Apps that were already off before WallHouse TV\'s first change stay off.</string>
     <string name="device_restore_button">Turn back on</string>
     <string name="device_rename_title">Rename this TV</string>
     <string name="device_rename_text">Only this phone sees the name. Nothing on the TV changes.</string>
     <string name="device_save">Save</string>
     <!-- %1$s is the TV's name -->
     <string name="device_forget_title">Forget %1$s?</string>
-    <string name="device_forget_text">Tellyscope stops reconnecting to it and removes it from this phone. Nothing on the TV changes. You can add it again from a scan.</string>
+    <string name="device_forget_text">WallHouse TV stops reconnecting to it and removes it from this phone. Nothing on the TV changes. You can add it again from a scan.</string>
     <string name="device_forget">Forget</string>
     <string name="device_not_allowed_title">The TV didn\'t allow this phone</string>
-    <string name="device_not_allowed_text">Its debugging access was turned off, reset, or denied. Tellyscope stopped asking so the TV isn\'t flooded with prompts.</string>
+    <string name="device_not_allowed_text">Its debugging access was turned off, reset, or denied. WallHouse TV stopped asking so the TV isn\'t flooded with prompts.</string>
     <string name="device_connect_again">Connect again</string>
     <!-- "Always allow from this computer" is the TV's own wording -->
     <string name="device_not_allowed_hint">Then press Allow on the TV, and tick \"Always allow from this computer\".</string>
@@ -1101,7 +1102,7 @@
     <string name="guide_done">Done</string>
     <string name="guide_tip_same_wifi">Keep the phone and the TV on the same Wi-Fi. Guest networks often keep devices apart.</string>
     <string name="guide_tip_debugging_off">Debugging switched itself off? Some TVs reset it after a restart. Turn it back on and this screen finds the TV again.</string>
-    <string name="guide_tip_vega">No Developer options after 7 presses? Newer Fire TVs run Vega OS, which isn\'t Android, and Tellyscope can\'t reach them.</string>
+    <string name="guide_tip_vega">No Developer options after 7 presses? Newer Fire TVs run Vega OS, which isn\'t Android, and WallHouse TV can\'t reach them.</string>
     <string name="guide_tip_by_ip">Still nothing? Add the TV by its IP address, from the TV\'s network settings.</string>
     <string name="guide_help_title">Can\'t find your TV?</string>
     <string name="guide_add_by_ip">Add by IP address</string>
@@ -1168,17 +1169,17 @@
 
     <!-- SettingsScreen -->
     <!-- Sent through the share sheet; %1$s is the project's web address -->
-    <string name="settings_share_text">I just found Tellyscope, an open-source app that cleans up your Android TV from your phone: turn off the bloat, install apps and send files, with no root and no PC. Free, no tracking. %1$s</string>
+    <string name="settings_share_text">I just found WallHouse TV, an open-source app that cleans up your Android TV from your phone: turn off the bloat, install apps and send files, with no root and no PC. Free, no tracking. %1$s</string>
     <string name="settings_title">Settings</string>
     <string name="settings_back_to_tv">Back to the TV\'s page</string>
     <string name="settings_check_updates">Check for updates</string>
-    <string name="settings_check_updates_alpha">Every 5 minutes on alpha builds, ask GitHub whether a newer Tellyscope is out. Nothing is downloaded.</string>
-    <string name="settings_check_updates_release">Every 30 minutes, ask GitHub whether a newer Tellyscope is out. Nothing is downloaded.</string>
+    <string name="settings_check_updates_alpha">Every 5 minutes on alpha builds, ask GitHub whether a newer WallHouse TV is out. Nothing is downloaded.</string>
+    <string name="settings_check_updates_release">Every 30 minutes, ask GitHub whether a newer WallHouse TV is out. Nothing is downloaded.</string>
     <string name="settings_key_haptics">Vibrate on key press</string>
     <string name="settings_key_haptics_text">A short tick for each key on the Remote.</string>
     <string name="settings_report">Report a problem</string>
-    <string name="settings_report_text">Opens an issue on Tellyscope’s GitHub. You see the text first.</string>
-    <string name="settings_share_hint">Send someone the link to Tellyscope’s GitHub page.</string>
+    <string name="settings_report_text">Opens an issue on WallHouse TV’s GitHub. You see the text first.</string>
+    <string name="settings_share_hint">Send someone the link to WallHouse TV’s GitHub page.</string>
     <string name="settings_whats_new">What’s new</string>
     <string name="settings_whats_new_text">What changed in this version and the ones before it.</string>
     <string name="whats_new_back">Back to Settings</string>
@@ -1186,7 +1187,7 @@
     <string name="whats_new_new">New</string>
     <string name="whats_new_improved">Improved</string>
     <string name="whats_new_fixed">Fixed</string>
-    <string name="whats_new_update_out">Tellyscope %1$s is out</string>
+    <string name="whats_new_update_out">WallHouse TV %1$s is out</string>
     <string name="whats_new_you_have">You have %1$s.</string>
     <string name="whats_new_update">Update</string>
     <string name="whats_new_not_installed">Not installed</string>
@@ -1231,7 +1232,7 @@
     <string name="connect_check_restart">Some TVs switch debugging off after a restart. Turn it back on.</string>
     <string name="connect_cant_reach">Can\'t reach the TV</string>
     <string name="connect_off_wifi">This phone isn\'t on Wi-Fi. Join the same Wi-Fi as the TV, then try again.</string>
-    <string name="connect_off_wifi_waiting">This phone isn\'t on Wi-Fi. Join the same Wi-Fi as the TV. Tellyscope carries on as soon as you\'re on.</string>
+    <string name="connect_off_wifi_waiting">This phone isn\'t on Wi-Fi. Join the same Wi-Fi as the TV. WallHouse TV carries on as soon as you\'re on.</string>
     <string name="connect_waiting_wifi">Waiting for Wi-Fi…</string>
     <string name="connect_tv_silent">This phone is on Wi-Fi, but the TV didn\'t answer.</string>
     <string name="connect_check_on">Is the TV on? Some TVs drop off Wi-Fi when they sleep.</string>
@@ -1307,10 +1308,10 @@
     <string name="scan_continue">Continue</string>
     <string name="scan_looking_first">Looking for your TV…</string>
     <string name="scan_looking_more">Looking for more TVs…</string>
-    <string name="scan_none_yet">No TV yet. Tellyscope looks again in a moment.</string>
+    <string name="scan_none_yet">No TV yet. WallHouse TV looks again in a moment.</string>
     <string name="scan_again">Scan again</string>
     <string name="scan_off_wifi_title">This phone isn\'t on Wi-Fi</string>
-    <string name="scan_off_wifi_text">Join the same Wi-Fi as your TV. Tellyscope looks for it again as soon as you\'re on.</string>
+    <string name="scan_off_wifi_text">Join the same Wi-Fi as your TV. WallHouse TV looks for it again as soon as you\'re on.</string>
     <string name="scan_open_wifi">Open Wi-Fi settings</string>
     <string name="scan_ip_hint">Find it on the TV under Settings → Network → your Wi-Fi.</string>
     <!-- %1$s is the phone's address range, in CIDR form -->
@@ -1371,14 +1372,14 @@
 
     <!-- Nearby devices permission (also shown on the welcome screen) -->
     <string name="permission_title">Find TVs on your Wi-Fi</string>
-    <string name="permission_local_network_text">Android asks before an app talks to other devices on your Wi-Fi. Tellyscope only connects to the TVs you pick.</string>
-    <string name="permission_denied">Without it, Tellyscope can\'t see any TV. In Settings, open Permissions → Nearby devices and choose Allow.</string>
+    <string name="permission_local_network_text">Android asks before an app talks to other devices on your Wi-Fi. WallHouse TV only connects to the TVs you pick.</string>
+    <string name="permission_denied">Without it, WallHouse TV can\'t see any TV. In Settings, open Permissions → Nearby devices and choose Allow.</string>
     <string name="permission_open_settings">Open Settings</string>
     <string name="permission_ask_again">Ask again</string>
 
     <!-- Update dialog -->
     <!-- The argument is the version, e.g. 0.3.0. -->
-    <string name="update_title">🎉 Tellyscope %1$s is out</string>
+    <string name="update_title">🎉 WallHouse TV %1$s is out</string>
     <string name="update_no_notes">No release notes.</string>
     <!-- Last line when the release notes are cut short. -->
     <string name="update_more_notes">…and more on GitHub</string>
@@ -1388,9 +1389,9 @@
 
     <!-- Welcome -->
     <string name="welcome_skip">Skip</string>
-    <string name="welcome_title">Welcome to Tellyscope</string>
+    <string name="welcome_title">Welcome to WallHouse TV</string>
     <string name="welcome_text">See what\'s running on your Android TV, and turn off the apps you don\'t need. All from your phone, over Wi-Fi.</string>
     <string name="welcome_step_1">Turn on debugging on your TV. The next screen shows how for your brand.</string>
-    <string name="welcome_step_2">Tellyscope finds the TV on your Wi-Fi.</string>
+    <string name="welcome_step_2">WallHouse TV finds the TV on your Wi-Fi.</string>
     <string name="welcome_step_3">Type the code the TV shows, or choose Allow when it asks.</string>
 </resources>

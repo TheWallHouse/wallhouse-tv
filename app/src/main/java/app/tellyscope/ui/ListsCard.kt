@@ -443,11 +443,8 @@ internal fun DisableDialog(apps: List<Suggested>, onDisable: () -> Unit, onDismi
 
 internal val REPO = RELEASES.removeSuffix("/releases")
 
-/** The project's GitHub Pages site: `https://OWNER.github.io/tellyscope/` for `github.com/OWNER/tellyscope`. */
-internal val SITE = REPO.removePrefix("https://github.com/").split('/').let { (owner, repo) -> "https://$owner.github.io/$repo/" }
-
-/** The demo video, the same one the README and the site play. */
-internal const val DEMO_VIDEO = "https://youtu.be/N_PeDw5GiCc"
+/** Tellyscope, the app WallHouse TV is a fork of. */
+internal const val UPSTREAM = "https://github.com/man15h/tellyscope"
 
 /**
  * About and licences: the installed version, links to the site, the repo and the demo video,
@@ -464,9 +461,8 @@ fun AboutDialog(commit: String?, onDismiss: () -> Unit, version: String = instal
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text(stringResource(R.string.lists_about_version, version), style = MaterialTheme.typography.titleSmall)
-                AboutLink(stringResource(R.string.lists_about_website), SITE, browser::openUri)
                 AboutLink("GitHub", REPO, browser::openUri)
-                AboutLink(stringResource(R.string.lists_about_demo), DEMO_VIDEO, browser::openUri)
+                AboutLink(stringResource(R.string.lists_about_based_on), UPSTREAM, browser::openUri)
                 Text(stringResource(R.string.lists_about_licence), style = MaterialTheme.typography.bodyMedium)
                 Text(
                     commit?.let { stringResource(R.string.lists_about_lists_commit, it.take(12)) } ?: stringResource(R.string.lists_about_lists_pending),

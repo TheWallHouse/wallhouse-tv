@@ -17,6 +17,8 @@ val ACCESSIBILITY_LAUNCHERS = mapOf(
     "com.spocky.projengmenu" to "4.72",
     "com.overdevs.at4k" to "1.2",
     "com.spauldhaliwal.dispatch" to "1.0.175",
+    // CleanYourTV · Nothing edition: InputKeyService (Input and colour buttons) and HomeKeyService (keeps Home).
+    "io.github.thewallhouse.nothingtv" to "3.3",
 )
 
 /**
@@ -28,6 +30,8 @@ data class KnownLauncher(
     val pkg: String,
     val name: String,
     val about: String? = null,
+    /** Where it downloads from, only on the WallHouse catalogue ([parseCatalogue]); null on `launchers.json`. */
+    val direct: DirectLauncher? = null,
 ) {
     val accessibility get() = pkg in ACCESSIBILITY_LAUNCHERS
 }
@@ -45,6 +49,34 @@ fun parseLaunchers(text: String): List<KnownLauncher> = try {
 } catch (_: org.json.JSONException) {
     emptyList()
 }
+
+/**
+ * The WallHouse catalogue (`catalog/launchers.json` in this app's repo): `launchers.json`'s format, plus a
+ * launcher's download, `github` (`owner/repo`) and `signers` (its certificates' SHA-256s), and `store`, false
+ * when it isn't on the Play Store. Only this list may pin a download; one without a valid repo and signer
+ * is still offered, from the Store. Empty unless it is schema 1.
+ */
+fun parseCatalogue(text: String): List<KnownLauncher> = try {
+    val o = jsonObject(text)
+    if (o.optInt("schema") != 1) emptyList() else o.getJSONArray("launchers").objectsOrSkip { l ->
+        val pkg = l.getString("package")
+        val name = plainText(l.getString("name"), NAME_MAX)
+        val repo = l.optStringOrNull("github")?.takeIf { GITHUB_REPO.matches(it) }
+        val signers = l.optJSONArray("signers")?.let { a -> (0 until a.length()).mapNotNull { a.optString(it).lowercase().takeIf(SIGNER::matches) }.toSet() }.orEmpty()
+        KnownLauncher(
+            pkg = pkg,
+            name = name,
+            about = l.optStringOrNull("about")?.let { plainText(it, NOTE_MAX) }?.ifEmpty { null },
+            direct = if (repo != null && signers.isNotEmpty()) DirectLauncher(pkg, name, repo, signers, l.optBoolean("store", true)) else null,
+        ).takeIf { PACKAGE.matches(it.pkg) && it.name.isNotEmpty() && (it.direct != null || l.optBoolean("store", true)) }
+    }
+} catch (_: org.json.JSONException) {
+    emptyList()
+}
+
+/** The catalogue's launchers first, then the list's ones it doesn't have. */
+fun mergeLaunchers(catalogue: List<KnownLauncher>, list: List<KnownLauncher>) =
+    catalogue + list.filter { l -> catalogue.none { it.pkg == l.pkg } }
 
 /**
  * Package to display name, from `labels.json`; its groups are only there for
@@ -67,6 +99,7 @@ fun parseLabels(text: String): Map<String, String> = try {
 
 /** The launcher, app name and streaming lists, as [SharedLists] holds them. */
 data class Shared(
+    /** The WallHouse catalogue's and `launchers.json`'s, merged ([mergeLaunchers]). */
     val launchers: List<KnownLauncher> = emptyList(),
     val labels: Map<String, String> = emptyMap(),
     val streaming: List<StreamingService> = emptyList(),
@@ -79,6 +112,11 @@ data class Shared(
  * a build with `fixtures/` among its Java resources (the tests) starts from those instead.
  */
 object SharedLists {
+    /** The WallHouse catalogue as last read: the bundled copy until the app's repo answers. */
+    @Volatile private var catalogue: List<KnownLauncher> = bundledCatalogue()
+
+    /** The list's own launchers, before the merge, so a new catalogue merges with them again. */
+    @Volatile private var listLaunchers: List<KnownLauncher> = emptyList() // set by seed()
     private val _state = MutableStateFlow(seed())
     val state: StateFlow<Shared> = _state.asStateFlow()
     val launchers get() = _state.value.launchers
@@ -91,8 +129,11 @@ object SharedLists {
     suspend fun load(lists: DeviceLists, fresh: Boolean = false) {
         source = lists
         if (fresh) _state.value = seed() else apply(lists.cachedShared())
+        catalogue = lists.cachedCatalogue()?.let(::parseCatalogue)?.ifEmpty { null } ?: catalogue
         apply(lists.shared())
+        lists.catalogue()?.let(::parseCatalogue)?.ifEmpty { null }?.let { catalogue = it; apply(SharedFiles(null, null, null)) }
     }
+
 
     /** The source's lists again; one already downloaded is read from the cache, so this is cheap once online. */
     suspend fun refresh() {
@@ -105,7 +146,7 @@ object SharedLists {
     private fun apply(f: SharedFiles) {
         _state.update { now ->
             Shared(
-                launchers = f.launchers?.let(::parseLaunchers)?.ifEmpty { null } ?: now.launchers,
+                launchers = mergeLaunchers(catalogue, f.launchers?.let(::parseLaunchers)?.ifEmpty { null }?.also { listLaunchers = it } ?: listLaunchers),
                 labels = f.labels?.let(::parseLabels)?.ifEmpty { null } ?: now.labels,
                 streaming = f.streaming?.let(::parseStreaming)?.ifEmpty { null } ?: now.streaming,
             )
@@ -113,10 +154,17 @@ object SharedLists {
     }
 
     private fun seed() = Shared(
-        launchers = resource("/fixtures/launchers.json")?.let { parseLaunchers(it.decodeToString()) }.orEmpty(),
+        launchers = mergeLaunchers(
+            bundledCatalogue(),
+            resource("/fixtures/launchers.json")?.let { parseLaunchers(it.decodeToString()) }.orEmpty().also { listLaunchers = it },
+        ),
         labels = resource("/fixtures/labels.json")?.let { parseLabels(it.decodeToString()) }.orEmpty(),
         streaming = resource("/fixtures/streaming.json")?.let { parseStreaming(it.decodeToString()) }.orEmpty(),
     )
+
+    /** The catalogue shipped in the app (`catalog/launchers.json`, a Java resource), for the first launch offline. */
+    private fun bundledCatalogue(): List<KnownLauncher> =
+        resource("/catalog/launchers.json")?.let { parseCatalogue(it.decodeToString()) }.orEmpty()
 
     private fun resource(path: String): ByteArray? =
         SharedLists::class.java.getResourceAsStream(path)?.use { it.readBytes() }

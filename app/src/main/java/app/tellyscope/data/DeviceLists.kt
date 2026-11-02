@@ -21,6 +21,9 @@ import java.security.MessageDigest
  */
 const val LISTS_BASE = "https://raw.githubusercontent.com/man15h/tellyscope-devices/main/"
 
+/** WallHouse TV's own launcher catalogue ([parseCatalogue]), in this app's repo; read beside the lists, whatever their source. */
+const val CATALOGUE_URL = "https://raw.githubusercontent.com/TheWallHouse/wallhouse-tv/main/app/src/main/resources/catalog/launchers.json"
+
 /** One row of `index.json`. [match] is null for lists nobody has matched to a TV yet. */
 data class ListEntry(
     val id: String,
@@ -334,6 +337,17 @@ class DeviceLists(
         SharedFiles(read("launchers"), read("labels"), read("streaming"))
     }
 
+    /** The WallHouse catalogue from [CATALOGUE_URL], cached when it parses; null offline or when it doesn't. */
+    suspend fun catalogue(): String? = withContext(Dispatchers.IO) {
+        attempt { fetch(CATALOGUE_URL) }?.decodeToString()?.takeIf { parseCatalogue(it).isNotEmpty() }
+            ?.also { dir.mkdirs(); File(dir, CATALOGUE_CACHE).writeText(it) }
+    }
+
+    /** The catalogue as last cached, without the network. */
+    suspend fun cachedCatalogue(): String? = withContext(Dispatchers.IO) {
+        File(dir, CATALOGUE_CACHE).takeIf { it.exists() }?.readText()
+    }
+
     /**
      * A logo's PNG by the name `streaming.json` gives it; null when the index has none or it can't be
      * had. Uses the index already read, never fetching it: offline, every button on screen asking at
@@ -438,6 +452,8 @@ fun sourceName(base: String): String {
     val where = parts.drop(2).joinToString("/")
     return "github.com/" + parts.take(2).joinToString("/") + if (where == "main" || where.isEmpty()) "" else " ($where)"
 }
+
+private const val CATALOGUE_CACHE = "wallhouse-catalogue.json"
 
 private const val MAX_BYTES = 2 shl 20 // 2 MiB; the index is ~60 KB
 private const val MAX_MILLIS = 30_000L

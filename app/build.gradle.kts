@@ -16,14 +16,14 @@ android {
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "app.tellyscope"
+        applicationId = "io.github.thewallhouse.wallhousetv"
         // 26 (Android 8.0): java.time and adaptive icons without desugaring, ~97% of
         // phones in use. Kadb needs 23; the TV side has its own floor (wireless debugging is 11+).
         minSdk = 26
         targetSdk = 37
         // A PR into main must raise both past the latest v* tag (.github/workflows/release-check.yml).
-        versionCode = 26
-        versionName = "0.14.0"
+        versionCode = 1
+        versionName = "0.1.0"
 
         // An alpha tag (release.yml, vX.Y.Z-alpha.N on dev) passes -Ptellyscope.alpha=N:
         // a separate app ID, so it installs next to the release.
