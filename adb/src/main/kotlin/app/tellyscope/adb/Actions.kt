@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 package app.tellyscope.adb
 
+import kotlinx.coroutines.delay
+
 /**
  * The only changes Tellyscope makes. Undo for [STOP] is [OPEN] ("open again"); a real undo isn't
  * possible. [UNINSTALL] has no undo at all, so it only ever runs on apps the user installed.
@@ -136,7 +138,7 @@ class Actions(private val shell: AdbShell) {
             setHome(from)
             return HomeResult.Failed("the TV wouldn't turn the old home screen off, so nothing changed", off.output)
         }
-        if (checked || setHome(to)) return HomeResult.Switched(from, to)
+        if (checked || settled(to)) return HomeResult.Switched(from, to)
         val on = exec("pm enable --user 0 $old", undo = null) { "enabled" in it }
         setHome(from)
         if (on is ActionResult.Failed) {
@@ -163,6 +165,19 @@ class Actions(private val shell: AdbShell) {
             return HomeResult.Failed("the TV kept the home screen it has")
         }
         return HomeResult.Switched(from, to)
+    }
+
+    /**
+     * [setHome] right after the old launcher was turned off, a few times over a couple of seconds: the package
+     * manager can take a moment to drop it (seen on a Google TV Streamer, Android 14), and until then Home still
+     * resolves to it, so a single try would turn it back on for nothing.
+     */
+    private suspend fun settled(activity: String): Boolean {
+        repeat(SETTLE_TRIES) { i ->
+            if (setHome(activity)) return true
+            if (i < SETTLE_TRIES - 1) delay(SETTLE_MS)
+        }
+        return false
     }
 
     /** Makes [activity] (`package/class`) the default home, then checks that Home opens it. */
@@ -328,3 +343,7 @@ class Actions(private val shell: AdbShell) {
         const val SHELL_REFUSED = "Shell cannot change component state"
     }
 }
+
+/** How often, and how far apart, [Actions.makeHome] tries Home again once the old launcher is off. */
+private const val SETTLE_TRIES = 4
+private const val SETTLE_MS = 750L

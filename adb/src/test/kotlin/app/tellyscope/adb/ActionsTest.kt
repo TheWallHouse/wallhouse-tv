@@ -233,9 +233,11 @@ class ActionsTest {
      * [outranks]: the old launcher has the higher Home priority, so Home opens it whatever the
      * default is until it's off, like Android TV Home.
      */
-    private fun twoLaunchers(accepts: Boolean = true, outranks: Boolean = false): FakeShell {
+    /** [lag]: Home reads that still open the old launcher after it was turned off, as a slow package manager does. */
+    private fun twoLaunchers(accepts: Boolean = true, outranks: Boolean = false, lag: Int = 0): FakeShell {
         var home = "com.google.android.tvlauncher/.MainActivity"
         var oldOn = true
+        var stale = 0
         return FakeShell(mapOf(
             "cmd package query-activities" to ok(
                 if (outranks) "2 activities found:\n  Activity #0:\n    priority=2 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=true\n    com.google.android.tvlauncher/.MainActivity\n" +
@@ -249,6 +251,7 @@ class ActionsTest {
                 when {
                     cmd.startsWith("pm disable-user --user 0 com.google.android.tvlauncher") -> {
                         oldOn = false
+                        stale = lag
                         ok("Package com.google.android.tvlauncher new state: disabled-user\n")
                     }
                     cmd.startsWith("pm enable --user 0 com.google.android.tvlauncher") -> {
@@ -256,7 +259,8 @@ class ActionsTest {
                         ok("Package com.google.android.tvlauncher new state: enabled\n")
                     }
                     cmd.startsWith("cmd package resolve-activity") -> {
-                        val opens = if (outranks && oldOn) "com.google.android.tvlauncher/.MainActivity" else home
+                        val lagging = !oldOn && stale > 0 && stale-- > 0
+                        val opens = if (outranks && (oldOn || lagging)) "com.google.android.tvlauncher/.MainActivity" else home
                         ok("priority=0 preferredOrder=0\n$opens\n")
                     }
                     cmd.startsWith("cmd package set-home-activity") -> {
@@ -353,6 +357,15 @@ class ActionsTest {
             Actions(sh).makeHome("com.spocky.projengmenu"),
         )
         assertEquals("com.spocky.projengmenu", Actions(sh).homeOptions()?.current)
+        assertTrue(sh.ran.none { it.startsWith("pm enable") })
+    }
+
+    @Test fun aSlowPackageManagerStillSwitchesWithoutTurningTheOldOneBackOn() = runTest {
+        val sh = twoLaunchers(outranks = true, lag = 2)
+        assertEquals(
+            HomeResult.Switched("com.google.android.tvlauncher/.MainActivity", "com.spocky.projengmenu/.ui.home.MainActivity"),
+            Actions(sh).makeHome("com.spocky.projengmenu"),
+        )
         assertTrue(sh.ran.none { it.startsWith("pm enable") })
     }
 
