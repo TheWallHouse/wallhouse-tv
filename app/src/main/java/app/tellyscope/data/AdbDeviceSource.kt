@@ -291,7 +291,10 @@ class AdbDeviceSource(context: Context) : DeviceSource {
     override fun scan(): Flow<ScanEvent> = flow {
         val hosts = lanHosts()
         if (hosts.isEmpty()) emit(ScanEvent.NoLan)
+        val own = ownAddresses()
         LanScanner(KadbMdnsAndroid(appContext)).scan(hosts).collect { h ->
+            // This phone's own wireless debugging answers mDNS too: it is not a TV.
+            if (h.host in own) return@collect
             if (h.kind == AdbHit.Kind.PAIRING) {
                 pairingPorts[h.host] = h.port
                 if (hits.containsKey(h.host)) return@collect
@@ -1439,3 +1442,12 @@ internal const val GOOGLE_TV_LAUNCHER = "com.google.android.apps.tv.launcherx"
 
 /** The Google TV remote's YouTube and Netflix buttons (BUTTON_3 and BUTTON_4), for a redirected Home. */
 internal val GOOGLE_TV_APP_KEYS = listOf("190" to "com.google.android.youtube.tv", "191" to "com.netflix.ninja")
+
+/** This phone's own IP addresses, on every interface, so the scan can leave the phone itself out. */
+internal fun ownAddresses(): Set<String> = runCatching {
+    java.net.NetworkInterface.getNetworkInterfaces()?.toList().orEmpty()
+        .flatMap { it.inetAddresses.toList() }
+        .filter { !it.isLoopbackAddress }
+        .mapNotNull { it.hostAddress?.substringBefore('%') }
+        .toSet()
+}.getOrDefault(emptySet())
