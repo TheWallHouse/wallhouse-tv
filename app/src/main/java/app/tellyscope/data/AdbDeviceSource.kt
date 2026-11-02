@@ -602,8 +602,11 @@ class AdbDeviceSource(context: Context) : DeviceSource {
         if (!service.endsWith("/com.gathin.tvhome.HomeKeyService")) return
         require(PACKAGE.matches(pkg)) { "not a package name: $pkg" }
         val uri = "content://$pkg.theme/config.json"
-        val now = session.shell("content read --uri '$uri' 2>/dev/null").output
-        val json = runCatching { org.json.JSONObject(now) }.getOrElse { org.json.JSONObject() }
+        // Where CleanYourTV keeps its theme; tools/theme.sh copies straight there where the provider won't answer.
+        val dir = "/sdcard/Android/data/$pkg/files"
+        suspend fun read(): String = session.shell("content read --uri '$uri' 2>/dev/null").output.takeIf { it.trimStart().startsWith("{") }
+            ?: session.shell("cat '$dir/config.json' 2>/dev/null").output
+        val json = runCatching { org.json.JSONObject(read()) }.getOrElse { org.json.JSONObject() }
         if (json.optString("stock_home_redirect") != GOOGLE_TV_LAUNCHER) {
             json.put("stock_home_redirect", GOOGLE_TV_LAUNCHER)
             val keys = json.optJSONArray("app_keys") ?: org.json.JSONArray()
@@ -614,8 +617,14 @@ class AdbDeviceSource(context: Context) : DeviceSource {
             if (keys.length() > 0) json.put("app_keys", keys)
             val tmp = "/data/local/tmp/wallhouse-config.json"
             session.push(json.toString(2).toByteArray(), tmp)
-            val wrote = session.shell("content write --uri '$uri' < $tmp 2>&1; echo \"exit=$?\"; rm -f $tmp")
-            if ("exit=0" !in wrote.output || "Error" in wrote.output) throw ActionFailed(UiText(R.string.data_no_redirect, labelOf(pkg)), wrote.output.trim())
+            // The provider first; where it fails (no `content write` before Android 10, or a firmware that won't
+            // reach it), a plain copy into the launcher's folder, as tools/theme.sh does.
+            val wrote = session.shell("content write --uri '$uri' < $tmp 2>&1; echo \"exit=$?\"").output
+            val viaProvider = "exit=0" in wrote && listOf("Unsupported operation", "Error", "Exception").none { it in wrote }
+            val copied = if (viaProvider) "" else session.shell("mkdir -p '$dir' && cp $tmp '$dir/config.json' 2>&1; echo \"exit=$?\"").output
+            session.shell("rm -f $tmp")
+            val back = runCatching { org.json.JSONObject(read()).optString("stock_home_redirect") }.getOrNull()
+            if (back != GOOGLE_TV_LAUNCHER) throw ActionFailed(UiText(R.string.data_no_redirect, labelOf(pkg)), (wrote + "\n" + copied).trim())
         }
         // Read again on connect: off first if it is on, then the grant turns it back on.
         if (Actions(session).serviceOn(service)) Actions(session).setService(service, false)
