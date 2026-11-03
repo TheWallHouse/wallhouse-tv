@@ -10,6 +10,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -41,13 +42,13 @@ import kotlin.math.min
 /**
  * The opening scene, once per launch, right after Android's plain black splash: the lit edge of a planet, a glow on
  * the horizon and the icon's trajectory lifting off from it, then the TV and WALLHOUSE TV. The app loads underneath
- * meanwhile. With animations off on the phone it shows the last frame briefly instead.
+ * meanwhile, and a tap skips it. With animations off on the phone it shows the last frame briefly instead.
  */
 object Intro {
     /** Shown once per process, so coming back to the app skips it. */
     @Volatile var shown = false
 
-    const val TOTAL_MS = 1350
+    const val TOTAL_MS = 3300
     const val STILL_MS = 400
 }
 
@@ -70,12 +71,17 @@ fun IntroScreen(onDone: () -> Unit) {
             kotlinx.coroutines.delay(Intro.STILL_MS.toLong())
         } else {
             time.animateTo(Intro.TOTAL_MS.toFloat(), tween(Intro.TOTAL_MS, easing = LinearEasing))
-            out.animateTo(0f, tween(220))
+            out.animateTo(0f, tween(400))
         }
         onDone()
     }
     val t = time.value
-    Box(Modifier.fillMaxSize().alpha(out.value).background(Color.Black)) {
+    // A tap skips it: the app is ready underneath.
+    val skip = remember { androidx.compose.foundation.interaction.MutableInteractionSource() }
+    Box(
+        Modifier.fillMaxSize().alpha(out.value).background(Color.Black)
+            .clickable(interactionSource = skip, indication = null, onClick = onDone),
+    ) {
         Canvas(Modifier.fillMaxSize()) {
             stars()
             planet()
@@ -88,7 +94,7 @@ fun IntroScreen(onDone: () -> Unit) {
             contentDescription = "WallHouse TV",
             colorFilter = ColorFilter.tint(Color(0xFFF2F4F5)),
             modifier = Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(bottom = 40.dp)
-                .size(200.dp, 80.dp).alpha(step(t, 950, 1350)),
+                .size(200.dp, 80.dp).alpha(step(t, 2300, 3150)),
         )
     }
 }
@@ -132,7 +138,7 @@ private fun DrawScope.launch(origin: Offset, icon: Float, t: Float) {
     fun p(x: Float, y: Float) = Offset(origin.x + (54 + (x - 54) * .68f) / 108f * icon, origin.y + (54 + (y - 54) * .68f) / 108f * icon)
     val unit = .68f / 108f * icon
     // The glow on the horizon where the trajectory starts: a soft streak, no edge, that opens and fades.
-    val glow = step(t, 50, 650)
+    val glow = step(t, 150, 1600)
     val glowAlpha = if (glow < .3f) glow / .3f else 1f - (glow - .3f) / .7f
     if (glow > 0f && glow < 1f) {
         val c = p(20f, 84f)
@@ -152,7 +158,7 @@ private fun DrawScope.launch(origin: Offset, icon: Float, t: Float) {
         }
     }
     // The TV behind, once the trajectory is up.
-    val tv = step(t, 700, 1050)
+    val tv = step(t, 1750, 2550)
     if (tv > 0f) {
         val stroke = Stroke(3.4f * unit)
         val tl = p(31f, 39f)
@@ -164,7 +170,7 @@ private fun DrawScope.launch(origin: Offset, icon: Float, t: Float) {
         drawLine(Color.White.copy(alpha = tv), p(46f, 74.5f), p(62f, 74.5f), 3.4f * unit, StrokeCap.Round)
     }
     // The trajectory, drawn from the horizon up.
-    val lift = step(t, 100, 800, LIFT::transform)
+    val lift = step(t, 350, 2000, LIFT::transform)
     if (lift > 0f) {
         val a = p(20f, 84f)
         val full = Path().apply {
