@@ -40,6 +40,7 @@ import app.tellyscope.data.NetworkInfo
 import app.tellyscope.data.NotAnApp
 import app.tellyscope.data.NotProjectivy
 import app.tellyscope.data.PROJECTIVY
+import app.tellyscope.data.LauncherSettings
 import app.tellyscope.data.directLauncher
 import app.tellyscope.data.PhoneStorage
 import app.tellyscope.data.PickedApp
@@ -150,6 +151,8 @@ data class DeviceUi(
     val reset: ResetUi? = null,
     /** Debloat's run, from "Yes, disable them" until its screen closes; null otherwise. */
     val debloat: DebloatRun? = null,
+    /** The settings of the catalogue launcher on the TV (CleanYourTV · Nothing edition); null when there is none. */
+    val launcherSettings: LauncherSettings? = null,
 )
 
 /**
@@ -770,6 +773,7 @@ class TellyscopeViewModel(
                 pruneDock(id, read)
                 val tweaks = source.tweaks(id)
                 updateDevice(id) { it.copy(tweaks = tweaks) }
+                loadLauncherSettings(id, read)
                 loadFiles()
                 while (true) {
                     val net = source.network(id)
@@ -1195,6 +1199,58 @@ class TellyscopeViewModel(
             val history = source.history(id)
             updateDevice(id) { it.copy(tweaks = tweaks, busy = null, history = history) }
             if (undoing == null) _done.value = Done(id, entry)
+        }
+    }
+
+    /**
+     * The launcher whose settings this app can change: a catalogue launcher that is on the TV, as its settings say
+     * them. Quiet on failure: the Launcher block just doesn't show.
+     */
+    private suspend fun loadLauncherSettings(id: String, apps: List<AppInfo>) {
+        // No app on the TV can be one, and the catalogue isn't read for nothing (plain JVM tests have no org.json).
+        val pkg = apps.takeIf { it.isNotEmpty() }?.let { runCatching { configurableLauncher(it) }.getOrNull() }
+            ?: return updateDevice(id) { it.copy(launcherSettings = null) }
+        val settings = try {
+            source.launcherSettings(id, pkg)
+        } catch (e: CancellationException) {
+            throw e
+        } catch (_: Exception) {
+            return
+        }
+        updateDevice(id) { it.copy(launcherSettings = settings) }
+    }
+
+    /** One of the launcher's own choices: [value] null puts the theme's back. */
+    fun setLauncherChoice(key: String, value: Any?) = launcherChange { id, pkg -> source.setLauncherSettings(id, pkg, mapOf(key to value)) }
+
+    /** The launcher's dock, in order. */
+    fun setLauncherDock(dock: List<String>) = launcherChange { id, pkg -> source.setLauncherDock(id, pkg, dock) }
+
+    private fun launcherChange(write: suspend (String, String) -> LauncherSettings) {
+        val id = _state.value.selectedId ?: return
+        val pkg = _state.value.device.launcherSettings?.pkg ?: return
+        updateDevice(id) { it.copy(busy = LAUNCHER_SAVING) }
+        viewModelScope.launch {
+            val next = try {
+                write(id, pkg)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                updateDevice(id) { it.copy(busy = null) }
+                _notice.value = UiText.Capitalized(e.why(R.string.vm_didnt_work))
+                return@launch
+            }
+            updateDevice(id) { it.copy(busy = null, launcherSettings = next) }
+            _notice.value = Copy.LAUNCHER_SAVED
+        }
+    }
+
+    /** Turn off debugging, after its confirm: the TV drops this connection, as it should. */
+    fun turnOffDebugging() {
+        val id = _state.value.selectedId ?: return
+        viewModelScope.launch {
+            runCatching { source.turnOffDebugging(id) }
+            _notice.value = Copy.DEBUGGING_OFF
         }
     }
 

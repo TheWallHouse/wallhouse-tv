@@ -411,6 +411,10 @@ fun DeviceTabsScreen(
                         if (offline) item { EmptyState(DeviceIcons.Tv, Copy.TV_OFFLINE.resolve(), stringResource(R.string.tabs_tweaks_offline)) }
                         else {
                             if (homeLaunchers(ui.apps).isNotEmpty()) item { Panel(Copy.HOME_SCREEN.resolve()) { HomeScreenBlock(ui, actions, fire) } }
+                            ui.launcherSettings?.let { l ->
+                                val label = ui.apps.firstOrNull { it.packageName == l.pkg }?.label ?: launcherName(l.pkg)
+                                item { Panel(stringResource(R.string.launcher_block_title, label)) { LauncherBlock(ui, actions) } }
+                            }
                             item { Panel(Copy.TWEAKS.resolve()) { TweaksBlock(ui, actions) } }
                         }
                     }

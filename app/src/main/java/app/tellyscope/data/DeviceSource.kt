@@ -187,6 +187,19 @@ interface DeviceSource {
     /** Opens the TV's system update screen on the TV. False when the TV has no such screen. */
     suspend fun openUpdates(deviceId: String): Boolean
 
+    /** A CleanYourTV launcher's settings ([LauncherSettings]); not supported where the launcher can't say. */
+    suspend fun launcherSettings(deviceId: String, pkg: String): LauncherSettings = LauncherSettings(pkg, supported = false)
+
+    /** Writes [values] as the launcher's own choices (a null puts the theme's back), then reads them again. */
+    suspend fun setLauncherSettings(deviceId: String, pkg: String, values: Map<String, Any?>): LauncherSettings =
+        LauncherSettings(pkg, supported = false)
+
+    /** Sets the launcher's dock to [dock], in order, keeping its other choices; then reads its settings again. */
+    suspend fun setLauncherDock(deviceId: String, pkg: String, dock: List<String>): LauncherSettings = LauncherSettings(pkg, supported = false)
+
+    /** Turns Wireless and USB debugging off on the TV, which ends this connection. */
+    suspend fun turnOffDebugging(deviceId: String) {}
+
     /** Private DNS and animation speed as the TV has them now. */
     suspend fun tweaks(deviceId: String): TvTweaks
 

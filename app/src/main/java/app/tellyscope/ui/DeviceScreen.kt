@@ -121,6 +121,12 @@ data class DeviceActions(
     val checkUpdates: () -> Unit = {},
     /** Ad-blocking Private DNS through the given hostname; null goes back to Automatic. */
     val setDns: (String?) -> Unit = {},
+    /** One of the catalogue launcher's own choices; a null puts the theme's back. */
+    val launcherChoice: (String, Any?) -> Unit = { _, _ -> },
+    /** The catalogue launcher's dock, in order. */
+    val launcherDock: (List<String>) -> Unit = {},
+    /** Turn off debugging on the TV, after its confirm. */
+    val turnOffDebugging: () -> Unit = {},
     val setFastAnimations: (Boolean) -> Unit = {},
     val clearCaches: () -> Unit = {},
     /** Asks where to save a screenshot of the TV on the phone, then takes it. */

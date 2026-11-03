@@ -749,6 +749,7 @@
     <string name="data_offline">%1$s is offline</string>
 
     <string name="data_no_redirect">%1$s couldn\'t be told to take Home from Google TV</string>
+    <string name="data_launcher_not_saved">%1$s didn\'t take the change. Try again, or update it.</string>
     <string name="data_no_service">%1$s has no accessibility service</string>
     <string name="data_service_not_on">%1$s is Home now, but its accessibility service didn\'t turn on, so the TV\'s Home button may still open its own launcher</string>
     <string name="data_service_still_on">%1$s\'s accessibility service is still on. Turn it off in the TV\'s Settings → Accessibility</string>
@@ -1396,4 +1397,33 @@
     <string name="welcome_step_1">Turn on debugging on your TV. The next screen shows how for your brand.</string>
     <string name="welcome_step_2">WallHouse TV finds the TV on your Wi-Fi.</string>
     <string name="welcome_step_3">Type the code the TV shows, or choose Allow when it asks.</string>
+    <string name="launcher_block_title">%1$s settings</string>
+    <string name="launcher_too_old">This version of %1$s can\'t be set up from your phone. Update it to change its settings here.</string>
+    <string name="launcher_update">Update</string>
+    <string name="launcher_apps_style">Apps style</string>
+    <string name="launcher_style_mono_red">Black and white, reds kept</string>
+    <string name="launcher_style_mono">Black and white</string>
+    <string name="launcher_style_colour">Colour</string>
+    <string name="launcher_name">Your name in red</string>
+    <string name="launcher_name_help">Shown after the greeting at the top of the home screen.</string>
+    <string name="launcher_save">Save</string>
+    <string name="launcher_name_remove">Remove name</string>
+    <string name="launcher_columns">Apps per row</string>
+    <string name="launcher_rows">Rows below the dock</string>
+    <string name="launcher_dock_opacity">Dock background</string>
+    <string name="launcher_clock">Clock</string>
+    <string name="launcher_clock_system">As the TV</string>
+    <string name="launcher_animations">Animations</string>
+    <string name="launcher_dock">Apps in the dock</string>
+    <string name="launcher_dock_empty">The theme\'s dock: add an app to choose your own.</string>
+    <string name="launcher_dock_remove">Remove</string>
+    <string name="launcher_dock_add">Add an app</string>
+    <string name="launcher_dock_full">The dock holds %1$d apps.</string>
+    <string name="launcher_saved">Saved on the TV</string>
+    <string name="debugging_off_title">Turn off debugging</string>
+    <string name="debugging_off_text">When you\'re done: the TV stops letting this phone, or anything else, in until you turn debugging on again in its Developer options.</string>
+    <string name="debugging_off_button">Turn off</string>
+    <string name="debugging_off_confirm_title">Turn off debugging on the TV?</string>
+    <string name="debugging_off_confirm_text">WallHouse TV loses the connection now. To come back, turn on Wireless debugging in the TV\'s Developer options.</string>
+    <string name="debugging_off_done">Debugging is off on the TV</string>
 </resources>

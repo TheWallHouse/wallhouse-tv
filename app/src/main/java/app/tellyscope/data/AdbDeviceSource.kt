@@ -601,12 +601,7 @@ class AdbDeviceSource(context: Context) : DeviceSource {
     private suspend fun redirectToService(session: AdbSession, pkg: String, service: String) {
         if (!service.endsWith("/com.gathin.tvhome.HomeKeyService")) return
         require(PACKAGE.matches(pkg)) { "not a package name: $pkg" }
-        val uri = "content://$pkg.theme/config.json"
-        // Where CleanYourTV keeps its theme; tools/theme.sh copies straight there where the provider won't answer.
-        val dir = "/sdcard/Android/data/$pkg/files"
-        suspend fun read(): String = session.shell("content read --uri '$uri' 2>/dev/null").output.takeIf { it.trimStart().startsWith("{") }
-            ?: session.shell("cat '$dir/config.json' 2>/dev/null").output
-        val json = runCatching { org.json.JSONObject(read()) }.getOrElse { org.json.JSONObject() }
+        val json = runCatching { org.json.JSONObject(readTheme(session, pkg)) }.getOrElse { org.json.JSONObject() }
         if (json.optString("stock_home_redirect") != GOOGLE_TV_LAUNCHER) {
             json.put("stock_home_redirect", GOOGLE_TV_LAUNCHER)
             val keys = json.optJSONArray("app_keys") ?: org.json.JSONArray()
@@ -615,20 +610,85 @@ class AdbDeviceSource(context: Context) : DeviceSource {
                 if (code !in taken && Actions(session).installed(app)) keys.put("$code:$app")
             }
             if (keys.length() > 0) json.put("app_keys", keys)
-            val tmp = "/data/local/tmp/wallhouse-config.json"
-            session.push(json.toString(2).toByteArray(), tmp)
-            // The provider first; where it fails (no `content write` before Android 10, or a firmware that won't
-            // reach it), a plain copy into the launcher's folder, as tools/theme.sh does.
-            val wrote = session.shell("content write --uri '$uri' < $tmp 2>&1; echo \"exit=$?\"").output
-            val viaProvider = "exit=0" in wrote && listOf("Unsupported operation", "Error", "Exception").none { it in wrote }
-            val copied = if (viaProvider) "" else session.shell("mkdir -p '$dir' && cp $tmp '$dir/config.json' 2>&1; echo \"exit=$?\"").output
-            session.shell("rm -f $tmp")
-            val back = runCatching { org.json.JSONObject(read()).optString("stock_home_redirect") }.getOrNull()
-            if (back != GOOGLE_TV_LAUNCHER) throw ActionFailed(UiText(R.string.data_no_redirect, labelOf(pkg)), (wrote + "\n" + copied).trim())
+            val before = readLauncher(session, pkg)
+            val said = writeTheme(session, pkg, json.toString(2))
+            // A theme push resets the TV's own choices: put them back.
+            if (before.supported && before.chosen.isNotEmpty()) runCatching { writeSettings(session, pkg, before.chosen) }
+            val back = runCatching { org.json.JSONObject(readTheme(session, pkg)).optString("stock_home_redirect") }.getOrNull()
+            if (back != GOOGLE_TV_LAUNCHER) throw ActionFailed(UiText(R.string.data_no_redirect, labelOf(pkg)), said)
         }
         // Read again on connect: off first if it is on, then the grant turns it back on.
         if (Actions(session).serviceOn(service)) Actions(session).setService(service, false)
     }
+
+    override suspend fun launcherSettings(deviceId: String, pkg: String): LauncherSettings = busy(deviceId) {
+        readLauncher(session(deviceId), pkg)
+    }
+
+    override suspend fun setLauncherSettings(deviceId: String, pkg: String, values: Map<String, Any?>): LauncherSettings = busy(deviceId) {
+        val session = session(deviceId)
+        writeSettings(session, pkg, values)
+        readLauncher(session, pkg)
+    }
+
+    override suspend fun setLauncherDock(deviceId: String, pkg: String, dock: List<String>): LauncherSettings = busy(deviceId) {
+        val session = session(deviceId)
+        val before = readLauncher(session, pkg)
+        val said = writeTheme(session, pkg, themeWithDock(readTheme(session, pkg), dock))
+        // A theme push resets the TV's own choices: put them back.
+        if (before.supported && before.chosen.isNotEmpty()) writeSettings(session, pkg, before.chosen)
+        val after = readLauncher(session, pkg)
+        if (after.supported && after.dock != dock.distinct()) throw ActionFailed(UiText(R.string.data_launcher_not_saved, labelOf(pkg)), said)
+        after
+    }
+
+    override suspend fun turnOffDebugging(deviceId: String) {
+        val session = session(deviceId)
+        // Wireless debugging first: turning USB debugging off ends this connection, so nothing after it would run.
+        runCatching { session.shell("settings put global adb_wifi_enabled 0; settings put global adb_enabled 0") }
+    }
+
+    private suspend fun readLauncher(session: AdbSession, pkg: String): LauncherSettings {
+        require(PACKAGE.matches(pkg)) { "not a package name: $pkg" }
+        return parseLauncherSettings(pkg, session.shell("content read --uri 'content://$pkg.theme/settings.json' 2>/dev/null").output)
+    }
+
+    private suspend fun writeSettings(session: AdbSession, pkg: String, values: Map<String, Any?>) {
+        require(PACKAGE.matches(pkg)) { "not a package name: $pkg" }
+        val tmp = "/data/local/tmp/wallhouse-settings.json"
+        session.push(launcherSettingsJson(values).toByteArray(), tmp)
+        val wrote = session.shell("content write --uri 'content://$pkg.theme/settings.json' < $tmp 2>&1; echo \"exit=$?\"; rm -f $tmp").output
+        if ("exit=0" !in wrote || listOf("Unsupported operation", "Error", "Exception").any { it in wrote }) {
+            throw ActionFailed(UiText(R.string.data_launcher_not_saved, labelOf(pkg)), wrote.trim())
+        }
+    }
+
+    /** The theme's config.json: from the provider, else straight from the launcher's folder; empty when there is none. */
+    private suspend fun readTheme(session: AdbSession, pkg: String): String {
+        require(PACKAGE.matches(pkg)) { "not a package name: $pkg" }
+        return session.shell("content read --uri 'content://$pkg.theme/config.json' 2>/dev/null").output.takeIf { it.trimStart().startsWith("{") }
+            ?: session.shell("cat '${themeDir(pkg)}/config.json' 2>/dev/null").output
+    }
+
+    /**
+     * Writes [config] as the theme's config.json: the provider first; where it fails (no `content write` before
+     * Android 10, or a firmware that won't reach it), a plain copy into the launcher's folder, as tools/theme.sh does.
+     * Returns what the TV said, for the details of a failure the caller finds by reading back.
+     */
+    private suspend fun writeTheme(session: AdbSession, pkg: String, config: String): String {
+        require(PACKAGE.matches(pkg)) { "not a package name: $pkg" }
+        val tmp = "/data/local/tmp/wallhouse-config.json"
+        session.push(config.toByteArray(), tmp)
+        val wrote = session.shell("content write --uri 'content://$pkg.theme/config.json' < $tmp 2>&1; echo \"exit=$?\"").output
+        val viaProvider = "exit=0" in wrote && listOf("Unsupported operation", "Error", "Exception").none { it in wrote }
+        val dir = themeDir(pkg)
+        val copied = if (viaProvider) "" else session.shell("mkdir -p '$dir' && cp $tmp '$dir/config.json' 2>&1; echo \"exit=$?\"").output
+        session.shell("rm -f $tmp")
+        return (wrote + "\n" + copied).trim()
+    }
+
+    /** Where CleanYourTV keeps its theme files. */
+    private fun themeDir(pkg: String) = "/sdcard/Android/data/$pkg/files"
 
     /** Undo of a first home: [launcher] stays Home, as there's none to go back to; its [service] goes off. */
     private suspend fun firstHomeServiceOff(deviceId: String, launcher: String, service: String, undoing: Long): HistoryEntry {

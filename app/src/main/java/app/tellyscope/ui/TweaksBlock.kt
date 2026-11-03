@@ -60,6 +60,7 @@ fun TweaksBlock(ui: DeviceUi, actions: DeviceActions) {
     }
     ButtonRow(Copy.CACHES_TITLE.resolve(), Copy.CACHES_TEXT.resolve(), Copy.CACHES_BUTTON.resolve(), enabled = ui.busy == null, actions.clearCaches)
     ButtonRow(Copy.SCREENSHOT_TITLE.resolve(), Copy.SCREENSHOT_TEXT.resolve(), Copy.SCREENSHOT_BUTTON.resolve(), enabled = ui.busy == null, actions.screenshot)
+    DebuggingOffRow(enabled = ui.busy == null, onConfirm = actions.turnOffDebugging)
     if (askDns) DnsDialog(onDismiss = { askDns = false }) { host -> askDns = false; actions.setDns(host) }
 }
 

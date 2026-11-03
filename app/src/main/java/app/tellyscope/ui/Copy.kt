@@ -250,6 +250,8 @@ object Copy {
     /** Install Projectivy on Fire OS: Tellyscope downloads it from its developer's GitHub and installs it over adb. */
     val INSTALL_PROJECTIVY = UiText(R.string.copy_install_projectivy)
     val FIRE_INSTALL_TEXT = UiText(R.string.copy_fire_install_text)
+    val LAUNCHER_SAVED = UiText(R.string.launcher_saved)
+    val DEBUGGING_OFF = UiText(R.string.debugging_off_done)
 
     fun downloadsFrom(name: String) = UiText(R.string.copy_downloads_from, name)
 

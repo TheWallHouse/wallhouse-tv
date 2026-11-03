@@ -354,7 +354,8 @@ class ScreenshotTest {
     @Test fun md3_files_collapsed_dark() = collapsed("65_md3_files_collapsed", true, "Connected", TvTab.Files)
     // On a tall screen the short tabs still fold the hero fully into the bar: the end space makes the room.
     @Test fun md3_files_foldsOnTallScreen() = collapsed("65_md3_files_collapsed_tall", false, "Connected", TvTab.Files)
-    @Test fun md3_tweaks_foldsOnTallScreen() = collapsed("66_md3_tweaks_collapsed_tall", false, "Connected", TvTab.Tweaks)
+    // Turn off debugging, the end of the Tweaks panel, still fits on a tall screen.
+    @Test fun md3_tweaks_foldsOnTallScreen() = collapsed("66_md3_tweaks_collapsed_tall", false, "Turn off debugging", TvTab.Tweaks)
     // Download and Movies are tabs under the hero now, like Apps.
     private fun moviesState() = md3State().let { it.copy(device = it.device.copy(files = FilesUi(TvFolder.MOVIES, listOf(
         TvFile("holiday-2025.mp4", 812_000_000, now - 3 * 86_400_000L),
