@@ -1403,7 +1403,7 @@
     <string name="launcher_apps_style">Apps style</string>
     <string name="launcher_style_mono_red">Black and white, reds kept</string>
     <string name="launcher_style_mono">Black and white</string>
-    <string name="launcher_style_colour">Colour</string>
+    <string name="launcher_style_colour">Color</string>
     <string name="launcher_name">Your name in red</string>
     <string name="launcher_name_help">Shown after the greeting at the top of the home screen.</string>
     <string name="launcher_save">Save</string>
@@ -1428,4 +1428,6 @@
     <string name="debugging_off_done">Debugging is off on the TV</string>
     <string name="settings_language">Language</string>
     <string name="settings_language_phone">As the phone</string>
+    <string name="launcher_language">Language</string>
+    <string name="launcher_language_tv">As the TV</string>
 </resources>

@@ -1096,4 +1096,6 @@
     <string name="debugging_off_done">Debugging is off on the TV</string>
     <string name="settings_language">言語</string>
     <string name="settings_language_phone">スマートフォンと同じ</string>
+    <string name="launcher_language">言語</string>
+    <string name="launcher_language_tv">テレビと同じ</string>
 </resources>

@@ -95,6 +95,14 @@ fun LauncherBlock(ui: DeviceUi, actions: DeviceActions) {
         stringResource(R.string.launcher_clock), K.CLOCK_CHOICES, s.string(K.CLOCK), idle,
         label = { if (it == "system") stringResource(R.string.launcher_clock_system) else "$it h" },
     ) { actions.launcherChoice(K.CLOCK, it) }
+    // Only launchers that know the setting (1205+) list it among their keys.
+    if (K.LOCALE in s.keys) {
+        val tv = stringResource(R.string.launcher_language_tv)
+        Choices(
+            stringResource(R.string.launcher_language), K.LOCALE_CHOICES, s.chosen[K.LOCALE] as? String ?: "", idle,
+            label = { app.tellyscope.data.AppLanguage.name(it, tv) },
+        ) { actions.launcherChoice(K.LOCALE, it.ifEmpty { null }) }
+    }
     Row(Modifier.fillMaxWidth().padding(vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
         Text(stringResource(R.string.launcher_animations), style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
         Switch(checked = s.bool(K.ANIMATIONS) != false, onCheckedChange = { actions.launcherChoice(K.ANIMATIONS, it) }, enabled = idle)

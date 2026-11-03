@@ -1096,4 +1096,6 @@
     <string name="debugging_off_done">Debugging is off on the TV</string>
     <string name="settings_language">语言</string>
     <string name="settings_language_phone">跟随手机</string>
+    <string name="launcher_language">语言</string>
+    <string name="launcher_language_tv">跟随电视</string>
 </resources>

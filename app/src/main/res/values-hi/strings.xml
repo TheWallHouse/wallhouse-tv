@@ -1140,4 +1140,6 @@
     <string name="debugging_off_done">Debugging is off on the TV</string>
     <string name="settings_language">भाषा</string>
     <string name="settings_language_phone">फ़ोन जैसी</string>
+    <string name="launcher_language">भाषा</string>
+    <string name="launcher_language_tv">TV जैसी</string>
 </resources>

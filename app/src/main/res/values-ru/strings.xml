@@ -1228,4 +1228,6 @@
     <string name="debugging_off_done">Debugging is off on the TV</string>
     <string name="settings_language">Язык</string>
     <string name="settings_language_phone">Как на телефоне</string>
+    <string name="launcher_language">Язык</string>
+    <string name="launcher_language_tv">Как на ТВ</string>
 </resources>

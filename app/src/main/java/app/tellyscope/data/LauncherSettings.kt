@@ -20,6 +20,8 @@ data class LauncherSettings(
     /** The choices made on the TV (or from here), by key: a theme push resets them, so they are written back after one. */
     val chosen: Map<String, Any> = emptyMap(),
     val dock: List<String> = emptyList(),
+    /** The keys the launcher accepts in settings.json, so a newer setting shows only where it works. */
+    val keys: Set<String> = emptySet(),
 ) {
     fun int(key: String) = (effective[key] as? Number)?.toInt()
     fun bool(key: String) = effective[key] as? Boolean
@@ -33,6 +35,10 @@ data class LauncherSettings(
         const val TILES = "nothing_tiles"
         const val NAME = "nothing_greeting_name"
         const val ANIMATIONS = "animations"
+        const val LOCALE = "locale"
+
+        /** Launcher languages: "" follows the TV. Each is named in its own language ([app.tellyscope.data.AppLanguage.name]). */
+        val LOCALE_CHOICES = listOf("", "es-ES", "en-US", "gl")
 
         /** The values each choice may take, as the launcher's own Launcher settings offers them. */
         val COLUMN_CHOICES = listOf(4, 5, 6, 7)
@@ -67,7 +73,8 @@ fun parseLauncherSettings(pkg: String, text: String?): LauncherSettings {
         }
     }
     val dock = now.optJSONArray("dock_apps")?.let { a -> (0 until a.length()).mapNotNull { a.optString(it).takeIf(PACKAGE::matches) } }.orEmpty()
-    return LauncherSettings(pkg, supported = true, version = o.optInt("version").takeIf { it > 0 }, effective = effective, chosen = chosen, dock = dock)
+    return LauncherSettings(pkg, supported = true, version = o.optInt("version").takeIf { it > 0 }, effective = effective, chosen = chosen, dock = dock,
+        keys = o.optJSONArray("keys")?.let { a -> (0 until a.length()).map { a.optString(it) }.toSet() }.orEmpty())
 }
 
 /** settings.json to write: [values] by key, a null removing the choice so the theme decides again. */
