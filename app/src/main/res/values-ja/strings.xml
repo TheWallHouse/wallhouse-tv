@@ -1094,4 +1094,6 @@
     <string name="debugging_off_confirm_title">Turn off debugging on the TV?</string>
     <string name="debugging_off_confirm_text">WallHouse TV loses the connection now. To come back, turn on Wireless debugging in the TV\'s Developer options.</string>
     <string name="debugging_off_done">Debugging is off on the TV</string>
+    <string name="settings_language">言語</string>
+    <string name="settings_language_phone">スマートフォンと同じ</string>
 </resources>

@@ -1,4 +1,6 @@
 <resources>
     <color name="splash_background">#0E1415</color>
     <color name="splash_icon_background">#000000</color>
+    <!-- The splash's WALLHOUSE TV wordmark: dark on the light splash, light on the dark one. -->
+    <color name="splash_branding">#FFF2F4F5</color>
 </resources>

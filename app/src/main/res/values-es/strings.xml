@@ -1182,4 +1182,6 @@
     <string name="debugging_off_confirm_title">¿Apagar la depuración de la TV?</string>
     <string name="debugging_off_confirm_text">WallHouse TV pierde la conexión ahora. Para volver, activa Depuración inalámbrica en las Opciones para desarrolladores de la TV.</string>
     <string name="debugging_off_done">Depuración apagada en la TV</string>
+    <string name="settings_language">Idioma</string>
+    <string name="settings_language_phone">Como el móvil</string>
 </resources>

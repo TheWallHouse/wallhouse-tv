@@ -55,6 +55,12 @@ Store badges in docs/badges/ (README only, not in the app)
 Each is trimmed to its edges and scaled to the same height.
 
 --------------------------------------------------------------------------------
+Barlow Condensed — https://github.com/jpt/barlow
+License: SIL Open Font License 1.1, Copyright 2017 The Barlow Project Authors
+The launch screen's WALLHOUSE TV wordmark (drawable/splash_branding.xml) is set in
+Barlow Condensed SemiBold and converted to outlines.
+
+--------------------------------------------------------------------------------
 cleanyourtv — https://github.com/Gathin23/cleanyourtv
 License: MIT, Copyright (c) 2026 Gathin
 Debloat package lists are adapted from this project.

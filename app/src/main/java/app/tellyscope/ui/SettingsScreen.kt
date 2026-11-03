@@ -158,6 +158,8 @@ fun SettingsScreen(
                         Switch(checked = keyHaptics, onCheckedChange = null)
                     }
                     HorizontalDivider(color = MaterialTheme.colorScheme.surface)
+                    LanguageRow()
+                    HorizontalDivider(color = MaterialTheme.colorScheme.surface)
                     Row(Modifier.fillMaxWidth().clickable(onClick = onWhatsNew).padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                         Icon(NewReleases, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
                         Spacer(Modifier.width(16.dp))
@@ -290,4 +292,49 @@ private fun SourceDialog(source: String?, onSave: (String?) -> Unit, onDismiss: 
         },
         dismissButton = if (source == null) ({ TextButton(onClick = onDismiss) { Text(stringResource(R.string.settings_cancel)) } }) else null,
     )
+}
+
+/** The app's language: the phone's, Castellano (España), English (US) or Galego; it applies at once. */
+@Composable
+private fun LanguageRow() {
+    val context = LocalContext.current
+    var picking by rememberSaveable { mutableStateOf(false) }
+    val phone = stringResource(R.string.settings_language_phone)
+    val current = remember { app.tellyscope.data.AppLanguage.current(context) }
+    Row(Modifier.fillMaxWidth().clickable { picking = true }.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+        Column(Modifier.weight(1f)) {
+            Text(stringResource(R.string.settings_language), style = MaterialTheme.typography.titleSmall)
+            Text(app.tellyscope.data.AppLanguage.name(current, phone), style = MaterialTheme.typography.bodyMedium)
+        }
+        Spacer(Modifier.width(16.dp))
+        Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null)
+    }
+    if (picking) {
+        androidx.compose.material3.AlertDialog(
+            onDismissRequest = { picking = false },
+            title = { Text(stringResource(R.string.settings_language)) },
+            text = {
+                Column {
+                    for (tag in app.tellyscope.data.AppLanguage.CHOICES) {
+                        Row(
+                            Modifier.fillMaxWidth().clickable {
+                                picking = false
+                                if (tag != current) {
+                                    app.tellyscope.data.AppLanguage.set(context, tag)
+                                    // Android 13+ recreates the activity itself; older phones need it here.
+                                    if (android.os.Build.VERSION.SDK_INT < 33) (context as? android.app.Activity)?.recreate()
+                                }
+                            }.padding(vertical = 12.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            androidx.compose.material3.RadioButton(selected = tag == current, onClick = null)
+                            Spacer(Modifier.width(12.dp))
+                            Text(app.tellyscope.data.AppLanguage.name(tag, phone), style = MaterialTheme.typography.bodyLarge)
+                        }
+                    }
+                }
+            },
+            confirmButton = { androidx.compose.material3.TextButton(onClick = { picking = false }) { Text(stringResource(R.string.screen_cancel)) } },
+        )
+    }
 }

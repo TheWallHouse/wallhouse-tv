@@ -96,6 +96,8 @@ import kotlinx.coroutines.launch
 import java.io.File
 
 class MainActivity : ComponentActivity() {
+    override fun attachBaseContext(newBase: android.content.Context) = super.attachBaseContext(app.tellyscope.data.AppLanguage.wrap(newBase))
+
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
