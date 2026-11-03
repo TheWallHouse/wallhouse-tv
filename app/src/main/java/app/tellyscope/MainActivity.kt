@@ -113,7 +113,20 @@ class MainActivity : ComponentActivity() {
         // Existing installs with a saved TV never see the welcome; the marker keeps it to once.
         val welcomed = File(filesDir, "welcomed")
         val showWelcome = scenario == null && !welcomed.exists() && File(filesDir, "devices.tsv").length() == 0L
+        // The opening scene once per launch, over the app as it loads; not on a rotation, nor with made-up data.
+        val intro = savedInstanceState == null && scenario == null && !app.tellyscope.ui.Intro.shown
+        app.tellyscope.ui.Intro.shown = true
         setContent {
+            androidx.compose.foundation.layout.Box {
+                AppContent(scenario, welcomed, showWelcome)
+                var showIntro by rememberSaveable { mutableStateOf(intro) }
+                if (showIntro) app.tellyscope.ui.IntroScreen(onDone = { showIntro = false })
+            }
+        }
+    }
+
+    @androidx.compose.runtime.Composable
+    private fun AppContent(scenario: FakeDeviceSource.Scenario?, welcomed: File, showWelcome: Boolean) {
             TellyscopeTheme {
                 var welcome by rememberSaveable { mutableStateOf(showWelcome) }
                 if (welcome) {
@@ -145,7 +158,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
 
     @Suppress("DEPRECATION") // the flags overload is API 33+
     private fun installedVersion() = packageManager.getPackageInfo(packageName, 0).versionName.orEmpty()
