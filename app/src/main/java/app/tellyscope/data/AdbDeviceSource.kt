@@ -1454,7 +1454,20 @@ private fun fireServiceNotOff(app: String) = UiText(R.string.data_fire_service_n
 private fun serviceNotOff(app: String) = UiText(R.string.data_service_not_off, app)
 
 /** What the TV printed when it refused, else that it refused. */
-private fun tvSaid(output: String) = output.ifEmpty { null }?.asUiText() ?: UiText(R.string.data_tv_refused)
+private fun tvSaid(output: String) = output.ifEmpty { null }?.let { said -> HOME_REASONS[said]?.let { id -> UiText(id) } ?: said.asUiText() } ?: UiText(R.string.data_tv_refused)
+
+/** The reasons Actions gives for a Home switch that didn't take, as the adb module writes them (in English), to show translated. */
+internal val HOME_REASONS = mapOf(
+    "it's already the home screen" to R.string.home_err_already,
+    "it has no home screen" to R.string.home_err_no_home,
+    "the TV kept the home screen it has" to R.string.home_err_kept,
+    "the TV kept its own home screen, so nothing was turned off" to R.string.home_err_kept_own,
+    "the TV wouldn't turn the old home screen off, so nothing changed" to R.string.home_err_wont_off,
+    "Home didn't open it, and the old home screen didn't turn back on. Turn it back on from Apps → Built-in" to R.string.home_err_not_back,
+    "Home still didn't open it, so the old home screen was turned back on" to R.string.home_err_back_on,
+    "the TV wouldn't turn it back on" to R.string.home_err_wont_on,
+    "the TV still asks which home screen to use" to R.string.home_err_asks,
+)
 
 /**
  * Writes [values] and hands [record] the label and the old values for History. Strict Private DNS

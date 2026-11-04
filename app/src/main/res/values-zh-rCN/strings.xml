@@ -1098,4 +1098,13 @@
     <string name="settings_language_phone">跟随手机</string>
     <string name="launcher_language">语言</string>
     <string name="launcher_language_tv">跟随电视</string>
+    <string name="home_err_already">it\'s already the home screen</string>
+    <string name="home_err_no_home">it has no home screen</string>
+    <string name="home_err_kept">the TV kept the home screen it has</string>
+    <string name="home_err_kept_own">the TV kept its own home screen, so nothing was turned off</string>
+    <string name="home_err_wont_off">the TV wouldn\'t turn the old home screen off, so nothing changed</string>
+    <string name="home_err_not_back">Home didn\'t open it, and the old home screen didn\'t turn back on. Turn it back on from Apps → Built-in</string>
+    <string name="home_err_back_on">Home still didn\'t open it, so the old home screen was turned back on</string>
+    <string name="home_err_wont_on">the TV wouldn\'t turn it back on</string>
+    <string name="home_err_asks">the TV still asks which home screen to use</string>
 </resources>

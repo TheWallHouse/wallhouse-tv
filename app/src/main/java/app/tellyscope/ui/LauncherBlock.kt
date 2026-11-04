@@ -147,7 +147,9 @@ private fun NameRow(current: String, enabled: Boolean, onSave: (String?) -> Unit
 /** The dock's apps in order: up, down and out on each, then Add from the TV's other apps, up to [K.DOCK_MAX]. */
 @Composable
 private fun DockEditor(s: LauncherSettings, apps: List<AppInfo>, enabled: Boolean, onDock: (List<String>) -> Unit) {
-    val dock = s.dock
+    // Only what is on the TV: the default dock names apps it may not have (Hotstar), which the launcher skips anyway.
+    // A change writes the dock as shown, so those drop out of the theme too.
+    val dock = if (apps.isEmpty()) s.dock else s.dock.filter { pkg -> apps.any { it.packageName == pkg && it.enabled } }
     fun label(pkg: String) = apps.firstOrNull { it.packageName == pkg }?.label ?: pkg
     var adding by remember { mutableStateOf(false) }
     Column(Modifier.fillMaxWidth().padding(vertical = 6.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {

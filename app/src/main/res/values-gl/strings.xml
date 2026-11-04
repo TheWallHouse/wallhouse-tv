@@ -68,7 +68,7 @@
     <string name="copy_service_off_title">Inicio pode abrir %1$s</string>
     <string name="copy_tv_own_launcher">o launcher propio da TV</string>
     <string name="copy_better_home">Consegue unha pantalla de inicio mellor</string>
-    <string name="copy_better_home_text">Cambia %1$s por un launcher sen anuncios. De balde en Play Store; podes volver ao anterior cando queiras.</string>
+    <string name="copy_better_home_text">Cambia %1$s por un launcher sen anuncios. De balde; podes volver ao anterior cando queiras.</string>
     <string name="copy_better_home_text_fire">Cambia %1$s por un launcher sen anuncios; podes volver ao anterior cando queiras.</string>
     <string name="copy_the_tvs_home_screen">a pantalla de inicio da TV</string>
     <string name="copy_choose_one">Escoller un</string>
@@ -1190,4 +1190,13 @@
     <string name="settings_language_phone">Coma o teléfono</string>
     <string name="launcher_language">Idioma</string>
     <string name="launcher_language_tv">Coma a TV</string>
+    <string name="home_err_already">xa é a pantalla de inicio</string>
+    <string name="home_err_no_home">non ten pantalla de inicio</string>
+    <string name="home_err_kept">a TV quedou coa pantalla de inicio que tiña</string>
+    <string name="home_err_kept_own">a TV quedou coa súa propia pantalla de inicio, así que non se desactivou nada</string>
+    <string name="home_err_wont_off">a TV non deixou desactivar a pantalla de inicio anterior, así que non cambiou nada</string>
+    <string name="home_err_not_back">Inicio non a abriu e a pantalla de inicio anterior non se volveu activar. Actívaa desde Apps → Integradas</string>
+    <string name="home_err_back_on">Inicio seguía sen abrila, así que se volveu activar a pantalla de inicio anterior</string>
+    <string name="home_err_wont_on">a TV non deixou volver activala</string>
+    <string name="home_err_asks">a TV segue preguntando que pantalla de inicio usar</string>
 </resources>

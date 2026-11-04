@@ -96,7 +96,7 @@
     <!-- Installing a home screen -->
     <string name="copy_better_home">Get a better home screen</string>
     <!-- %1$s is the current launcher's name, or copy_the_tvs_home_screen -->
-    <string name="copy_better_home_text">Swap %1$s for a launcher without ads. Free on the Play Store; switch back any time.</string>
+    <string name="copy_better_home_text">Swap %1$s for a launcher without ads. Free; switch back any time.</string>
     <!-- Fire OS: there's no Play Store and WallHouse TV installs it. %1$s as in copy_better_home_text -->
     <string name="copy_better_home_text_fire">Swap %1$s for a launcher without ads; switch back any time.</string>
     <string name="copy_the_tvs_home_screen">the TV\'s home screen</string>
@@ -1430,4 +1430,13 @@
     <string name="settings_language_phone">As the phone</string>
     <string name="launcher_language">Language</string>
     <string name="launcher_language_tv">As the TV</string>
+    <string name="home_err_already">it\'s already the home screen</string>
+    <string name="home_err_no_home">it has no home screen</string>
+    <string name="home_err_kept">the TV kept the home screen it has</string>
+    <string name="home_err_kept_own">the TV kept its own home screen, so nothing was turned off</string>
+    <string name="home_err_wont_off">the TV wouldn\'t turn the old home screen off, so nothing changed</string>
+    <string name="home_err_not_back">Home didn\'t open it, and the old home screen didn\'t turn back on. Turn it back on from Apps → Built-in</string>
+    <string name="home_err_back_on">Home still didn\'t open it, so the old home screen was turned back on</string>
+    <string name="home_err_wont_on">the TV wouldn\'t turn it back on</string>
+    <string name="home_err_asks">the TV still asks which home screen to use</string>
 </resources>
