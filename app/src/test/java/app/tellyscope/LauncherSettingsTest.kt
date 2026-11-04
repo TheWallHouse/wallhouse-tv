@@ -2,7 +2,10 @@
 
 package app.tellyscope
 
+import app.tellyscope.data.appKeyFor
+import app.tellyscope.data.appKeysWith
 import app.tellyscope.data.launcherSettingsJson
+import app.tellyscope.data.themeWith
 import app.tellyscope.data.parseLauncherSettings
 import app.tellyscope.data.themeWithDock
 import org.json.JSONObject
@@ -51,5 +54,30 @@ class LauncherSettingsTest {
         assertEquals("com.google.android.apps.tv.launcherx", o.getString("stock_home_redirect"))
         assertEquals(listOf("a.b", "c.d"), (0 until o.getJSONArray("dock_apps").length()).map { o.getJSONArray("dock_apps").getString(it) })
         assertEquals(1, JSONObject(themeWithDock("not json", listOf("a.b"))).getJSONArray("dock_apps").length())
+    }
+
+    @Test fun aColourButtonIsSetOrClearedKeepingTheOthers() {
+        val keys = listOf("190:com.google.android.youtube.tv", "KEYCODE_PROG_RED:org.old.app")
+        val red = appKeysWith(keys, "KEYCODE_PROG_RED", "org.smarttube.stable")
+        assertEquals(listOf("190:com.google.android.youtube.tv", "KEYCODE_PROG_RED:org.smarttube.stable"), red)
+        assertEquals("org.smarttube.stable", appKeyFor(red, "KEYCODE_PROG_RED"))
+        assertEquals(listOf("190:com.google.android.youtube.tv"), appKeysWith(red, "KEYCODE_PROG_RED", null))
+        assertEquals(null, appKeyFor(keys, "KEYCODE_PROG_BLUE"))
+    }
+
+    @Test fun aThemeValueIsSetAndANullRemovesIt() {
+        val o = JSONObject(themeWith("""{"show_greeting":false,"stock_home_redirect":"x"}""", mapOf("show_greeting" to null, "hidden_apps" to listOf("a.b"), "dock_glass" to true)))
+        assertFalse(o.has("show_greeting"))
+        assertEquals("x", o.getString("stock_home_redirect"))
+        assertEquals("a.b", o.getJSONArray("hidden_apps").getString(0))
+        assertTrue(o.getBoolean("dock_glass"))
+    }
+
+    @Test fun theThemeListsAreRead() {
+        val s = parseLauncherSettings(pkg, """{"keys":[],"effective":{"hidden_apps":["a.b","bad"],"app_keys":["190:x.y"],"show_greeting":true}}""")
+        assertEquals(listOf("a.b"), s.hidden)
+        assertEquals(listOf("190:x.y"), s.appKeys)
+        assertEquals(true, s.bool("show_greeting"))
+        assertEquals(null, parseLauncherSettings(pkg, """{"keys":[],"effective":{}}""").hidden) // older launcher: not shown
     }
 }

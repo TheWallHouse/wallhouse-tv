@@ -632,14 +632,34 @@ class AdbDeviceSource(context: Context) : DeviceSource {
     }
 
     override suspend fun setLauncherDock(deviceId: String, pkg: String, dock: List<String>): LauncherSettings = busy(deviceId) {
-        val session = session(deviceId)
-        val before = readLauncher(session, pkg)
-        val said = writeTheme(session, pkg, themeWithDock(readTheme(session, pkg), dock))
-        // A theme push resets the TV's own choices: put them back.
-        if (before.supported && before.chosen.isNotEmpty()) writeSettings(session, pkg, before.chosen)
-        val after = readLauncher(session, pkg)
-        if (after.supported && after.dock != dock.distinct()) throw ActionFailed(UiText(R.string.data_launcher_not_saved, labelOf(pkg)), said)
+        val after = themeChange(session(deviceId), pkg, mapOf("dock_apps" to dock))
+        if (after.supported && after.dock != dock.distinct()) throw ActionFailed(UiText(R.string.data_launcher_not_saved, labelOf(pkg)), "dock_apps")
         after
+    }
+
+    override suspend fun setLauncherTheme(deviceId: String, pkg: String, values: Map<String, Any?>): LauncherSettings = busy(deviceId) {
+        require(values.keys.all { it in THEME_KEYS }) { "not a theme key this app sets: ${values.keys}" }
+        themeChange(session(deviceId), pkg, values)
+    }
+
+    /** Writes [values] into the theme, puts back the TV's own choices the push reset, and reads the settings again. */
+    private suspend fun themeChange(session: AdbSession, pkg: String, values: Map<String, Any?>): LauncherSettings {
+        val before = readLauncher(session, pkg)
+        writeTheme(session, pkg, themeWith(readTheme(session, pkg), values))
+        if (before.supported && before.chosen.isNotEmpty()) writeSettings(session, pkg, before.chosen)
+        return readLauncher(session, pkg)
+    }
+
+    override suspend fun repairRemote(deviceId: String, pkg: String): Boolean = busy(deviceId) {
+        require(PACKAGE.matches(pkg)) { "not a package name: $pkg" }
+        val actions = Actions(session(deviceId))
+        val on = session(deviceId).shell("settings get secure enabled_accessibility_services").output.trim()
+            .split(':').filter { it.startsWith("$pkg/") }
+        if (on.isEmpty()) return@busy false
+        // Off and on again: the cure for a helper Android left in "crashed services" (it doesn't bind it again by itself).
+        on.forEach { actions.setService(it, false) }
+        kotlinx.coroutines.delay(1_000)
+        on.all { actions.grant(it) }
     }
 
     override suspend fun turnOffDebugging(deviceId: String) {

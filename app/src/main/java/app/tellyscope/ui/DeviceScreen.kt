@@ -125,6 +125,10 @@ data class DeviceActions(
     val launcherChoice: (String, Any?) -> Unit = { _, _ -> },
     /** The catalogue launcher's dock, in order. */
     val launcherDock: (List<String>) -> Unit = {},
+    /** One of the catalogue launcher's theme keys; a null puts its default back. */
+    val launcherTheme: (String, Any?) -> Unit = { _, _ -> },
+    /** Restart the catalogue launcher's remote helpers. */
+    val repairRemote: () -> Unit = {},
     /** Turn off debugging on the TV, after its confirm. */
     val turnOffDebugging: () -> Unit = {},
     val setFastAnimations: (Boolean) -> Unit = {},

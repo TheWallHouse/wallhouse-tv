@@ -1151,4 +1151,32 @@
     <string name="home_err_back_on">Home still didn\'t open it, so the old home screen was turned back on</string>
     <string name="home_err_wont_on">the TV wouldn\'t turn it back on</string>
     <string name="home_err_asks">the TV still asks which home screen to use</string>
+    <string name="launcher_show_greeting">Greeting</string>
+    <string name="launcher_date_below">Date below the clock</string>
+    <string name="launcher_always_names">App names always shown</string>
+    <string name="launcher_dock_glass">Glass dock</string>
+    <string name="launcher_dock_band">Band behind the dock</string>
+    <string name="launcher_idle_clock">Clock when idle</string>
+    <string name="launcher_idle_off">Off</string>
+    <string name="launcher_open_on_start">Open at start-up</string>
+    <string name="launcher_nothing">Nothing</string>
+    <string name="launcher_colour_buttons">Remote\'s color buttons</string>
+    <string name="launcher_colour_buttons_help">What each one opens on the home screen.</string>
+    <string name="launcher_red">Red</string>
+    <string name="launcher_green">Green</string>
+    <string name="launcher_yellow">Yellow</string>
+    <string name="launcher_blue">Blue</string>
+    <string name="launcher_tv_default">What the TV does</string>
+    <string name="launcher_change">Change</string>
+    <string name="launcher_hidden">Hidden apps</string>
+    <string name="launcher_hidden_choose">Choose</string>
+    <string name="launcher_repair">Repair the remote</string>
+    <string name="launcher_repair_help">For when the colour buttons or Home stop answering: restarts the launcher\'s helper.</string>
+    <string name="launcher_repair_button">Repair</string>
+    <string name="launcher_remote_repaired">Remote helper restarted</string>
+    <string name="launcher_remote_not_on">The remote helper isn\'t on: make the launcher Home first</string>
+    <plurals name="launcher_hidden_count">
+        <item quantity="one">%1$d app hidden</item>
+        <item quantity="other">%1$d apps hidden</item>
+    </plurals>
 </resources>

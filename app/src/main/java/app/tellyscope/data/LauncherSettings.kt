@@ -22,6 +22,9 @@ data class LauncherSettings(
     val dock: List<String> = emptyList(),
     /** The keys the launcher accepts in settings.json, so a newer setting shows only where it works. */
     val keys: Set<String> = emptySet(),
+    /** The theme's hidden_apps and app_keys as Home uses them (launcher 1206+); null when the launcher doesn't say. */
+    val hidden: List<String>? = null,
+    val appKeys: List<String>? = null,
 ) {
     fun int(key: String) = (effective[key] as? Number)?.toInt()
     fun bool(key: String) = effective[key] as? Boolean
@@ -72,9 +75,11 @@ fun parseLauncherSettings(pkg: String, text: String?): LauncherSettings {
             }
         }
     }
+    fun list(key: String) = now.optJSONArray(key)?.let { a -> (0 until a.length()).map { a.optString(it) } }
     val dock = now.optJSONArray("dock_apps")?.let { a -> (0 until a.length()).mapNotNull { a.optString(it).takeIf(PACKAGE::matches) } }.orEmpty()
     return LauncherSettings(pkg, supported = true, version = o.optInt("version").takeIf { it > 0 }, effective = effective, chosen = chosen, dock = dock,
-        keys = o.optJSONArray("keys")?.let { a -> (0 until a.length()).map { a.optString(it) }.toSet() }.orEmpty())
+        keys = o.optJSONArray("keys")?.let { a -> (0 until a.length()).map { a.optString(it) }.toSet() }.orEmpty(),
+        hidden = list("hidden_apps")?.filter(PACKAGE::matches), appKeys = list("app_keys"))
 }
 
 /** settings.json to write: [values] by key, a null removing the choice so the theme decides again. */
@@ -83,12 +88,38 @@ fun launcherSettingsJson(values: Map<String, Any?>): String = JSONObject().apply
 }.toString()
 
 /** [config] (the theme's config.json, or anything unreadable as none) with [dock] as its dock_apps. */
-fun themeWithDock(config: String?, dock: List<String>): String {
+fun themeWithDock(config: String?, dock: List<String>): String = themeWith(config, mapOf("dock_apps" to dock.filter(PACKAGE::matches).distinct()))
+
+/** [config] with [values] set: a list as a JSON array, a null removing the key so the launcher's default is back. */
+fun themeWith(config: String?, values: Map<String, Any?>): String {
     val json = try {
         config?.trim()?.takeIf { it.startsWith("{") }?.let(::JSONObject) ?: JSONObject()
     } catch (_: JSONException) {
         JSONObject()
     }
-    json.put("dock_apps", JSONArray(dock.filter(PACKAGE::matches).distinct()))
+    for ((k, v) in values) {
+        when (v) {
+            null -> json.remove(k)
+            is List<*> -> json.put(k, JSONArray(v))
+            else -> json.put(k, v)
+        }
+    }
     return json.toString(2)
 }
+
+/** The theme keys this app may set, and the kind of value each takes. Anything else stays the theme's own. */
+val THEME_KEYS = setOf(
+    "dock_apps", "hidden_apps", "app_keys", "always_show_names", "show_greeting", "date_below_clock", "dock_glass",
+    "dock_band", "home_idle_clock_minutes",
+)
+
+/** The remote's colour buttons, as app_keys names them, in the order the remote has them. */
+val COLOUR_KEYS = listOf("KEYCODE_PROG_RED", "KEYCODE_PROG_GREEN", "KEYCODE_PROG_YELLOW", "KEYCODE_PROG_BLUE")
+
+/** [keys] (app_keys entries) with [button] opening [pkg], or nothing of this app's when [pkg] is null; others kept. */
+fun appKeysWith(keys: List<String>, button: String, pkg: String?): List<String> =
+    keys.filterNot { it.substringBefore(':').trim() == button } + listOfNotNull(pkg?.takeIf(PACKAGE::matches)?.let { "$button:$it" })
+
+/** The app [button] opens in [keys], or null when the TV's own action stays. */
+fun appKeyFor(keys: List<String>, button: String): String? =
+    keys.lastOrNull { it.substringBefore(':').trim() == button }?.substringAfter(':')?.trim()?.takeIf(PACKAGE::matches)

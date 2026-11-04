@@ -197,6 +197,12 @@ interface DeviceSource {
     /** Sets the launcher's dock to [dock], in order, keeping its other choices; then reads its settings again. */
     suspend fun setLauncherDock(deviceId: String, pkg: String, dock: List<String>): LauncherSettings = LauncherSettings(pkg, supported = false)
 
+    /** Sets theme keys ([THEME_KEYS]) in the launcher's config.json, keeping its other choices; then reads its settings again. */
+    suspend fun setLauncherTheme(deviceId: String, pkg: String, values: Map<String, Any?>): LauncherSettings = LauncherSettings(pkg, supported = false)
+
+    /** Restarts the launcher's accessibility helpers, for remote buttons that stopped working. False when it has none on. */
+    suspend fun repairRemote(deviceId: String, pkg: String): Boolean = false
+
     /** Turns Wireless and USB debugging off on the TV, which ends this connection. */
     suspend fun turnOffDebugging(deviceId: String) {}
 

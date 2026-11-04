@@ -2,7 +2,9 @@
 
 package app.tellyscope.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -30,6 +32,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -108,6 +111,7 @@ fun LauncherBlock(ui: DeviceUi, actions: DeviceActions) {
         Switch(checked = s.bool(K.ANIMATIONS) != false, onCheckedChange = { actions.launcherChoice(K.ANIMATIONS, it) }, enabled = idle)
     }
     DockEditor(s, ui.apps, idle, actions.launcherDock)
+    ThemeOptions(s, ui.apps, idle, actions)
 }
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -199,4 +203,114 @@ fun DebuggingOffRow(enabled: Boolean, onConfirm: () -> Unit) {
 @Composable
 private fun Muted(text: String) {
     Text(text, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+}
+
+/**
+ * The launcher's theme options a phone can change too (launcher 1206+ says how Home has them): the greeting, the date,
+ * app names, the dock's look, the idle clock, the app opened at start-up, the remote's colour buttons, hidden apps, and
+ * a repair for remote buttons that stopped answering. Each shows only where the launcher reports it.
+ */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun ThemeOptions(s: LauncherSettings, apps: List<AppInfo>, enabled: Boolean, actions: DeviceActions) {
+    val launchable = apps.filter { it.launchable && it.enabled && it.packageName != s.pkg }.sortedBy { it.label.lowercase() }
+    fun label(pkg: String?) = pkg?.let { p -> apps.firstOrNull { it.packageName == p }?.label ?: p }
+    for ((key, title) in listOf(
+        "show_greeting" to R.string.launcher_show_greeting,
+        "date_below_clock" to R.string.launcher_date_below,
+        "always_show_names" to R.string.launcher_always_names,
+        "dock_glass" to R.string.launcher_dock_glass,
+        "dock_band" to R.string.launcher_dock_band,
+    )) {
+        val on = s.bool(key) ?: continue
+        Row(Modifier.fillMaxWidth().padding(vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+            Text(stringResource(title), style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
+            Switch(checked = on, onCheckedChange = { actions.launcherTheme(key, it) }, enabled = enabled)
+        }
+    }
+    s.int("home_idle_clock_minutes")?.let { minutes ->
+        val off = stringResource(R.string.launcher_idle_off)
+        Choices(stringResource(R.string.launcher_idle_clock), listOf(0, 5, 10, 30), minutes, enabled, label = { if (it == 0) off else "$it min" }) {
+            actions.launcherTheme("home_idle_clock_minutes", it)
+        }
+    }
+    if (OPEN_ON_START in s.effective) {
+        AppPicker(
+            stringResource(R.string.launcher_open_on_start), label(s.string(OPEN_ON_START)?.ifEmpty { null }),
+            stringResource(R.string.launcher_nothing), launchable, enabled,
+        ) { actions.launcherChoice(OPEN_ON_START, it) }
+    }
+    s.appKeys?.let { keys ->
+        Text(stringResource(R.string.launcher_colour_buttons), style = MaterialTheme.typography.bodyLarge, modifier = Modifier.padding(top = 8.dp))
+        Muted(stringResource(R.string.launcher_colour_buttons_help))
+        val names = listOf(R.string.launcher_red, R.string.launcher_green, R.string.launcher_yellow, R.string.launcher_blue)
+        app.tellyscope.data.COLOUR_KEYS.forEachIndexed { i, button ->
+            AppPicker(
+                stringResource(names[i]), label(app.tellyscope.data.appKeyFor(keys, button)),
+                stringResource(R.string.launcher_tv_default), launchable, enabled,
+            ) { actions.launcherTheme("app_keys", app.tellyscope.data.appKeysWith(keys, button, it)) }
+        }
+    }
+    s.hidden?.let { hidden -> HiddenApps(hidden, launchable, enabled) { actions.launcherTheme("hidden_apps", it) } }
+    Column(Modifier.fillMaxWidth().padding(vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Text(stringResource(R.string.launcher_repair), style = MaterialTheme.typography.bodyLarge)
+        Muted(stringResource(R.string.launcher_repair_help))
+        FilledTonalButton(onClick = actions.repairRemote, enabled = enabled) { Text(stringResource(R.string.launcher_repair_button)) }
+    }
+}
+
+private const val OPEN_ON_START = "open_on_start"
+
+/** [title]: [current] app, or [none]; a tap lists [apps] with [none] first. */
+@Composable
+private fun AppPicker(title: String, current: String?, none: String, apps: List<AppInfo>, enabled: Boolean, onPick: (String?) -> Unit) {
+    var open by remember { mutableStateOf(false) }
+    Row(Modifier.fillMaxWidth().padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+        Column(Modifier.weight(1f)) {
+            Text(title, style = MaterialTheme.typography.bodyMedium)
+            Muted(current ?: none)
+        }
+        Box {
+            TextButton(onClick = { open = true }, enabled = enabled) { Text(stringResource(R.string.launcher_change)) }
+            DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
+                DropdownMenuItem(text = { Text(none) }, onClick = { open = false; onPick(null) })
+                for (a in apps) DropdownMenuItem(text = { Text(a.label) }, onClick = { open = false; onPick(a.packageName) })
+            }
+        }
+    }
+}
+
+/** Hidden apps: how many, and a list to tick them in. */
+@Composable
+private fun HiddenApps(hidden: List<String>, apps: List<AppInfo>, enabled: Boolean, onSave: (List<String>) -> Unit) {
+    var editing by remember { mutableStateOf(false) }
+    Column(Modifier.fillMaxWidth().padding(vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Text(stringResource(R.string.launcher_hidden), style = MaterialTheme.typography.bodyLarge)
+        Muted(pluralStringResource(R.plurals.launcher_hidden_count, hidden.size, hidden.size))
+        FilledTonalButton(onClick = { editing = true }, enabled = enabled && apps.isNotEmpty()) { Text(stringResource(R.string.launcher_hidden_choose)) }
+    }
+    if (editing) {
+        val picked = remember { androidx.compose.runtime.mutableStateListOf<String>().apply { addAll(hidden) } }
+        AlertDialog(
+            onDismissRequest = { editing = false },
+            title = { Text(stringResource(R.string.launcher_hidden)) },
+            text = {
+                androidx.compose.foundation.lazy.LazyColumn {
+                    items(apps.size) { i ->
+                        val a = apps[i]
+                        Row(
+                            Modifier.fillMaxWidth().clickable { if (a.packageName in picked) picked.remove(a.packageName) else picked.add(a.packageName) }
+                                .padding(vertical = 6.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            androidx.compose.material3.Checkbox(checked = a.packageName in picked, onCheckedChange = null)
+                            Text(a.label, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.padding(start = 12.dp))
+                        }
+                    }
+                }
+            },
+            confirmButton = { Button(onClick = { editing = false; onSave(picked.toList()) }) { Text(stringResource(R.string.launcher_save)) } },
+            dismissButton = { TextButton(onClick = { editing = false }) { Text(stringResource(R.string.screen_cancel)) } },
+        )
+    }
 }

@@ -1195,4 +1195,32 @@
     <string name="home_err_back_on">Inicio seguía sin abrirla, así que se volvió a activar la pantalla de inicio anterior</string>
     <string name="home_err_wont_on">la TV no dejó volver a activarla</string>
     <string name="home_err_asks">la TV sigue preguntando qué pantalla de inicio usar</string>
+    <string name="launcher_show_greeting">Saludo</string>
+    <string name="launcher_date_below">Fecha debajo del reloj</string>
+    <string name="launcher_always_names">Nombres de las apps siempre</string>
+    <string name="launcher_dock_glass">Dock de cristal</string>
+    <string name="launcher_dock_band">Banda detrás del dock</string>
+    <string name="launcher_idle_clock">Reloj en reposo</string>
+    <string name="launcher_idle_off">No</string>
+    <string name="launcher_open_on_start">Abrir al encender</string>
+    <string name="launcher_nothing">Nada</string>
+    <string name="launcher_colour_buttons">Botones de colores del mando</string>
+    <string name="launcher_colour_buttons_help">Qué abre cada uno en la pantalla de inicio.</string>
+    <string name="launcher_red">Rojo</string>
+    <string name="launcher_green">Verde</string>
+    <string name="launcher_yellow">Amarillo</string>
+    <string name="launcher_blue">Azul</string>
+    <string name="launcher_tv_default">Lo que haga la TV</string>
+    <string name="launcher_change">Cambiar</string>
+    <string name="launcher_hidden">Apps ocultas</string>
+    <string name="launcher_hidden_choose">Elegir</string>
+    <string name="launcher_repair">Reparar el mando</string>
+    <string name="launcher_repair_help">Para cuando los botones de colores o Inicio dejan de responder: rearranca el ayudante del launcher.</string>
+    <string name="launcher_repair_button">Reparar</string>
+    <string name="launcher_remote_repaired">Ayudante del mando rearrancado</string>
+    <string name="launcher_remote_not_on">El ayudante del mando no está activo: pon el launcher como inicio primero</string>
+    <plurals name="launcher_hidden_count">
+        <item quantity="one">%1$d app oculta</item>
+        <item quantity="other">%1$d apps ocultas</item>
+    </plurals>
 </resources>

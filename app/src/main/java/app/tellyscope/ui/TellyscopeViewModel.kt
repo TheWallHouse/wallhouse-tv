@@ -1226,6 +1226,21 @@ class TellyscopeViewModel(
     /** The launcher's dock, in order. */
     fun setLauncherDock(dock: List<String>) = launcherChange { id, pkg -> source.setLauncherDock(id, pkg, dock) }
 
+    /** A theme key of the launcher (hidden apps, remote buttons, greeting…): [value] null puts its default back. */
+    fun setLauncherTheme(key: String, value: Any?) = launcherChange { id, pkg -> source.setLauncherTheme(id, pkg, mapOf(key to value)) }
+
+    /** Restart the launcher's accessibility helpers, for remote buttons that stopped answering. */
+    fun repairRemote() {
+        val id = _state.value.selectedId ?: return
+        val pkg = _state.value.device.launcherSettings?.pkg ?: return
+        updateDevice(id) { it.copy(busy = LAUNCHER_SAVING) }
+        viewModelScope.launch {
+            val fixed = runCatching { source.repairRemote(id, pkg) }.getOrDefault(false)
+            updateDevice(id) { it.copy(busy = null) }
+            _notice.value = if (fixed) Copy.REMOTE_REPAIRED else Copy.REMOTE_NOT_ON
+        }
+    }
+
     private fun launcherChange(write: suspend (String, String) -> LauncherSettings) {
         val id = _state.value.selectedId ?: return
         val pkg = _state.value.device.launcherSettings?.pkg ?: return
