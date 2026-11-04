@@ -32,6 +32,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -112,6 +113,9 @@ fun LauncherBlock(ui: DeviceUi, actions: DeviceActions) {
     }
     DockEditor(s, ui.apps, idle, actions.launcherDock)
     if ("font_file" in s.effective) FontPicker(s.fontName, idle, actions.launcherFont)
+    s.wallpaperImages?.let { WallpaperOptions(s, it, idle, actions) }
+    PreviewRow(ui.tvPreview, idle, actions)
+    CopiesRow(ui.launcherCopies, idle, actions)
     ThemeOptions(s, ui.apps, idle, actions)
 }
 
@@ -222,6 +226,14 @@ private fun ThemeOptions(s: LauncherSettings, apps: List<AppInfo>, enabled: Bool
         "always_show_names" to R.string.launcher_always_names,
         "dock_glass" to R.string.launcher_dock_glass,
         "dock_band" to R.string.launcher_dock_band,
+        "ambient_glow" to R.string.launcher_ambient_glow,
+        "app_glow" to R.string.launcher_app_glow,
+        "clock_glow" to R.string.launcher_clock_glow,
+        "show_network_pill" to R.string.launcher_network_pill,
+        "show_inputs_pill" to R.string.launcher_inputs_pill,
+        "show_library_pill" to R.string.launcher_library_pill,
+        "vpn_pill" to R.string.launcher_vpn_pill,
+        "icon_only_buttons" to R.string.launcher_icon_only,
     )) {
         val on = s.bool(key) ?: continue
         Row(Modifier.fillMaxWidth().padding(vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -335,4 +347,107 @@ private fun FontPicker(current: String?, enabled: Boolean, onPick: (app.tellysco
         }
     }
     Muted(stringResource(R.string.launcher_font_help))
+}
+
+/**
+ * Wallpapers: photos from the phone's gallery (cropped to the screen and sent as a collection), how often they
+ * change, how dark, in what order, and Remove photos, which brings the launcher's own back.
+ */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun WallpaperOptions(s: LauncherSettings, images: List<String>, enabled: Boolean, actions: DeviceActions) {
+    val pick = androidx.activity.compose.rememberLauncherForActivityResult(
+        androidx.activity.result.contract.ActivityResultContracts.PickMultipleVisualMedia(app.tellyscope.data.WallpaperPrep.MAX),
+    ) { uris -> if (uris.isNotEmpty()) actions.launcherWallpapers(uris) }
+    Column(Modifier.fillMaxWidth().padding(vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Text(stringResource(R.string.launcher_wallpaper), style = MaterialTheme.typography.bodyLarge)
+        Muted(if (images.isEmpty()) stringResource(R.string.launcher_wallpaper_own) else pluralStringResource(R.plurals.launcher_photos_count, images.size, images.size))
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            FilledTonalButton(onClick = {
+                pick.launch(androidx.activity.result.PickVisualMediaRequest(androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia.ImageOnly))
+            }, enabled = enabled) { Text(stringResource(R.string.launcher_photos_choose)) }
+            if (images.isNotEmpty()) TextButton(onClick = { actions.launcherWallpapers(emptyList()) }, enabled = enabled) { Text(stringResource(R.string.launcher_photos_remove)) }
+        }
+    }
+    if (images.size > 1) {
+        val fixed = stringResource(R.string.launcher_rotation_off)
+        s.int("wallpaper_rotation_minutes")?.let { m ->
+            Choices(stringResource(R.string.launcher_rotation), listOf(0, 1, 10, 60), m, enabled, label = { if (it == 0) fixed else "$it min" }) {
+                actions.launcherTheme("wallpaper_rotation_minutes", it)
+            }
+        }
+        s.string("wallpaper_order")?.let { o ->
+            val shuffle = stringResource(R.string.launcher_order_shuffle)
+            val inOrder = stringResource(R.string.launcher_order_sequential)
+            Choices(stringResource(R.string.launcher_order), listOf("shuffle", "sequential"), o, enabled, label = { if (it == "shuffle") shuffle else inOrder }) {
+                actions.launcherTheme("wallpaper_order", it)
+            }
+        }
+    }
+    s.int("wallpaper_dim")?.let { d ->
+        Choices(stringResource(R.string.launcher_dim), listOf(0, 20, 40, 60), d, enabled, label = { "$it %" }) { actions.launcherTheme("wallpaper_dim", it) }
+    }
+}
+
+/** See the TV: a screenshot of what it shows now, in a dialog. */
+@Composable
+private fun PreviewRow(png: ByteArray?, enabled: Boolean, actions: DeviceActions) {
+    Column(Modifier.fillMaxWidth().padding(vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Text(stringResource(R.string.launcher_preview), style = MaterialTheme.typography.bodyLarge)
+        Muted(stringResource(R.string.launcher_preview_help))
+        FilledTonalButton(onClick = actions.previewTv, enabled = enabled) { Text(stringResource(R.string.launcher_preview_button)) }
+    }
+    val image = remember(png) { png?.let { bytes -> android.graphics.BitmapFactory.decodeByteArray(bytes, 0, bytes.size)?.asImageBitmap() } }
+    if (image != null) {
+        AlertDialog(
+            onDismissRequest = actions.closePreview,
+            title = { Text(stringResource(R.string.launcher_preview)) },
+            text = { androidx.compose.foundation.Image(image, contentDescription = stringResource(R.string.launcher_preview), modifier = Modifier.fillMaxWidth()) },
+            confirmButton = { TextButton(onClick = actions.previewTv) { Text(stringResource(R.string.launcher_preview_again)) } },
+            dismissButton = { TextButton(onClick = actions.closePreview) { Text(stringResource(R.string.launcher_close)) } },
+        )
+    }
+}
+
+/** Copies: save this launcher's setup on the phone, and put a saved one on this TV (the same, or another). */
+@Composable
+private fun CopiesRow(copies: List<app.tellyscope.data.LauncherCopy>, enabled: Boolean, actions: DeviceActions) {
+    var naming by remember { mutableStateOf(false) }
+    var choosing by remember { mutableStateOf(false) }
+    Column(Modifier.fillMaxWidth().padding(vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Text(stringResource(R.string.launcher_copies), style = MaterialTheme.typography.bodyLarge)
+        Muted(stringResource(R.string.launcher_copies_help))
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            FilledTonalButton(onClick = { naming = true }, enabled = enabled) { Text(stringResource(R.string.launcher_copy_save)) }
+            if (copies.isNotEmpty()) TextButton(onClick = { choosing = true }, enabled = enabled) { Text(stringResource(R.string.launcher_copy_apply)) }
+        }
+    }
+    if (naming) {
+        var name by rememberSaveable { mutableStateOf("") }
+        AlertDialog(
+            onDismissRequest = { naming = false },
+            title = { Text(stringResource(R.string.launcher_copy_save)) },
+            text = { OutlinedTextField(name, { if (it.length <= 40) name = it }, singleLine = true, placeholder = { Text(stringResource(R.string.launcher_copy_name)) }) },
+            confirmButton = { Button(onClick = { naming = false; actions.saveLauncherCopy(name.trim()) }, enabled = name.isNotBlank()) { Text(stringResource(R.string.launcher_save)) } },
+            dismissButton = { TextButton(onClick = { naming = false }) { Text(stringResource(R.string.screen_cancel)) } },
+        )
+    }
+    if (choosing) {
+        val df = remember { java.text.DateFormat.getDateTimeInstance(java.text.DateFormat.MEDIUM, java.text.DateFormat.SHORT) }
+        AlertDialog(
+            onDismissRequest = { choosing = false },
+            title = { Text(stringResource(R.string.launcher_copy_apply)) },
+            text = {
+                Column {
+                    for (c in copies) {
+                        Column(Modifier.fillMaxWidth().clickable { choosing = false; actions.applyLauncherCopy(c) }.padding(vertical = 10.dp)) {
+                            Text(c.name, style = MaterialTheme.typography.bodyLarge)
+                            Muted(df.format(java.util.Date(c.savedAt)))
+                        }
+                    }
+                }
+            },
+            confirmButton = { TextButton(onClick = { choosing = false }) { Text(stringResource(R.string.screen_cancel)) } },
+        )
+    }
 }

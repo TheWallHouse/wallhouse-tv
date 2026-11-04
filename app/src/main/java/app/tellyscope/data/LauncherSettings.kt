@@ -27,6 +27,8 @@ data class LauncherSettings(
     val appKeys: List<String>? = null,
     /** The font this app sent (the theme's font_name), or null for the launcher's own. */
     val fontName: String? = null,
+    /** The wallpaper collection's images, by name (launcher 1208+); null when the launcher doesn't say. */
+    val wallpaperImages: List<String>? = null,
 ) {
     fun int(key: String) = (effective[key] as? Number)?.toInt()
     fun bool(key: String) = effective[key] as? Boolean
@@ -81,8 +83,11 @@ fun parseLauncherSettings(pkg: String, text: String?): LauncherSettings {
     val dock = now.optJSONArray("dock_apps")?.let { a -> (0 until a.length()).mapNotNull { a.optString(it).takeIf(PACKAGE::matches) } }.orEmpty()
     return LauncherSettings(pkg, supported = true, version = o.optInt("version").takeIf { it > 0 }, effective = effective, chosen = chosen, dock = dock,
         keys = o.optJSONArray("keys")?.let { a -> (0 until a.length()).map { a.optString(it) }.toSet() }.orEmpty(),
-        hidden = list("hidden_apps")?.filter(PACKAGE::matches), appKeys = list("app_keys"))
+        hidden = list("hidden_apps")?.filter(PACKAGE::matches), appKeys = list("app_keys"), wallpaperImages = list("wallpaper_images"))
 }
+
+/** A launcher setup saved on the phone ([file] under the app's files), to put on this TV or another. */
+data class LauncherCopy(val name: String, val savedAt: Long, val file: String)
 
 /** settings.json to write: [values] by key, a null removing the choice so the theme decides again. */
 fun launcherSettingsJson(values: Map<String, Any?>): String = JSONObject().apply {
@@ -112,7 +117,9 @@ fun themeWith(config: String?, values: Map<String, Any?>): String {
 /** The theme keys this app may set, and the kind of value each takes. Anything else stays the theme's own. */
 val THEME_KEYS = setOf(
     "dock_apps", "hidden_apps", "app_keys", "always_show_names", "show_greeting", "date_below_clock", "dock_glass",
-    "dock_band", "home_idle_clock_minutes",
+    "dock_band", "home_idle_clock_minutes", "ambient_glow", "app_glow", "clock_glow", "show_network_pill", "show_inputs_pill",
+    "show_library_pill", "vpn_pill", "icon_only_buttons", "wallpaper", "wallpaper_rotation_minutes", "wallpaper_dim",
+    "wallpaper_order",
 )
 
 /** The remote's colour buttons, as app_keys names them, in the order the remote has them. */

@@ -129,6 +129,14 @@ data class DeviceActions(
     val launcherTheme: (String, Any?) -> Unit = { _, _ -> },
     /** The catalogue launcher's font, from Google Fonts; null puts its own back. */
     val launcherFont: (app.tellyscope.data.GoogleFont?) -> Unit = {},
+    /** Photos from the phone as the launcher's wallpapers; an empty list clears them. */
+    val launcherWallpapers: (List<android.net.Uri>) -> Unit = {},
+    /** A screenshot of the TV, for See the TV. */
+    val previewTv: () -> Unit = {},
+    val closePreview: () -> Unit = {},
+    /** Saves the launcher's setup on the phone under a name. */
+    val saveLauncherCopy: (String) -> Unit = {},
+    val applyLauncherCopy: (app.tellyscope.data.LauncherCopy) -> Unit = {},
     /** Restart the catalogue launcher's remote helpers. */
     val repairRemote: () -> Unit = {},
     /** Turn off debugging on the TV, after its confirm. */

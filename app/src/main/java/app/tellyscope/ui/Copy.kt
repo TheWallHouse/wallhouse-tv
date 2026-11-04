@@ -252,6 +252,8 @@ object Copy {
     val FIRE_INSTALL_TEXT = UiText(R.string.copy_fire_install_text)
     val LAUNCHER_SAVED = UiText(R.string.launcher_saved)
     val REMOTE_REPAIRED = UiText(R.string.launcher_remote_repaired)
+    val PREVIEW_NONE = UiText(R.string.launcher_preview_none)
+    val COPY_SAVED = UiText(R.string.launcher_copy_saved)
     val REMOTE_NOT_ON = UiText(R.string.launcher_remote_not_on)
     val DEBUGGING_OFF = UiText(R.string.debugging_off_done)
 

@@ -153,6 +153,10 @@ data class DeviceUi(
     val debloat: DebloatRun? = null,
     /** The settings of the catalogue launcher on the TV (CleanYourTV · Nothing edition); null when there is none. */
     val launcherSettings: LauncherSettings? = null,
+    /** "See the TV": a screenshot to show, PNG bytes; null when none is open. */
+    val tvPreview: ByteArray? = null,
+    /** Launcher setups saved on this phone, newest first. */
+    val launcherCopies: List<app.tellyscope.data.LauncherCopy> = emptyList(),
 )
 
 /**
@@ -1217,7 +1221,8 @@ class TellyscopeViewModel(
         } catch (_: Exception) {
             return
         }
-        updateDevice(id) { it.copy(launcherSettings = settings) }
+        val copies = runCatching { source.launcherCopies() }.getOrDefault(emptyList())
+        updateDevice(id) { it.copy(launcherSettings = settings, launcherCopies = copies) }
     }
 
     /** One of the launcher's own choices: [value] null puts the theme's back. */
@@ -1238,6 +1243,47 @@ class TellyscopeViewModel(
         }
         source.setLauncherFont(id, pkg, font, bytes)
     }
+
+    /**
+     * Photos from the phone as the launcher's wallpapers, each made into a 1920 × 1080 JPEG by [prepare]; none clears
+     * them and the launcher's own comes back.
+     */
+    fun setLauncherWallpapers(uris: List<android.net.Uri>, prepare: (android.net.Uri) -> ByteArray?) = launcherChange { id, pkg ->
+        val images = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Default) { uris.take(app.tellyscope.data.WallpaperPrep.MAX).mapNotNull(prepare) }
+        if (uris.isNotEmpty() && images.isEmpty()) throw app.tellyscope.data.UiTextException(UiText(R.string.launcher_photos_bad))
+        source.setLauncherWallpapers(id, pkg, images)
+    }
+
+    /** "See the TV": a screenshot of what it shows now, for the dialog. */
+    fun previewTv() {
+        val id = _state.value.selectedId ?: return
+        updateDevice(id) { it.copy(busy = LAUNCHER_SAVING) }
+        viewModelScope.launch {
+            val png = runCatching { source.previewTv(id) }.getOrNull()
+            updateDevice(id) { it.copy(busy = null, tvPreview = png) }
+            if (png == null) _notice.value = Copy.PREVIEW_NONE
+        }
+    }
+
+    fun closePreview() {
+        val id = _state.value.selectedId ?: return
+        updateDevice(id) { it.copy(tvPreview = null) }
+    }
+
+    /** Saves the launcher's setup on this phone as [name], to put on this TV or another later. */
+    fun saveLauncherCopy(name: String) {
+        val id = _state.value.selectedId ?: return
+        val pkg = _state.value.device.launcherSettings?.pkg ?: return
+        viewModelScope.launch {
+            val copies = runCatching { source.saveLauncherCopy(id, pkg, name) }.getOrNull()
+            if (copies == null) { _notice.value = UiText(R.string.vm_didnt_work); return@launch }
+            updateDevice(id) { it.copy(launcherCopies = copies) }
+            _notice.value = Copy.COPY_SAVED
+        }
+    }
+
+    /** Puts a saved setup on this TV's launcher. */
+    fun applyLauncherCopy(copy: app.tellyscope.data.LauncherCopy) = launcherChange { id, pkg -> source.applyLauncherCopy(id, pkg, copy) }
 
     /** Restart the launcher's accessibility helpers, for remote buttons that stopped answering. */
     fun repairRemote() {

@@ -207,6 +207,24 @@ interface DeviceSource {
     suspend fun setLauncherFont(deviceId: String, pkg: String, font: GoogleFont?, bytes: ByteArray?): LauncherSettings =
         LauncherSettings(pkg, supported = false)
 
+    /**
+     * Replaces the launcher's wallpaper collection with [images] (JPEGs, [WallpaperPrep]), the first also as its single
+     * wallpaper, and turns the wallpaper on; with none, clears them so the launcher's own comes back. Then reads again.
+     */
+    suspend fun setLauncherWallpapers(deviceId: String, pkg: String, images: List<ByteArray>): LauncherSettings = LauncherSettings(pkg, supported = false)
+
+    /** A screenshot of the TV as it is now, as PNG bytes; null when the TV won't give one. */
+    suspend fun previewTv(deviceId: String): ByteArray? = null
+
+    /** Copies of launcher setups kept on this phone, newest first: their name and when they were saved. */
+    suspend fun launcherCopies(): List<LauncherCopy> = emptyList()
+
+    /** Saves the launcher's theme and its TV choices on this phone as [name]. */
+    suspend fun saveLauncherCopy(deviceId: String, pkg: String, name: String): List<LauncherCopy> = emptyList()
+
+    /** Puts [copy] on this TV's launcher, theme and choices; then reads its settings again. */
+    suspend fun applyLauncherCopy(deviceId: String, pkg: String, copy: LauncherCopy): LauncherSettings = LauncherSettings(pkg, supported = false)
+
     /** Restarts the launcher's accessibility helpers, for remote buttons that stopped working. False when it has none on. */
     suspend fun repairRemote(deviceId: String, pkg: String): Boolean = false
 

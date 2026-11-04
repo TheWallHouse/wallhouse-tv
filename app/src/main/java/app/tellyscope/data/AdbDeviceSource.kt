@@ -48,6 +48,7 @@ import com.flyfishxu.kadb.mdns.KadbMdnsAndroid
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
@@ -671,6 +672,84 @@ class AdbDeviceSource(context: Context) : DeviceSource {
         if (font != null && after.bool("font_file") == false) throw ActionFailed(UiText(R.string.data_launcher_not_saved, labelOf(pkg)), "font.ttf")
         after
     }
+
+    override suspend fun setLauncherWallpapers(deviceId: String, pkg: String, images: List<ByteArray>): LauncherSettings = busy(deviceId) {
+        require(PACKAGE.matches(pkg)) { "not a package name: $pkg" }
+        val session = session(deviceId)
+        val base = "content://$pkg.theme"
+        // The collection goes first, so the old photos don't mix with the new ones.
+        session.shell("content delete --uri '$base/wallpapers' 2>/dev/null")
+        val tmp = "/data/local/tmp/wallhouse-wallpaper.jpg"
+        suspend fun put(bytes: ByteArray, name: String) {
+            session.push(bytes, tmp)
+            val wrote = session.shell("content write --uri '$base/$name' < $tmp 2>&1; echo \"exit=$?\"").output
+            if ("exit=0" !in wrote || listOf("Unsupported operation", "Error", "Exception").any { it in wrote }) {
+                session.shell("mkdir -p '${themeDir(pkg)}/wallpapers' && cp $tmp '${themeDir(pkg)}/$name'")
+            }
+        }
+        if (images.isEmpty()) {
+            session.shell("content delete --uri '$base/wallpaper.jpg' 2>/dev/null")
+        } else {
+            images.take(WallpaperPrep.MAX).forEachIndexed { i, b -> put(b, "wallpapers/wallhouse-%02d.jpg".format(i + 1)) }
+            put(images.first(), "wallpaper.jpg")
+        }
+        session.shell("rm -f $tmp")
+        themeChange(session, pkg, mapOf("wallpaper" to true))
+    }
+
+    override suspend fun previewTv(deviceId: String): ByteArray? = busy(deviceId) {
+        val buffer = okio.Buffer()
+        runCatching { Tweaks(session(deviceId)).screenshot(buffer) }.getOrNull() ?: return@busy null
+        buffer.readByteArray().takeIf { it.size > 8 }
+    }
+
+    override suspend fun launcherCopies(): List<LauncherCopy> = withContext(Dispatchers.IO) {
+        copiesDir().listFiles { f -> f.extension == "json" }.orEmpty().mapNotNull { f ->
+            runCatching { org.json.JSONObject(f.readText()) }.getOrNull()?.let { LauncherCopy(it.optString("name", f.nameWithoutExtension), it.optLong("saved"), f.name) }
+        }.sortedByDescending { it.savedAt }
+    }
+
+    override suspend fun saveLauncherCopy(deviceId: String, pkg: String, name: String): List<LauncherCopy> {
+        val (theme, chosen) = busy(deviceId) {
+            val session = session(deviceId)
+            readTheme(session, pkg) to readLauncher(session, pkg).chosen
+        }
+        withContext(Dispatchers.IO) {
+            val now = System.currentTimeMillis()
+            val json = org.json.JSONObject().apply {
+                put("name", name.take(60))
+                put("saved", now)
+                put("launcher", pkg)
+                put("theme", runCatching { org.json.JSONObject(theme) }.getOrElse { org.json.JSONObject() })
+                put("settings", org.json.JSONObject(launcherSettingsJson(chosen)))
+            }
+            copiesDir().mkdirs()
+            File(copiesDir(), "$now.json").writeText(json.toString(2))
+        }
+        return launcherCopies()
+    }
+
+    override suspend fun applyLauncherCopy(deviceId: String, pkg: String, copy: LauncherCopy): LauncherSettings {
+        val json = withContext(Dispatchers.IO) {
+            val f = File(copiesDir(), copy.file).canonicalFile
+            require(f.parentFile == copiesDir().canonicalFile) { "not a saved copy: ${copy.file}" }
+            org.json.JSONObject(f.readText())
+        }
+        val theme = json.optJSONObject("theme") ?: org.json.JSONObject()
+        val settings = json.optJSONObject("settings") ?: org.json.JSONObject()
+        return busy(deviceId) {
+            val session = session(deviceId)
+            // The whole theme is the copy's, but this TV keeps how its Home button reaches the launcher.
+            val here = runCatching { org.json.JSONObject(readTheme(session, pkg)) }.getOrNull()
+            here?.optString("stock_home_redirect")?.takeIf { it.isNotEmpty() }?.let { theme.put("stock_home_redirect", it) } ?: theme.remove("stock_home_redirect")
+            writeTheme(session, pkg, theme.toString(2))
+            val values = buildMap<String, Any?> { for (k in settings.keys()) put(k, settings.opt(k)) }
+            if (values.isNotEmpty()) writeSettings(session, pkg, values)
+            readLauncher(session, pkg)
+        }
+    }
+
+    private fun copiesDir() = File(appContext.filesDir, "launcher-copies")
 
     override suspend fun repairRemote(deviceId: String, pkg: String): Boolean = busy(deviceId) {
         require(PACKAGE.matches(pkg)) { "not a package name: $pkg" }
