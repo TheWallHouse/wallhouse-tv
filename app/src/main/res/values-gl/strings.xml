@@ -1227,4 +1227,8 @@
         <item quantity="one">%1$d aplicación oculta</item>
         <item quantity="other">%1$d aplicacións ocultas</item>
     </plurals>
+    <string name="launcher_font">Fonte</string>
+    <string name="launcher_font_own">Doto, de puntos (a do launcher)</string>
+    <string name="launcher_font_help">O teléfono descárgaa de Google Fonts e pásaa á TV: o launcher segue sen internet.</string>
+    <string name="launcher_font_bad">%1$s non se descargou ben. Téntao de novo máis tarde.</string>
 </resources>

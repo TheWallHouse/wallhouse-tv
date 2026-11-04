@@ -127,6 +127,8 @@ data class DeviceActions(
     val launcherDock: (List<String>) -> Unit = {},
     /** One of the catalogue launcher's theme keys; a null puts its default back. */
     val launcherTheme: (String, Any?) -> Unit = { _, _ -> },
+    /** The catalogue launcher's font, from Google Fonts; null puts its own back. */
+    val launcherFont: (app.tellyscope.data.GoogleFont?) -> Unit = {},
     /** Restart the catalogue launcher's remote helpers. */
     val repairRemote: () -> Unit = {},
     /** Turn off debugging on the TV, after its confirm. */

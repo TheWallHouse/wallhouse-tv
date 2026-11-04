@@ -1223,4 +1223,8 @@
         <item quantity="one">%1$d app oculta</item>
         <item quantity="other">%1$d apps ocultas</item>
     </plurals>
+    <string name="launcher_font">Fuente</string>
+    <string name="launcher_font_own">Doto, de puntos (la del launcher)</string>
+    <string name="launcher_font_help">El móvil la descarga de Google Fonts y la pasa a la TV: el launcher sigue sin internet.</string>
+    <string name="launcher_font_bad">%1$s no se descargó bien. Vuelve a intentarlo más tarde.</string>
 </resources>

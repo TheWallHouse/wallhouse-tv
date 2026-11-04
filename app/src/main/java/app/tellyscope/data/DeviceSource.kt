@@ -200,6 +200,13 @@ interface DeviceSource {
     /** Sets theme keys ([THEME_KEYS]) in the launcher's config.json, keeping its other choices; then reads its settings again. */
     suspend fun setLauncherTheme(deviceId: String, pkg: String, values: Map<String, Any?>): LauncherSettings = LauncherSettings(pkg, supported = false)
 
+    /**
+     * Sends [font] ([bytes], already checked) to the launcher as its theme's font.ttf, or puts its own font back with
+     * null; then reads its settings again.
+     */
+    suspend fun setLauncherFont(deviceId: String, pkg: String, font: GoogleFont?, bytes: ByteArray?): LauncherSettings =
+        LauncherSettings(pkg, supported = false)
+
     /** Restarts the launcher's accessibility helpers, for remote buttons that stopped working. False when it has none on. */
     suspend fun repairRemote(deviceId: String, pkg: String): Boolean = false
 

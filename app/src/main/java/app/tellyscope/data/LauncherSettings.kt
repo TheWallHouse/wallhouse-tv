@@ -25,6 +25,8 @@ data class LauncherSettings(
     /** The theme's hidden_apps and app_keys as Home uses them (launcher 1206+); null when the launcher doesn't say. */
     val hidden: List<String>? = null,
     val appKeys: List<String>? = null,
+    /** The font this app sent (the theme's font_name), or null for the launcher's own. */
+    val fontName: String? = null,
 ) {
     fun int(key: String) = (effective[key] as? Number)?.toInt()
     fun bool(key: String) = effective[key] as? Boolean

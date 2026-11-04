@@ -111,6 +111,7 @@ fun LauncherBlock(ui: DeviceUi, actions: DeviceActions) {
         Switch(checked = s.bool(K.ANIMATIONS) != false, onCheckedChange = { actions.launcherChoice(K.ANIMATIONS, it) }, enabled = idle)
     }
     DockEditor(s, ui.apps, idle, actions.launcherDock)
+    if ("font_file" in s.effective) FontPicker(s.fontName, idle, actions.launcherFont)
     ThemeOptions(s, ui.apps, idle, actions)
 }
 
@@ -313,4 +314,25 @@ private fun HiddenApps(hidden: List<String>, apps: List<AppInfo>, enabled: Boole
             dismissButton = { TextButton(onClick = { editing = false }) { Text(stringResource(R.string.screen_cancel)) } },
         )
     }
+}
+
+/** The launcher's font: its own Doto, or one of [app.tellyscope.data.GOOGLE_FONTS], downloaded and sent to the TV. */
+@Composable
+private fun FontPicker(current: String?, enabled: Boolean, onPick: (app.tellyscope.data.GoogleFont?) -> Unit) {
+    var open by remember { mutableStateOf(false) }
+    val own = stringResource(R.string.launcher_font_own)
+    Row(Modifier.fillMaxWidth().padding(vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+        Column(Modifier.weight(1f)) {
+            Text(stringResource(R.string.launcher_font), style = MaterialTheme.typography.bodyLarge)
+            Muted(current ?: own)
+        }
+        Box {
+            TextButton(onClick = { open = true }, enabled = enabled) { Text(stringResource(R.string.launcher_change)) }
+            DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
+                DropdownMenuItem(text = { Text(own) }, onClick = { open = false; if (current != null) onPick(null) })
+                for (f in app.tellyscope.data.GOOGLE_FONTS) DropdownMenuItem(text = { Text(f.name) }, onClick = { open = false; if (f.name != current) onPick(f) })
+            }
+        }
+    }
+    Muted(stringResource(R.string.launcher_font_help))
 }

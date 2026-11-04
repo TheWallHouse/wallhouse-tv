@@ -61,6 +61,13 @@ The launch screen's WALLHOUSE TV wordmark (drawable/splash_branding.xml) is set 
 Barlow Condensed SemiBold and converted to outlines.
 
 --------------------------------------------------------------------------------
+Google Fonts — https://github.com/google/fonts
+License: SIL Open Font License 1.1 (each font's own copyright holders)
+The launcher fonts offered in Ajustes de Nothing → Fuente (Space Mono, Michroma, Orbitron, Barlow Condensed, Major
+Mono Display, VT323, Silkscreen, Bebas Neue, JetBrains Mono, Share Tech Mono, Audiowide, Outfit) are not in this
+app: the phone downloads the one picked, checks its SHA-256, and sends it to the TV.
+
+--------------------------------------------------------------------------------
 cleanyourtv — https://github.com/Gathin23/cleanyourtv
 License: MIT, Copyright (c) 2026 Gathin
 Debloat package lists are adapted from this project.

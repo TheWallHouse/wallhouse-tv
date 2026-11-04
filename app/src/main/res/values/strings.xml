@@ -1467,4 +1467,8 @@
         <item quantity="one">%1$d app hidden</item>
         <item quantity="other">%1$d apps hidden</item>
     </plurals>
+    <string name="launcher_font">Font</string>
+    <string name="launcher_font_own">Doto, dot-matrix (the launcher\'s own)</string>
+    <string name="launcher_font_help">Downloaded from Google Fonts by this phone and sent to the TV: the launcher stays offline.</string>
+    <string name="launcher_font_bad">%1$s didn\'t download as it should. Try again later.</string>
 </resources>

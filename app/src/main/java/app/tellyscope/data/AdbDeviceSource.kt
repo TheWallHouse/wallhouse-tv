@@ -650,6 +650,28 @@ class AdbDeviceSource(context: Context) : DeviceSource {
         return readLauncher(session, pkg)
     }
 
+    override suspend fun setLauncherFont(deviceId: String, pkg: String, font: GoogleFont?, bytes: ByteArray?): LauncherSettings = busy(deviceId) {
+        require(PACKAGE.matches(pkg)) { "not a package name: $pkg" }
+        val session = session(deviceId)
+        val uri = "content://$pkg.theme/font.ttf"
+        if (font == null || bytes == null) {
+            session.shell("content delete --uri '$uri' 2>/dev/null; rm -f '${themeDir(pkg)}/font.ttf' 2>/dev/null")
+        } else {
+            require(isFont(font, bytes)) { "not ${font.name}'s file" }
+            val tmp = "/data/local/tmp/wallhouse-font.ttf"
+            session.push(bytes, tmp)
+            val wrote = session.shell("content write --uri '$uri' < $tmp 2>&1; echo \"exit=$?\"").output
+            if ("exit=0" !in wrote || listOf("Unsupported operation", "Error", "Exception").any { it in wrote }) {
+                session.shell("mkdir -p '${themeDir(pkg)}' && cp $tmp '${themeDir(pkg)}/font.ttf'")
+            }
+            session.shell("rm -f $tmp")
+        }
+        // Its name in the theme, so this app can say which one is on; the launcher itself ignores the key.
+        val after = themeChange(session, pkg, mapOf("font_name" to font?.name))
+        if (font != null && after.bool("font_file") == false) throw ActionFailed(UiText(R.string.data_launcher_not_saved, labelOf(pkg)), "font.ttf")
+        after
+    }
+
     override suspend fun repairRemote(deviceId: String, pkg: String): Boolean = busy(deviceId) {
         require(PACKAGE.matches(pkg)) { "not a package name: $pkg" }
         val actions = Actions(session(deviceId))
@@ -670,7 +692,10 @@ class AdbDeviceSource(context: Context) : DeviceSource {
 
     private suspend fun readLauncher(session: AdbSession, pkg: String): LauncherSettings {
         require(PACKAGE.matches(pkg)) { "not a package name: $pkg" }
-        return parseLauncherSettings(pkg, session.shell("content read --uri 'content://$pkg.theme/settings.json' 2>/dev/null").output)
+        val s = parseLauncherSettings(pkg, session.shell("content read --uri 'content://$pkg.theme/settings.json' 2>/dev/null").output)
+        if (!s.supported || "font_file" !in s.effective) return s
+        val name = runCatching { org.json.JSONObject(readTheme(session, pkg)).optString("font_name") }.getOrNull()
+        return s.copy(fontName = name?.takeIf { it.isNotEmpty() && s.bool("font_file") == true })
     }
 
     private suspend fun writeSettings(session: AdbSession, pkg: String, values: Map<String, Any?>) {

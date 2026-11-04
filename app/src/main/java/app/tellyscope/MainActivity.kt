@@ -451,6 +451,7 @@ fun TellyscopeApp(vm: TellyscopeViewModel) {
                 launcherDock = vm::setLauncherDock,
                 launcherTheme = vm::setLauncherTheme,
                 repairRemote = vm::repairRemote,
+                launcherFont = vm::setLauncherFont,
                 turnOffDebugging = vm::turnOffDebugging,
                 setFastAnimations = vm::setFastAnimations,
                 clearCaches = vm::clearCaches,

@@ -1229,6 +1229,16 @@ class TellyscopeViewModel(
     /** A theme key of the launcher (hidden apps, remote buttons, greeting…): [value] null puts its default back. */
     fun setLauncherTheme(key: String, value: Any?) = launcherChange { id, pkg -> source.setLauncherTheme(id, pkg, mapOf(key to value)) }
 
+    /** The launcher's font: [font] downloaded from Google Fonts and checked, or its own Doto back with null. */
+    fun setLauncherFont(font: app.tellyscope.data.GoogleFont?) = launcherChange { id, pkg ->
+        val bytes = font?.let { f ->
+            val b = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) { app.tellyscope.data.download(f.url) }
+            if (!app.tellyscope.data.isFont(f, b)) throw app.tellyscope.data.UiTextException(UiText(R.string.launcher_font_bad, f.name))
+            b
+        }
+        source.setLauncherFont(id, pkg, font, bytes)
+    }
+
     /** Restart the launcher's accessibility helpers, for remote buttons that stopped answering. */
     fun repairRemote() {
         val id = _state.value.selectedId ?: return
