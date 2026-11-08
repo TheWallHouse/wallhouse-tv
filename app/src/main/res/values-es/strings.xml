@@ -1189,6 +1189,7 @@
     <string name="debugging_off_done">Depuración apagada en la TV</string>
     <string name="settings_language">Idioma</string>
     <string name="settings_language_phone">Como el móvil</string>
+    <string name="launcher_palette">Paleta</string>
     <string name="launcher_aspect">Aspecto</string>
     <string name="launcher_aspect_windows">Terminal · Ventanas</string>
     <string name="launcher_aspect_console">Terminal · Consola</string>

@@ -46,6 +46,9 @@ data class LauncherSettings(
         const val ANIMATIONS = "animations"
         const val LOCALE = "locale"
         const val ASPECT = "aspect"
+        const val PALETTE = "terminal_palette"
+        /** The terminal looks' palettes, as the launcher names them. */
+        val PALETTE_CHOICES = listOf("tokyo-night", "catppuccin", "gruvbox", "nord")
 
         /** Launcher languages: "" follows the TV. Each is named in its own language ([app.tellyscope.data.AppLanguage.name]). */
         val LOCALE_CHOICES = listOf("", "es-ES", "en-US", "gl")

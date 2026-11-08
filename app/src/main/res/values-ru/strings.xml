@@ -1233,6 +1233,7 @@
     <string name="debugging_off_done">Debugging is off on the TV</string>
     <string name="settings_language">Язык</string>
     <string name="settings_language_phone">Как на телефоне</string>
+    <string name="launcher_palette">Палитра</string>
     <string name="launcher_aspect">Вид</string>
     <string name="launcher_aspect_windows">Терминал · Окна</string>
     <string name="launcher_aspect_console">Терминал · Консоль</string>

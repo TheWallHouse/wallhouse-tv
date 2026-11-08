@@ -78,6 +78,12 @@ fun LauncherBlock(ui: DeviceUi, actions: DeviceActions) {
             actions.launcherChoice(K.ASPECT, it)
         }
     }
+    val terminal = s.string(K.ASPECT) == "windows" || s.string(K.ASPECT) == "console"
+    if (terminal && K.PALETTE in s.keys) {
+        Choices(stringResource(R.string.launcher_palette), K.PALETTE_CHOICES, s.string(K.PALETTE), idle, label = { it }) {
+            actions.launcherChoice(K.PALETTE, it)
+        }
+    }
     Choices(
         stringResource(R.string.launcher_apps_style),
         K.TILE_CHOICES, s.string(K.TILES), idle,
@@ -119,7 +125,7 @@ fun LauncherBlock(ui: DeviceUi, actions: DeviceActions) {
         Switch(checked = s.bool(K.ANIMATIONS) != false, onCheckedChange = { actions.launcherChoice(K.ANIMATIONS, it) }, enabled = idle)
     }
     DockEditor(s, ui.apps, idle, actions.launcherDock)
-    if ("font_file" in s.effective) FontPicker(s.fontName, idle, actions.launcherFont)
+    if ("font_file" in s.effective && !terminal) FontPicker(s.fontName, idle, actions.launcherFont)
     s.wallpaperImages?.let { WallpaperOptions(s, it, idle, actions) }
     PreviewRow(ui.tvPreview, idle, actions)
     CopiesRow(ui.launcherCopies, idle, actions)
