@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: GPL-3.0-only -->
+<!-- Flag of Spain (civil flag, 1:2:1). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="16dp"
+    android:viewportWidth="30" android:viewportHeight="20">
+    <path android:fillColor="#AA151B" android:pathData="M0,0h30v5h-30z"/>
+    <path android:fillColor="#F1BF00" android:pathData="M0,5h30v10h-30z"/>
+    <path android:fillColor="#AA151B" android:pathData="M0,15h30v5h-30z"/>
+    <path android:fillColor="#00000000" android:strokeColor="#33000000" android:strokeWidth="0.6"
+        android:pathData="M0.3,0.3h29.4v19.4h-29.4z"/>
+</vector>

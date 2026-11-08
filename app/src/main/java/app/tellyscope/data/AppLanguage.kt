@@ -48,6 +48,14 @@ object AppLanguage {
 
     private fun stored(ctx: Context) = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getString(KEY, "").orEmpty()
 
+    /** The flag shown beside each choice, or null for the device's own language (shown with the device instead). */
+    fun flag(tag: String): Int? = when (tag) {
+        "es-ES" -> app.tellyscope.R.drawable.flag_es
+        "en-US" -> app.tellyscope.R.drawable.flag_us
+        "gl" -> app.tellyscope.R.drawable.flag_gl
+        else -> null
+    }
+
     /** How each choice is named, in its own language, as language pickers do. */
     fun name(tag: String, phone: String): String = when (tag) {
         "es-ES" -> "Castellano (España)"

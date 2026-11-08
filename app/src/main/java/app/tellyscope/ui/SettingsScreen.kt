@@ -304,7 +304,11 @@ private fun LanguageRow() {
     Row(Modifier.fillMaxWidth().clickable { picking = true }.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
         Column(Modifier.weight(1f)) {
             Text(stringResource(R.string.settings_language), style = MaterialTheme.typography.titleSmall)
-            Text(app.tellyscope.data.AppLanguage.name(current, phone), style = MaterialTheme.typography.bodyMedium)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                LanguageMark(current, R.drawable.ic_lang_phone)
+                Spacer(Modifier.width(8.dp))
+                Text(app.tellyscope.data.AppLanguage.name(current, phone), style = MaterialTheme.typography.bodyMedium)
+            }
         }
         Spacer(Modifier.width(16.dp))
         Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null)
@@ -328,6 +332,8 @@ private fun LanguageRow() {
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             androidx.compose.material3.RadioButton(selected = tag == current, onClick = null)
+                            Spacer(Modifier.width(12.dp))
+                            LanguageMark(tag, R.drawable.ic_lang_phone)
                             Spacer(Modifier.width(12.dp))
                             Text(app.tellyscope.data.AppLanguage.name(tag, phone), style = MaterialTheme.typography.bodyLarge)
                         }

@@ -105,6 +105,7 @@ fun LauncherBlock(ui: DeviceUi, actions: DeviceActions) {
         Choices(
             stringResource(R.string.launcher_language), K.LOCALE_CHOICES, s.chosen[K.LOCALE] as? String ?: "", idle,
             label = { app.tellyscope.data.AppLanguage.name(it, tv) },
+            leading = { LanguageMark(it, R.drawable.ic_lang_tv) },
         ) { actions.launcherChoice(K.LOCALE, it.ifEmpty { null }) }
     }
     Row(Modifier.fillMaxWidth().padding(vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -121,12 +122,18 @@ fun LauncherBlock(ui: DeviceUi, actions: DeviceActions) {
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun <T> Choices(title: String, values: List<T>, current: T?, enabled: Boolean, label: @Composable (T) -> String, onPick: (T) -> Unit) {
+private fun <T> Choices(
+    title: String, values: List<T>, current: T?, enabled: Boolean, label: @Composable (T) -> String,
+    leading: (@Composable (T) -> Unit)? = null, onPick: (T) -> Unit,
+) {
     Column(Modifier.fillMaxWidth().padding(vertical = 6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Text(title, style = MaterialTheme.typography.bodyLarge)
         FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             for (v in values) {
-                FilterChip(selected = v == current, onClick = { if (v != current) onPick(v) }, label = { Text(label(v)) }, enabled = enabled)
+                FilterChip(
+                    selected = v == current, onClick = { if (v != current) onPick(v) }, label = { Text(label(v)) }, enabled = enabled,
+                    leadingIcon = leading?.let { { it(v) } },
+                )
             }
         }
     }
