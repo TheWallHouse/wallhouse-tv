@@ -72,6 +72,12 @@ fun LauncherBlock(ui: DeviceUi, actions: DeviceActions) {
         FilledTonalButton(onClick = actions.installLauncher, enabled = idle) { Text(stringResource(R.string.launcher_update)) }
         return
     }
+    // The look comes first: the rest of the block is that look's settings (WallHouse Launcher with more than one).
+    if (K.ASPECT in s.keys && s.aspects.size > 1) {
+        Choices(stringResource(R.string.launcher_aspect), s.aspects, s.string(K.ASPECT), idle, label = { aspectName(it) }) {
+            actions.launcherChoice(K.ASPECT, it)
+        }
+    }
     Choices(
         stringResource(R.string.launcher_apps_style),
         K.TILE_CHOICES, s.string(K.TILES), idle,
@@ -137,6 +143,15 @@ private fun <T> Choices(
             }
         }
     }
+}
+
+/** A look's name as the launcher calls it; an unknown one (a newer launcher) by its key. */
+@Composable
+private fun aspectName(key: String): String = when (key) {
+    "nothing" -> "Nothing"
+    "windows" -> stringResource(R.string.launcher_aspect_windows)
+    "console" -> stringResource(R.string.launcher_aspect_console)
+    else -> key
 }
 
 @Composable

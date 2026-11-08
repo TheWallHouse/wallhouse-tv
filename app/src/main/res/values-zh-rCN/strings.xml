@@ -1101,6 +1101,9 @@
     <string name="debugging_off_done">Debugging is off on the TV</string>
     <string name="settings_language">语言</string>
     <string name="settings_language_phone">跟随手机</string>
+    <string name="launcher_aspect">外观</string>
+    <string name="launcher_aspect_windows">终端 · 窗口</string>
+    <string name="launcher_aspect_console">终端 · 控制台</string>
     <string name="launcher_language">语言</string>
     <string name="launcher_language_tv">跟随电视</string>
     <string name="home_err_already">it\'s already the home screen</string>

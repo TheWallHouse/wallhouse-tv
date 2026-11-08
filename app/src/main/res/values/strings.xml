@@ -1433,6 +1433,9 @@
     <string name="debugging_off_done">Debugging is off on the TV</string>
     <string name="settings_language">Language</string>
     <string name="settings_language_phone">As the phone</string>
+    <string name="launcher_aspect">Look</string>
+    <string name="launcher_aspect_windows">Terminal · Windows</string>
+    <string name="launcher_aspect_console">Terminal · Console</string>
     <string name="launcher_language">Language</string>
     <string name="launcher_language_tv">As the TV</string>
     <string name="home_err_already">it\'s already the home screen</string>

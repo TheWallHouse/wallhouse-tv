@@ -29,6 +29,8 @@ data class LauncherSettings(
     val fontName: String? = null,
     /** The wallpaper collection's images, by name (launcher 1208+); null when the launcher doesn't say. */
     val wallpaperImages: List<String>? = null,
+    /** The looks this launcher build can draw (WallHouse Launcher 1208+), in its order; empty when it has one. */
+    val aspects: List<String> = emptyList(),
 ) {
     fun int(key: String) = (effective[key] as? Number)?.toInt()
     fun bool(key: String) = effective[key] as? Boolean
@@ -43,6 +45,7 @@ data class LauncherSettings(
         const val NAME = "nothing_greeting_name"
         const val ANIMATIONS = "animations"
         const val LOCALE = "locale"
+        const val ASPECT = "aspect"
 
         /** Launcher languages: "" follows the TV. Each is named in its own language ([app.tellyscope.data.AppLanguage.name]). */
         val LOCALE_CHOICES = listOf("", "es-ES", "en-US", "gl")
@@ -83,7 +86,8 @@ fun parseLauncherSettings(pkg: String, text: String?): LauncherSettings {
     val dock = now.optJSONArray("dock_apps")?.let { a -> (0 until a.length()).mapNotNull { a.optString(it).takeIf(PACKAGE::matches) } }.orEmpty()
     return LauncherSettings(pkg, supported = true, version = o.optInt("version").takeIf { it > 0 }, effective = effective, chosen = chosen, dock = dock,
         keys = o.optJSONArray("keys")?.let { a -> (0 until a.length()).map { a.optString(it) }.toSet() }.orEmpty(),
-        hidden = list("hidden_apps")?.filter(PACKAGE::matches), appKeys = list("app_keys"), wallpaperImages = list("wallpaper_images"))
+        hidden = list("hidden_apps")?.filter(PACKAGE::matches), appKeys = list("app_keys"), wallpaperImages = list("wallpaper_images"),
+        aspects = list("aspects")?.filter { it.matches(Regex("[a-z_]{1,24}")) }.orEmpty())
 }
 
 /** A launcher setup saved on the phone ([file] under the app's files), to put on this TV or another. */

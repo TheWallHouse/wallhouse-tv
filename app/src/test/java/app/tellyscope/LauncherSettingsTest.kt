@@ -37,6 +37,13 @@ class LauncherSettingsTest {
         assertEquals(listOf("com.netflix.ninja"), s.dock) // a bad entry is dropped
     }
 
+    @Test fun theLooksAreTheOnesTheLauncherDraws() {
+        val s = parseLauncherSettings("p.q", """{"keys":["aspect"],"effective":{"aspect":"nothing","aspects":["nothing","windows","bad key!"]}}""")
+        assertEquals(listOf("nothing", "windows"), s.aspects)
+        assertEquals("nothing", s.string("aspect"))
+        assertTrue(parseLauncherSettings("p.q", """{"keys":[],"effective":{}}""").aspects.isEmpty())
+    }
+
     @Test fun anOldLauncherOrAnErrorIsUnsupported() {
         assertFalse(parseLauncherSettings(pkg, "Error while accessing provider").supported)
         assertFalse(parseLauncherSettings(pkg, "").supported)
