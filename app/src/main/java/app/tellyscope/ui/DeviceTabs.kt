@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-only
-// Apps, Files and Tweaks icons are the Material Icons "apps", "folder" and "tune", Upload is
+// Apps, Files, Tweaks and Customize icons are the Material Icons "apps", "folder", "tune" and "palette", Upload is
 // "upload" and Movie is "movie" (Apache-2.0), see NOTICE.
 
 package app.tellyscope.ui
@@ -50,11 +50,13 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialShapes
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -105,6 +107,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import app.tellyscope.R
 import app.tellyscope.adb.StatsProfile
 import app.tellyscope.adb.TvFolder
@@ -118,7 +121,11 @@ import app.tellyscope.data.resolve
 import kotlinx.coroutines.launch
 
 /** The TV page's destinations, one job each, in the bottom bar. */
-enum class TvTab(@StringRes val label: Int) { Overview(R.string.tabs_overview), Apps(R.string.tabs_apps), Files(R.string.tabs_files), Tweaks(R.string.tabs_tweaks) }
+enum class TvTab(@StringRes val label: Int) {
+    Overview(R.string.tabs_overview), Apps(R.string.tabs_apps), Files(R.string.tabs_files), Tweaks(R.string.tabs_tweaks),
+    /** The launcher's own look and layout; Tweaks keeps which launcher is Home and the TV's settings. */
+    Customize(R.string.tabs_customize),
+}
 
 private object TabIcons {
     val Apps = icon(
@@ -131,6 +138,11 @@ private object TabIcons {
         "M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z",
     )
 
+    val Palette = icon(
+        "Palette",
+        "M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z",
+    )
+
     private fun icon(name: String, path: String) = ImageVector.Builder(name, 24.dp, 24.dp, 24f, 24f)
         .addPath(PathParser().parsePathString(path).toNodes(), pathFillType = PathFillType.NonZero, fill = SolidColor(Color.Black))
         .build()
@@ -141,6 +153,7 @@ private fun TvTab.icon() = when (this) {
     TvTab.Apps -> TabIcons.Apps
     TvTab.Files -> TabIcons.Folder
     TvTab.Tweaks -> TabIcons.Tune
+    TvTab.Customize -> TabIcons.Palette
 }
 
 /**
@@ -212,7 +225,7 @@ fun DeviceTabsScreen(
             when (tab) {
                 TvTab.Overview -> StatsProfile.OVERVIEW
                 TvTab.Apps -> StatsProfile.APPS
-                TvTab.Files, TvTab.Tweaks -> StatsProfile.OTHER
+                TvTab.Files, TvTab.Tweaks, TvTab.Customize -> StatsProfile.OTHER
             },
         )
         onDispose { actions.showStats(StatsProfile.OTHER) }
@@ -267,7 +280,13 @@ fun DeviceTabsScreen(
                                 tab = t
                             },
                             icon = { Icon(t.icon(), contentDescription = null) },
-                            label = { Text(stringResource(t.label)) },
+                            // Five tabs share a narrow phone: a long label ("Personalizar") shrinks a little rather than wrap.
+                            label = {
+                                Text(
+                                    stringResource(t.label), maxLines = 1, softWrap = false,
+                                    autoSize = androidx.compose.foundation.text.TextAutoSize.StepBased(minFontSize = 9.sp, maxFontSize = LocalTextStyle.current.fontSize),
+                                )
+                            },
                         )
                     }
                 }
@@ -411,11 +430,23 @@ fun DeviceTabsScreen(
                         if (offline) item { EmptyState(DeviceIcons.Tv, Copy.TV_OFFLINE.resolve(), stringResource(R.string.tabs_tweaks_offline)) }
                         else {
                             if (homeLaunchers(ui.apps).isNotEmpty()) item { Panel(Copy.HOME_SCREEN.resolve()) { HomeScreenBlock(ui, actions, fire) } }
-                            ui.launcherSettings?.let { l ->
+                            item { Panel(Copy.TWEAKS.resolve()) { TweaksBlock(ui, actions) } }
+                        }
+                    }
+                    TvTab.Customize -> {
+                        val l = ui.launcherSettings
+                        when {
+                            offline -> item { EmptyState(DeviceIcons.Tv, Copy.TV_OFFLINE.resolve(), stringResource(R.string.tabs_customize_offline)) }
+                            l == null -> item {
+                                Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                                    EmptyState(TabIcons.Palette, stringResource(R.string.tabs_customize_none_title), stringResource(R.string.tabs_customize_none))
+                                    FilledTonalButton(onClick = { tab = TvTab.Tweaks }) { Text(stringResource(R.string.tabs_customize_go)) }
+                                }
+                            }
+                            else -> {
                                 val label = ui.apps.firstOrNull { it.packageName == l.pkg }?.label ?: launcherName(l.pkg)
                                 item { Panel(stringResource(R.string.launcher_block_title, label)) { LauncherBlock(ui, actions) } }
                             }
-                            item { Panel(Copy.TWEAKS.resolve()) { TweaksBlock(ui, actions) } }
                         }
                     }
                 }

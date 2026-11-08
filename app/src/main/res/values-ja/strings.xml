@@ -625,6 +625,11 @@
     <string name="tabs_apps">アプリ</string>
     <string name="tabs_files">ファイル</string>
     <string name="tabs_tweaks">調整</string>
+    <string name="tabs_customize">カスタマイズ</string>
+    <string name="tabs_customize_offline">ホーム画面をカスタマイズするには TV に接続してください。</string>
+    <string name="tabs_customize_none_title">カスタマイズできるものはまだありません</string>
+    <string name="tabs_customize_none">ここから TV のホーム画面の見た目を変えるには、調整でランチャーをインストールしてください。</string>
+    <string name="tabs_customize_go">調整へ</string>
     <string name="tabs_remote">リモコン</string>
     <string name="tabs_install_app">アプリをインストール</string>
     <string name="tabs_upload_files">ファイルをアップロード</string>

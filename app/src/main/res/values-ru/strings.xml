@@ -730,6 +730,11 @@
     <string name="tabs_apps">Приложения</string>
     <string name="tabs_files">Файлы</string>
     <string name="tabs_tweaks">Твики</string>
+    <string name="tabs_customize">Оформление</string>
+    <string name="tabs_customize_offline">Подключитесь к телевизору, чтобы настроить его главный экран.</string>
+    <string name="tabs_customize_none_title">Пока нечего настраивать</string>
+    <string name="tabs_customize_none">Установите лаунчер в разделе «Твики», чтобы менять отсюда вид главного экрана телевизора.</string>
+    <string name="tabs_customize_go">К твикам</string>
     <string name="tabs_remote">Пульт</string>
     <string name="tabs_install_app">Установить приложение</string>
     <string name="tabs_upload_files">Загрузить файлы</string>

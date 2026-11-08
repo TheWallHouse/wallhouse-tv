@@ -697,6 +697,11 @@
     <string name="tabs_apps">Apps</string>
     <string name="tabs_files">Ficheiros</string>
     <string name="tabs_tweaks">Melloras</string>
+    <string name="tabs_customize">Personalizar</string>
+    <string name="tabs_customize_offline">Conéctate á TV para personalizar a súa pantalla de inicio.</string>
+    <string name="tabs_customize_none_title">Aínda non hai nada que personalizar</string>
+    <string name="tabs_customize_none">Instala un launcher en Melloras para cambiar desde aquí como se ve a pantalla de inicio da TV.</string>
+    <string name="tabs_customize_go">Ir a Melloras</string>
     <string name="tabs_remote">Control remoto</string>
     <string name="tabs_install_app">Instalar app</string>
     <string name="tabs_upload_files">Subir ficheiros</string>

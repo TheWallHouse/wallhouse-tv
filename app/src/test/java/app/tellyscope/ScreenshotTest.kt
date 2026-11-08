@@ -412,6 +412,10 @@ class ScreenshotTest {
     @Test fun md3_tweaks_dark() { shot("66_md3_tweaks", dark = true) { DeviceTabsScreen(md3State(), DeviceActions(), startTab = TvTab.Tweaks) } }
     @Test fun md3_tweaks_offline() { shot("75_md3_tweaks_offline") { DeviceTabsScreen(offlineMd3(), DeviceActions(), startTab = TvTab.Tweaks) } }
     @Test fun md3_tweaks_offline_dark() { shot("75_md3_tweaks_offline", dark = true) { DeviceTabsScreen(offlineMd3(), DeviceActions(), startTab = TvTab.Tweaks) } }
+    // Spanish has the longest tab labels ("Personalizar"): five must still fit the bar.
+    @Config(qualifiers = "es-w360dp-h800dp-xxhdpi")
+    @Test fun md3_customize_spanish() { shot("78_md3_customize_none_es") { DeviceTabsScreen(md3State(), DeviceActions(), startTab = TvTab.Customize) } }
+    @Test fun md3_customize_noLauncher() { shot("78_md3_customize_none") { DeviceTabsScreen(md3State(), DeviceActions(), startTab = TvTab.Customize) } }
     @Config(qualifiers = "w411dp-h640dp-xxhdpi")
     @Test fun md3_tweaks_collapsed_dark() = collapsed("66_md3_tweaks_collapsed", true, "Connected", TvTab.Tweaks)
     // "See changes" on Overview opens History, and Tweaks no longer lists the changes.

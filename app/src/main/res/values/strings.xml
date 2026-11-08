@@ -825,6 +825,11 @@
     <string name="tabs_apps">Apps</string>
     <string name="tabs_files">Files</string>
     <string name="tabs_tweaks">Tweaks</string>
+    <string name="tabs_customize">Customize</string>
+    <string name="tabs_customize_offline">Connect to the TV to customize its home screen.</string>
+    <string name="tabs_customize_none_title">Nothing to customize yet</string>
+    <string name="tabs_customize_none">Install a launcher in Tweaks to change how the TV\'s home screen looks from here.</string>
+    <string name="tabs_customize_go">Go to Tweaks</string>
     <string name="tabs_remote">Remote</string>
     <string name="tabs_install_app">Install app</string>
     <string name="tabs_upload_files">Upload files</string>

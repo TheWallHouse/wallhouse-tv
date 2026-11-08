@@ -625,6 +625,11 @@
     <string name="tabs_apps">应用</string>
     <string name="tabs_files">文件</string>
     <string name="tabs_tweaks">调整</string>
+    <string name="tabs_customize">个性化</string>
+    <string name="tabs_customize_offline">连接电视后即可个性化其主屏幕。</string>
+    <string name="tabs_customize_none_title">暂时没有可个性化的内容</string>
+    <string name="tabs_customize_none">在“调整”中安装启动器后，即可在这里更改电视主屏幕的外观。</string>
+    <string name="tabs_customize_go">前往调整</string>
     <string name="tabs_remote">遥控器</string>
     <string name="tabs_install_app">安装应用</string>
     <string name="tabs_upload_files">上传文件</string>

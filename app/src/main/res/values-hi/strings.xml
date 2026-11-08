@@ -660,6 +660,11 @@
     <string name="tabs_apps">ऐप</string>
     <string name="tabs_files">फ़ाइलें</string>
     <string name="tabs_tweaks">बदलाव</string>
+    <string name="tabs_customize">रूप बदलें</string>
+    <string name="tabs_customize_offline">होम स्क्रीन बदलने के लिए TV से कनेक्ट करें।</string>
+    <string name="tabs_customize_none_title">अभी बदलने को कुछ नहीं</string>
+    <string name="tabs_customize_none">यहाँ से TV की होम स्क्रीन का रूप बदलने के लिए बदलाव में कोई लॉन्चर इंस्टॉल करें।</string>
+    <string name="tabs_customize_go">बदलाव पर जाएँ</string>
     <string name="tabs_remote">रिमोट</string>
     <string name="tabs_install_app">ऐप इंस्टॉल करें</string>
     <string name="tabs_upload_files">फ़ाइलें अपलोड करें</string>
