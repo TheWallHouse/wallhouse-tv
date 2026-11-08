@@ -72,11 +72,24 @@ fun LauncherBlock(ui: DeviceUi, actions: DeviceActions) {
         FilledTonalButton(onClick = actions.installLauncher, enabled = idle) { Text(stringResource(R.string.launcher_update)) }
         return
     }
-    // The look comes first: the rest of the block is that look's settings (WallHouse Launcher with more than one).
-    if (K.ASPECT in s.keys && s.aspects.size > 1) {
-        Choices(stringResource(R.string.launcher_aspect), s.aspects, s.string(K.ASPECT), idle, label = { aspectName(it) }) {
-            actions.launcherChoice(K.ASPECT, it)
-        }
+    // The look comes first: the rest of the block is that look's settings. Always shown, so the looks are found
+    // even on a launcher too old to have them: picking one there offers the update instead.
+    var needsUpdate by rememberSaveable { mutableStateOf<String?>(null) }
+    val knows = K.ASPECT in s.keys && s.aspects.isNotEmpty()
+    val looks = if (knows) (s.aspects + K.ASPECT_CHOICES).distinct() else K.ASPECT_CHOICES
+    Choices(stringResource(R.string.launcher_aspect), looks, s.string(K.ASPECT) ?: "nothing", idle, label = { aspectName(it) }) {
+        if (it in s.aspects) actions.launcherChoice(K.ASPECT, it) else needsUpdate = it
+    }
+    needsUpdate?.let { look ->
+        androidx.compose.material3.AlertDialog(
+            onDismissRequest = { needsUpdate = null },
+            title = { Text(aspectName(look)) },
+            text = { Text(stringResource(R.string.launcher_aspect_needs_update, aspectName(look), name)) },
+            confirmButton = {
+                androidx.compose.material3.Button(onClick = { needsUpdate = null; actions.installLauncher() }) { Text(stringResource(R.string.launcher_update)) }
+            },
+            dismissButton = { TextButton(onClick = { needsUpdate = null }) { Text(stringResource(R.string.screen_cancel)) } },
+        )
     }
     val terminal = s.string(K.ASPECT) == "windows" || s.string(K.ASPECT) == "console"
     if (terminal && K.PALETTE in s.keys) {

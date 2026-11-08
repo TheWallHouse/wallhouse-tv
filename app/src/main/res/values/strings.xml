@@ -1434,6 +1434,7 @@
     <string name="settings_language">Language</string>
     <string name="settings_language_phone">As the phone</string>
     <string name="launcher_palette">Palette</string>
+    <string name="launcher_aspect_needs_update">%1$s needs the new version of %2$s. Update it and pick the look again.</string>
     <string name="launcher_aspect">Look</string>
     <string name="launcher_aspect_windows">Terminal · Windows</string>
     <string name="launcher_aspect_console">Terminal · Console</string>

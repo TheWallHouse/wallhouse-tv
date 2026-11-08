@@ -1234,6 +1234,7 @@
     <string name="settings_language">Язык</string>
     <string name="settings_language_phone">Как на телефоне</string>
     <string name="launcher_palette">Палитра</string>
+    <string name="launcher_aspect_needs_update">Для «%1$s» нужна новая версия %2$s. Обновите её и выберите вид снова.</string>
     <string name="launcher_aspect">Вид</string>
     <string name="launcher_aspect_windows">Терминал · Окна</string>
     <string name="launcher_aspect_console">Терминал · Консоль</string>

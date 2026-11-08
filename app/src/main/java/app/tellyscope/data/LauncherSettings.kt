@@ -47,6 +47,8 @@ data class LauncherSettings(
         const val LOCALE = "locale"
         const val ASPECT = "aspect"
         const val PALETTE = "terminal_palette"
+        /** WallHouse Launcher's looks, offered even before the TV's launcher has them. */
+        val ASPECT_CHOICES = listOf("nothing", "windows", "console")
         /** The terminal looks' palettes, as the launcher names them. */
         val PALETTE_CHOICES = listOf("tokyo-night", "catppuccin", "gruvbox", "nord")
 

@@ -1102,6 +1102,7 @@
     <string name="settings_language">言語</string>
     <string name="settings_language_phone">スマートフォンと同じ</string>
     <string name="launcher_palette">配色</string>
+    <string name="launcher_aspect_needs_update">%1$s には新しい %2$s が必要です。更新してから、もう一度見た目を選んでください。</string>
     <string name="launcher_aspect">見た目</string>
     <string name="launcher_aspect_windows">ターミナル · ウィンドウ</string>
     <string name="launcher_aspect_console">ターミナル · コンソール</string>

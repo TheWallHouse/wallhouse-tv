@@ -1102,6 +1102,7 @@
     <string name="settings_language">语言</string>
     <string name="settings_language_phone">跟随手机</string>
     <string name="launcher_palette">配色</string>
+    <string name="launcher_aspect_needs_update">“%1$s”需要新版 %2$s。请更新后再选择外观。</string>
     <string name="launcher_aspect">外观</string>
     <string name="launcher_aspect_windows">终端 · 窗口</string>
     <string name="launcher_aspect_console">终端 · 控制台</string>

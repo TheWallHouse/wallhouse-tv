@@ -1146,6 +1146,7 @@
     <string name="settings_language">भाषा</string>
     <string name="settings_language_phone">फ़ोन जैसी</string>
     <string name="launcher_palette">रंग-पट्टी</string>
+    <string name="launcher_aspect_needs_update">%1$s के लिए %2$s का नया संस्करण चाहिए। इसे अपडेट करें और फिर से रूप चुनें।</string>
     <string name="launcher_aspect">रूप</string>
     <string name="launcher_aspect_windows">टर्मिनल · विंडो</string>
     <string name="launcher_aspect_console">टर्मिनल · कंसोल</string>

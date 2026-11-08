@@ -1190,6 +1190,7 @@
     <string name="settings_language">Idioma</string>
     <string name="settings_language_phone">Como el móvil</string>
     <string name="launcher_palette">Paleta</string>
+    <string name="launcher_aspect_needs_update">%1$s necesita la versión nueva de %2$s. Actualízalo y vuelve a elegir el aspecto.</string>
     <string name="launcher_aspect">Aspecto</string>
     <string name="launcher_aspect_windows">Terminal · Ventanas</string>
     <string name="launcher_aspect_console">Terminal · Consola</string>
