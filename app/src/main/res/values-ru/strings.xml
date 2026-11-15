@@ -1238,6 +1238,10 @@
     <string name="launcher_aspect">Вид</string>
     <string name="launcher_aspect_windows">Терминал · Окна</string>
     <string name="launcher_aspect_console">Терминал · Консоль</string>
+    <string name="launcher_tone">Оттенок</string>
+    <string name="launcher_tone_yellow">Жёлтый</string>
+    <string name="launcher_tone_pink">Розовый</string>
+    <string name="launcher_tone_cyan">Голубой</string>
     <string name="launcher_language">Язык</string>
     <string name="launcher_language_tv">Как на ТВ</string>
     <string name="home_err_already">it\'s already the home screen</string>

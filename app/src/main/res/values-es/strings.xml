@@ -1194,6 +1194,10 @@
     <string name="launcher_aspect">Aspecto</string>
     <string name="launcher_aspect_windows">Terminal · Ventanas</string>
     <string name="launcher_aspect_console">Terminal · Consola</string>
+    <string name="launcher_tone">Tono</string>
+    <string name="launcher_tone_yellow">Amarillo</string>
+    <string name="launcher_tone_pink">Rosa</string>
+    <string name="launcher_tone_cyan">Cian</string>
     <string name="launcher_language">Idioma</string>
     <string name="launcher_language_tv">Como la TV</string>
     <string name="home_err_already">ya es la pantalla de inicio</string>

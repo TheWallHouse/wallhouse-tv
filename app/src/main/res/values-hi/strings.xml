@@ -1150,6 +1150,10 @@
     <string name="launcher_aspect">रूप</string>
     <string name="launcher_aspect_windows">टर्मिनल · विंडो</string>
     <string name="launcher_aspect_console">टर्मिनल · कंसोल</string>
+    <string name="launcher_tone">रंगत</string>
+    <string name="launcher_tone_yellow">पीला</string>
+    <string name="launcher_tone_pink">गुलाबी</string>
+    <string name="launcher_tone_cyan">सियान</string>
     <string name="launcher_language">भाषा</string>
     <string name="launcher_language_tv">TV जैसी</string>
     <string name="home_err_already">it\'s already the home screen</string>

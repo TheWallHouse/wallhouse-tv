@@ -1438,6 +1438,10 @@
     <string name="launcher_aspect">Look</string>
     <string name="launcher_aspect_windows">Terminal · Windows</string>
     <string name="launcher_aspect_console">Terminal · Console</string>
+    <string name="launcher_tone">Tone</string>
+    <string name="launcher_tone_yellow">Yellow</string>
+    <string name="launcher_tone_pink">Pink</string>
+    <string name="launcher_tone_cyan">Cyan</string>
     <string name="launcher_language">Language</string>
     <string name="launcher_language_tv">As the TV</string>
     <string name="home_err_already">it\'s already the home screen</string>
