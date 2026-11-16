@@ -1448,6 +1448,9 @@
     <string name="launcher_aspect_legend">Map</string>
     <string name="launcher_tone_parchment">Parchment</string>
     <string name="launcher_tone_embers">Embers</string>
+    <string name="launcher_aspect_orbit">Orbit</string>
+    <string name="launcher_tone_sunrise">Sunrise</string>
+    <string name="launcher_tone_mars">Mars</string>
     <string name="launcher_language">Language</string>
     <string name="launcher_language_tv">As the TV</string>
     <string name="home_err_already">it\'s already the home screen</string>

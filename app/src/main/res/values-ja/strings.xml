@@ -1116,6 +1116,9 @@
     <string name="launcher_aspect_legend">地図</string>
     <string name="launcher_tone_parchment">羊皮紙</string>
     <string name="launcher_tone_embers">残り火</string>
+    <string name="launcher_aspect_orbit">軌道</string>
+    <string name="launcher_tone_sunrise">日の出</string>
+    <string name="launcher_tone_mars">火星</string>
     <string name="launcher_language">言語</string>
     <string name="launcher_language_tv">テレビと同じ</string>
     <string name="home_err_already">it\'s already the home screen</string>

@@ -1204,6 +1204,9 @@
     <string name="launcher_aspect_legend">Mapa</string>
     <string name="launcher_tone_parchment">Pergamino</string>
     <string name="launcher_tone_embers">Brasas</string>
+    <string name="launcher_aspect_orbit">Órbita</string>
+    <string name="launcher_tone_sunrise">Amanecer</string>
+    <string name="launcher_tone_mars">Marte</string>
     <string name="launcher_language">Idioma</string>
     <string name="launcher_language_tv">Como la TV</string>
     <string name="home_err_already">ya es la pantalla de inicio</string>
