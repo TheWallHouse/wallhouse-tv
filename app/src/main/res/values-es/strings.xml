@@ -1198,6 +1198,9 @@
     <string name="launcher_tone_yellow">Amarillo</string>
     <string name="launcher_tone_pink">Rosa</string>
     <string name="launcher_tone_cyan">Cian</string>
+    <string name="launcher_tone_dusk">Atardecer</string>
+    <string name="launcher_tone_noon">Mediodía</string>
+    <string name="launcher_tone_night">Noche</string>
     <string name="launcher_language">Idioma</string>
     <string name="launcher_language_tv">Como la TV</string>
     <string name="home_err_already">ya es la pantalla de inicio</string>

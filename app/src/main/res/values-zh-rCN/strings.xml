@@ -1110,6 +1110,9 @@
     <string name="launcher_tone_yellow">黄色</string>
     <string name="launcher_tone_pink">粉色</string>
     <string name="launcher_tone_cyan">青色</string>
+    <string name="launcher_tone_dusk">黄昏</string>
+    <string name="launcher_tone_noon">正午</string>
+    <string name="launcher_tone_night">夜晚</string>
     <string name="launcher_language">语言</string>
     <string name="launcher_language_tv">跟随电视</string>
     <string name="home_err_already">it\'s already the home screen</string>

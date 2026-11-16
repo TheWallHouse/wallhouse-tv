@@ -1442,6 +1442,9 @@
     <string name="launcher_tone_yellow">Yellow</string>
     <string name="launcher_tone_pink">Pink</string>
     <string name="launcher_tone_cyan">Cyan</string>
+    <string name="launcher_tone_dusk">Dusk</string>
+    <string name="launcher_tone_noon">Noon</string>
+    <string name="launcher_tone_night">Night</string>
     <string name="launcher_language">Language</string>
     <string name="launcher_language_tv">As the TV</string>
     <string name="home_err_already">it\'s already the home screen</string>

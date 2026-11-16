@@ -48,12 +48,15 @@ data class LauncherSettings(
         const val ASPECT = "aspect"
         const val PALETTE = "terminal_palette"
         const val TONE = "cyberpunk_tone"
+        const val DUNE_TONE = "dune_tone"
         /** WallHouse Launcher's looks, offered even before the TV's launcher has them. */
-        val ASPECT_CHOICES = listOf("nothing", "windows", "console", "cyberpunk")
+        val ASPECT_CHOICES = listOf("nothing", "windows", "console", "cyberpunk", "dune")
         /** The terminal looks' palettes, as the launcher names them. */
         val PALETTE_CHOICES = listOf("tokyo-night", "catppuccin", "gruvbox", "nord")
         /** Cyberpunk's neon colours, as the launcher names them. */
         val TONE_CHOICES = listOf("yellow", "pink", "cyan")
+        /** Dune's skies, as the launcher names them. */
+        val DUNE_TONE_CHOICES = listOf("dusk", "noon", "night")
 
         /** Launcher languages: "" follows the TV. Each is named in its own language ([app.tellyscope.data.AppLanguage.name]). */
         val LOCALE_CHOICES = listOf("", "es-ES", "en-US", "gl")

@@ -111,6 +111,20 @@ fun LauncherBlock(ui: DeviceUi, actions: DeviceActions) {
             },
         ) { actions.launcherChoice(K.TONE, it) }
     }
+    if (s.string(K.ASPECT) == "dune" && K.DUNE_TONE in s.keys) {
+        Choices(
+            stringResource(R.string.launcher_tone), K.DUNE_TONE_CHOICES, s.string(K.DUNE_TONE), idle,
+            label = {
+                stringResource(
+                    when (it) {
+                        "noon" -> R.string.launcher_tone_noon
+                        "night" -> R.string.launcher_tone_night
+                        else -> R.string.launcher_tone_dusk
+                    },
+                )
+            },
+        ) { actions.launcherChoice(K.DUNE_TONE, it) }
+    }
     Choices(
         stringResource(R.string.launcher_apps_style),
         K.TILE_CHOICES, s.string(K.TILES), idle,
@@ -152,7 +166,7 @@ fun LauncherBlock(ui: DeviceUi, actions: DeviceActions) {
         Switch(checked = s.bool(K.ANIMATIONS) != false, onCheckedChange = { actions.launcherChoice(K.ANIMATIONS, it) }, enabled = idle)
     }
     DockEditor(s, ui.apps, idle, actions.launcherDock)
-    if ("font_file" in s.effective && !terminal && s.string(K.ASPECT) != "cyberpunk") FontPicker(s.fontName, idle, actions.launcherFont)
+    if ("font_file" in s.effective && !terminal && s.string(K.ASPECT) != "cyberpunk" && s.string(K.ASPECT) != "dune") FontPicker(s.fontName, idle, actions.launcherFont)
     s.wallpaperImages?.let { WallpaperOptions(s, it, idle, actions) }
     PreviewRow(ui.tvPreview, idle, actions)
     CopiesRow(ui.launcherCopies, idle, actions)
@@ -185,6 +199,7 @@ private fun aspectName(key: String): String = when (key) {
     "windows" -> stringResource(R.string.launcher_aspect_windows)
     "console" -> stringResource(R.string.launcher_aspect_console)
     "cyberpunk" -> "Cyberpunk"
+    "dune" -> "Dune"
     else -> key
 }
 
