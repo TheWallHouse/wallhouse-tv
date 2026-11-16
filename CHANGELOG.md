@@ -12,6 +12,22 @@ until this file has a section for its version.
 
 ## Unreleased
 
+## 1.0.0 — 2026-11-16
+
+The first release of WallHouse TV, built on Tellyscope 0.14.0, with its own name and app ID: it installs next to Tellyscope.
+
+- **New:** Install WallHouse Launcher on the TV from the phone, checked against its pinned signing key. [#1](../../pull/1)
+- **New:** Customize tab: the launcher's look, apps per row, dock, clock, greeting, wallpapers and more, live on the TV. [#1](../../pull/1)
+- **New:** Seven launcher looks to pick from: Nothing, Terminal · Windows, Terminal · Console, Cyberpunk, Dune, Map, Orbit. [#1](../../pull/1)
+- **New:** Each look's own tones, and the terminal looks' palettes. [#1](../../pull/1)
+- **New:** Wallpapers from the phone's gallery, saved setups to put on this TV or another, See the TV. [#1](../../pull/1)
+- **New:** The launcher's font, from twelve pinned Google Fonts. [#1](../../pull/1)
+- **New:** Galician, a language picker with flags, and the launcher's language from the phone. [#1](../../pull/1)
+- **New:** Turn off debugging, explained first. [#1](../../pull/1)
+- **Improved:** Google TV keeps its setup wizard; Home stays with the launcher. [#1](../../pull/1)
+- **Improved:** The dock lists only apps that are on the TV. [#1](../../pull/1)
+- **Fixed:** Scan no longer lists this phone's own wireless debugging as a TV. [#1](../../pull/1)
+
 ## 0.14.0 — 2026-10-30
 
 - **New:** Hindi, Chinese, Japanese, Russian and Spanish support, machine-made; corrections welcome. [#272](../../pull/272)
