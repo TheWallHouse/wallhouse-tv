@@ -1157,6 +1157,9 @@
     <string name="launcher_tone_dusk">संध्या</string>
     <string name="launcher_tone_noon">दोपहर</string>
     <string name="launcher_tone_night">रात</string>
+    <string name="launcher_aspect_legend">नक्शा</string>
+    <string name="launcher_tone_parchment">चर्मपत्र</string>
+    <string name="launcher_tone_embers">अंगारे</string>
     <string name="launcher_language">भाषा</string>
     <string name="launcher_language_tv">TV जैसी</string>
     <string name="home_err_already">it\'s already the home screen</string>

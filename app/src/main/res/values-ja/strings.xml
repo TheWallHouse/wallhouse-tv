@@ -1113,6 +1113,9 @@
     <string name="launcher_tone_dusk">夕暮れ</string>
     <string name="launcher_tone_noon">真昼</string>
     <string name="launcher_tone_night">夜</string>
+    <string name="launcher_aspect_legend">地図</string>
+    <string name="launcher_tone_parchment">羊皮紙</string>
+    <string name="launcher_tone_embers">残り火</string>
     <string name="launcher_language">言語</string>
     <string name="launcher_language_tv">テレビと同じ</string>
     <string name="home_err_already">it\'s already the home screen</string>
