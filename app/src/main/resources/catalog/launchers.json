@@ -4,8 +4,8 @@
     {
       "package": "io.github.thewallhouse.nothingtv",
       "name": "WallHouse Launcher",
-      "about": "No ads, no network. Dot-matrix font, one red, apps in black and white.",
-      "github": "TheWallHouse/cleanyourtv",
+      "about": "No ads, no network. Seven looks: Nothing, Terminal, Cyberpunk, Dune, Map and Orbit.",
+      "github": "TheWallHouse/wallhouse-launcher",
       "signers": ["131bfe0058117173b0fab2dc8b55e479ce110632280cc3929b64f3f28816b062"],
       "store": false
     }

@@ -85,7 +85,7 @@ class LaunchersTest {
         assertEquals(Regex("\"package\"").findAll(text).count(), launchers.size)
         assertTrue(launchers.all { it.direct != null && it.direct!!.signers.isNotEmpty() })
         val nothing = launchers.first { it.pkg == NOTHING }
-        assertEquals("TheWallHouse/cleanyourtv", nothing.direct?.repo)
+        assertEquals("TheWallHouse/wallhouse-launcher", nothing.direct?.repo)
         assertFalse(nothing.direct!!.store)
         assertEquals(nothing.direct, directLauncher(NOTHING)) // seeded from the bundled copy
     }
