@@ -68,10 +68,10 @@ Tellyscope talks to your Android TV, Google TV, NVIDIA Shield or Fire TV over Wi
 
 ## Languages
 
-English, Español, 简体中文, 日本語, Русский and हिन्दी.
+English, Español and Galego.
 
-- Tellyscope follows your phone's language. On Android 13 or newer you can also pick one just for Tellyscope in **Settings → Apps → Tellyscope → Language**.
-- The translations are machine-made. Corrections are welcome as a PR to `app/src/main/res/values-<lang>/strings.xml`.
+- The app follows your phone's language, or the one picked in its Settings. In any other language it shows in English.
+- Only the languages that are kept fully translated ship; corrections are welcome as a PR to `app/src/main/res/values-<lang>/strings.xml`.
 
 ## Safety rules
 

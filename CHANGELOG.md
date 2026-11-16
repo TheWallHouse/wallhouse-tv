@@ -12,6 +12,8 @@ until this file has a section for its version.
 
 ## Unreleased
 
+- **Improved:** The app speaks English, Spanish and Galician; the half-translated Russian, Hindi, Chinese and Japanese are gone, so those phones get it whole in English.
+
 ## 1.0.0 — 2026-11-16
 
 The first release of WallHouse TV, built on Tellyscope 0.14.0, with its own name and app ID: it installs next to Tellyscope.
