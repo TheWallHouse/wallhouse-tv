@@ -11,12 +11,13 @@ jobs:
   # main only takes dev from this repo. The test lives in the `if`, not in
   # `run:`, so the branch name never reaches a shell.
   only-dev-to-main:
-    if: github.head_ref != 'dev' || github.event.pull_request.head.repo.full_name != github.repository
+    # WallHouse TV releases from its own working branch, wallhouse, rather than Tellyscope's dev.
+    if: github.head_ref != 'wallhouse' || github.event.pull_request.head.repo.full_name != github.repository
     runs-on: ubuntu-latest
     steps:
       - name: Refuse
         run: |
-          echo "::error::PRs into main must come from dev"
+          echo "::error::PRs into main must come from wallhouse"
           exit 1
 
   # Every release is deliberate: a PR into main must raise versionName and
