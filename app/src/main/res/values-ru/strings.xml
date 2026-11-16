@@ -1287,8 +1287,10 @@
     <string name="launcher_remote_repaired">Remote helper restarted</string>
     <string name="launcher_remote_not_on">The remote helper isn\'t on: make the launcher Home first</string>
     <plurals name="launcher_hidden_count">
-        <item quantity="one">%1$d app hidden</item>
-        <item quantity="other">%1$d apps hidden</item>
+        <item quantity="one">Скрыто %1$d приложение</item>
+        <item quantity="few">Скрыто %1$d приложения</item>
+        <item quantity="many">Скрыто %1$d приложений</item>
+        <item quantity="other">Скрыто %1$d приложения</item>
     </plurals>
     <string name="launcher_font">Font</string>
     <string name="launcher_font_own">Doto, dot-matrix (the launcher\'s own)</string>
@@ -1325,7 +1327,9 @@
     <string name="launcher_copy_name">Name, e.g. Living room</string>
     <string name="launcher_copy_saved">Setup saved on your phone</string>
     <plurals name="launcher_photos_count">
-        <item quantity="one">%1$d photo</item>
-        <item quantity="other">%1$d photos</item>
+        <item quantity="one">%1$d фото</item>
+        <item quantity="few">%1$d фото</item>
+        <item quantity="many">%1$d фото</item>
+        <item quantity="other">%1$d фото</item>
     </plurals>
 </resources>
