@@ -221,8 +221,8 @@ jobs:
             echo
             git log --no-merges --pretty='- %s (%h)' ${PREV:+"$PREV.."}HEAD
           } >> notes.md
-          APK="Tellyscope-$V.apk"
+          APK="WallHouse-TV-$V.apk"
           cp app/build/outputs/apk/release/app-release.apk "$APK"
           git tag "v$V"
           git push origin "v$V"
-          gh release create "v$V" "$APK" --title "Tellyscope $V" --notes-file notes.md --verify-tag
+          gh release create "v$V" "$APK" --title "WallHouse TV $V" --notes-file notes.md --verify-tag
