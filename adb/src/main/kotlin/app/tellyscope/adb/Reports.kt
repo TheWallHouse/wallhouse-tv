@@ -99,9 +99,9 @@ data class Report(
     }
 }
 
-/** Builds the two reports: problems go to Tellyscope's tracker, an unsupported TV to cleanyourtv's. */
+/** Builds the two reports: problems go to WallHouse TV's tracker, an unsupported TV to cleanyourtv's. */
 object Reports {
-    const val OURS = "man15h/tellyscope"
+    const val OURS = "TheWallHouse/wallhouse-tv"
     const val CLEANYOURTV = "Gathin23/cleanyourtv"
 
     /** The options of our device_report.yml "How did you connect?" dropdown, word for word. */
@@ -133,7 +133,7 @@ object Reports {
      */
     fun problem(app: AppFacts, tv: TvFacts?, connection: Connection, outcome: Outcome, details: String, log: String?): Report {
         val redact = { s: String -> Redact.text(s, tv?.identifiers.orEmpty()) }
-        val written = redact(details.trim()).ifEmpty { "(nothing written)" } + "\n\nTellyscope ${app.version} on ${redact(app.phone)}"
+        val written = redact(details.trim()).ifEmpty { "(nothing written)" } + "\n\nWallHouse TV ${app.version} on ${redact(app.phone)}"
         // Redacted whole, before it's split: a key or PEM block spans lines.
         val lines = log?.trim()?.let(redact)?.lines().orEmpty()
         return fit(lines.size) { keep ->
@@ -160,7 +160,7 @@ object Reports {
                     "model" to "TV make and model",
                     "android-version" to "Android TV / Google TV version",
                     "connection" to "How did you connect?",
-                    "app-version" to "Tellyscope version",
+                    "app-version" to "WallHouse TV version",
                     "outcome" to "What happened?",
                     "details" to "Details",
                 ),
@@ -186,7 +186,7 @@ object Reports {
                 listed.take(keep).forEach { append(it).append("\n") }
                 if (more > 0) append("+$more more, added as a comment\n")
                 append("\nUser-installed apps: ${tv.userApps} (not listed)\n")
-                append("Sent from Tellyscope ${app.version}")
+                append("Sent from WallHouse TV ${app.version}")
             }
             Report(
                 repo = CLEANYOURTV,

@@ -90,7 +90,7 @@ fun HomeScreenBlock(ui: DeviceUi, actions: DeviceActions, fire: Boolean = false)
         }
     }
     // Only before a launcher was added: after that, the rows above are the way to switch.
-    if (launchers.none { !it.system } && (hasPlayStore(ui.apps) || fire)) {
+    if (launchers.none { !it.system } && (hasPlayStore(ui.apps) || fire || anyStoreless())) {
         Column(Modifier.fillMaxWidth().padding(top = 16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Text(Copy.GET_LAUNCHER.resolve(), style = MaterialTheme.typography.bodyLarge)
             Text((if (fire) Copy.GET_PROJECTIVY_TEXT else Copy.GET_LAUNCHER_TEXT).resolve(), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)

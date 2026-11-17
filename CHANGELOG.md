@@ -12,6 +12,17 @@ until this file has a section for its version.
 
 ## Unreleased
 
+## 1.0.1 — 2026-11-17
+
+- **New:** Before installing, the picker warns when the TV is too old, a Fire TV, made for China or a Google TV that needs one more step. [#2](../../pull/2)
+- **Improved:** WallHouse Launcher is offered on TVs without the Play Store too: it downloads itself. [#2](../../pull/2)
+- **Improved:** Customize shows only the choices of the look picked, as the launcher's own settings do. [#2](../../pull/2)
+- **Improved:** Your name in red is now Custom message: every look shows it in its own style. [#2](../../pull/2)
+- **Improved:** The app speaks English, Spanish and Galician; the half-translated Russian, Hindi, Chinese and Japanese are gone, so those phones get it whole in English. [#2](../../pull/2)
+- **Fixed:** Report a problem opens the issue on WallHouse TV's own repository, and the app says WallHouse TV everywhere. [#2](../../pull/2)
+- **Fixed:** Customize offers the launcher's settings right after installing it, without reconnecting. [#2](../../pull/2)
+- **Fixed:** The launcher picker says how WallHouse Launcher installs, and no longer calls it unaffiliated. [#2](../../pull/2)
+
 ## 1.0.0 — 2026-11-16
 
 The first release of WallHouse TV, built on Tellyscope 0.14.0, with its own name and app ID: it installs next to Tellyscope.

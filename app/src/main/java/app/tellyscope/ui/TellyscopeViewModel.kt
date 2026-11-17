@@ -260,7 +260,7 @@ data class SideloadUi(
     val kind: InstallKind? get() = app?.let { installKind(it.info, installed) }
 }
 
-/** Report a problem goes to Tellyscope's tracker; Help add this TV to cleanyourtv's. */
+/** Report a problem goes to WallHouse TV's tracker; Help add this TV to cleanyourtv's. */
 enum class ReportKind { Problem, NewTv }
 
 /** The report screen. The form itself (dropdowns, what the user writes) lives on the screen. */
@@ -1144,6 +1144,8 @@ class TellyscopeViewModel(
             null
         }
         apps?.let { a -> updateDevice(id) { it.copy(apps = a) } }
+        // Customize reads the launcher's settings once on connect; a launcher installed since has to be read now.
+        apps?.let { loadLauncherSettings(id, it) }
         // No way to offer it as Home (the TV asks each time): say where to find it instead.
         if (apps?.firstOrNull { it.packageName == pkg }?.homeInstead == null) {
             updateDevice(id) { it.copy(launcher = null) }
@@ -1395,6 +1397,8 @@ class TellyscopeViewModel(
             updateDevice(id) { it.copy(apps = apps, busy = null, history = history) }
             if (undoing == null) _done.value = Done(id, entry)
             if (action == Action.Uninstall) pruneDock(id, apps)
+            // Uninstalling, turning off or turning on the launcher changes what Customize can show.
+            loadLauncherSettings(id, apps)
         }
     }
 
@@ -1448,7 +1452,7 @@ class TellyscopeViewModel(
             when (r) {
                 InstallResult.Done -> {
                     updateDevice(id) { it.copy(sideload = ready.copy(step = SideloadUi.Step.Installed)) }
-                    runCatching { source.apps(id) }.onSuccess { apps -> updateDevice(id) { it.copy(apps = apps) } }
+                    runCatching { source.apps(id) }.onSuccess { apps -> updateDevice(id) { it.copy(apps = apps) }; loadLauncherSettings(id, apps) }
                 }
                 is InstallResult.Refused -> updateDevice(id) {
                     log(UiText.Raw("Install ${app.info.packageName} ${app.info.versionName.orEmpty()}: ${r.detail ?: r.reason}"))

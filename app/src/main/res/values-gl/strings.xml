@@ -38,7 +38,7 @@
     <string name="copy_keeps_home">Mantén Inicio co seu servizo de accesibilidade</string>
     <string name="copy_make_home">Usar como inicio</string>
     <string name="copy_get_launcher">Conseguir outro launcher</string>
-    <string name="copy_get_launcher_text">Instala un desde Play Store, como Projectivy ou FLauncher. Podes volver ao anterior cando queiras.</string>
+    <string name="copy_get_launcher_text">Instala WallHouse Launcher: WallHouse TV descárgao da súa páxina de GitHub e comproba a súa sinatura. Podes volver ao anterior cando queiras.</string>
     <string name="copy_get_projectivy_text">Instala Projectivy. Podes volver ao anterior cando queiras.</string>
     <string name="copy_home_settings">Configuración da pantalla de inicio</string>
     <string name="copy_make_home_title">Queres usar %1$s como pantalla de inicio?</string>
@@ -74,7 +74,7 @@
     <string name="copy_choose_one">Escoller un</string>
     <string name="copy_install_one">Instalalo</string>
     <string name="copy_choose_home">Escolle unha pantalla de inicio</string>
-    <string name="copy_choose_home_text">Cada unha substitúe a pantalla de inicio da TV. WallHouse TV ábrea en Play Store na TV; instálala co mando a distancia.</string>
+    <string name="copy_choose_home_text">Cada un substitúe a pantalla de inicio da TV. WallHouse Launcher descárgase directamente da súa páxina de GitHub e compróbase a súa sinatura; os demais ábrense en Play Store na TV, onde os instalas co mando.</string>
     <string name="copy_can_download">Algunhas tamén se poden descargar directamente.</string>
     <string name="copy_no_launcher_list">Non se puido cargar a lista de pantallas de inicio. Revisa a conexión a internet do teléfono e téntao de novo.</string>
     <string name="copy_recommended">Recomendado</string>
@@ -85,9 +85,17 @@
     <string name="copy_uses_service">Usa un servizo de accesibilidade</string>
     <string name="copy_no_service">Código aberto · sen servizo de accesibilidade</string>
     <string name="copy_other_launcher">Prefires outro launcher? Instálao desde Play Store na túa TV e volve aquí. Aparecerá en %1$s.</string>
-    <string name="copy_not_affiliated">WallHouse TV non está afiliada a ningún destes launchers nin aos seus desenvolvedores.</string>
+    <string name="copy_not_affiliated">Salvo WallHouse Launcher, WallHouse TV non está afiliada a estes launchers nin aos seus desenvolvedores.</string>
     <string name="copy_get_from_store">Conseguir en Play Store</string>
     <string name="copy_store_recommended">Recoméndase Play Store: actualízase soa</string>
+    <string name="copy_warn_old_title">Esta tele é demasiado antiga para %1$s</string>
+    <string name="copy_warn_old_text">Ten Android %1$s e %2$s necesita Android 8 ou posterior. A tele rexeitaría a instalación.</string>
+    <string name="copy_warn_fire_title">Fire TV quédase co seu Inicio</string>
+    <string name="copy_warn_fire_text">Amazon non deixa que outro launcher use o botón Inicio. %1$s instálase e ábrese, pero Inicio segue levando a Fire TV.</string>
+    <string name="copy_warn_locked_title">Pode que esta tele non cambie de Inicio</string>
+    <string name="copy_warn_locked_text">As teles feitas para China adoitan aceptar só as pantallas de inicio da súa marca. %1$s instálase, pero pode que a tele non o deixe como Inicio.</string>
+    <string name="copy_warn_google_title">Google TV necesita un paso máis</string>
+    <string name="copy_warn_google_text">Aquí %1$s quédase co botón Inicio grazas ao seu servizo de accesibilidade. Despois de instalalo, a app pídeche activalo.</string>
     <string name="copy_download_directly">Descargar directamente</string>
     <string name="copy_install_home">Instala unha pantalla de inicio</string>
     <string name="copy_install_it">Instálao na túa TV</string>
@@ -113,6 +121,7 @@
     <string name="copy_release">Versión %1$s · %2$s</string>
     <string name="copy_where_from">De onde vén</string>
     <string name="copy_signed_check">WallHouse TV comproba que estea asinado polo desenvolvedor de %1$s antes de instalalo na TV. WallHouse TV non está afiliada a %1$s.</string>
+    <string name="copy_signed_check_own">WallHouse TV comproba que estea asinado polo desenvolvedor de %1$s antes de instalalo na TV.</string>
     <string name="copy_download_and_install">Descargar e instalar</string>
     <string name="copy_download_directly_title">Queres descargar %1$s directamente?</string>
     <string name="copy_direct_check">WallHouse TV comproba que a aplicación leve a sinatura do desenvolvedor. Non analiza a aplicación en busca de código malicioso, e a aplicación non se actualizará soa.</string>
@@ -677,7 +686,7 @@
     <string name="data_dns_stuck">a TV non puido buscar nada a través de %1$s, e non se puido restaurar o DNS privado anterior. Pode que a TV non teña conexión ata que o desfagas en Historial</string>
     <string name="data_lists_not_https">o enderezo ten que comezar por https://</string>
     <string name="data_lists_unreachable">non se puido conectar con ese enderezo. Revísao, xunto coa conexión a internet do teléfono</string>
-    <string name="data_lists_not_a_list">esta fonte non é unha lista de Tellyscope</string>
+    <string name="data_lists_not_a_list">esta fonte non é unha lista de dispositivos</string>
     <string name="data_app_names_system">Sistema Android</string>
     <string name="data_history_service_off">Desactivouse o servizo de accesibilidade de %1$s</string>
     <string name="data_history_reset_undone">Revertéronse os cambios de Restablecer TV</string>
@@ -1168,10 +1177,10 @@
     <string name="launcher_style_mono_red">Branco e negro con vermellos</string>
     <string name="launcher_style_mono">Branco e negro</string>
     <string name="launcher_style_colour">Cor</string>
-    <string name="launcher_name">O teu nome en vermello</string>
-    <string name="launcher_name_help">Sae despois do saúdo, arriba na pantalla de inicio.</string>
+    <string name="launcher_name">Mensaxe personalizada</string>
+    <string name="launcher_name_help">Sae despois do saúdo na pantalla de inicio, co estilo do aspecto.</string>
     <string name="launcher_save">Gardar</string>
-    <string name="launcher_name_remove">Quitar nome</string>
+    <string name="launcher_name_remove">Quitar mensaxe</string>
     <string name="launcher_columns">Apps por fila</string>
     <string name="launcher_rows">Filas baixo o dock</string>
     <string name="launcher_dock_opacity">Fondo do dock</string>

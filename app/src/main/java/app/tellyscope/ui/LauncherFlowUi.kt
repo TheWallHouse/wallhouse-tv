@@ -91,6 +91,8 @@ import app.tellyscope.data.directLauncher
 import app.tellyscope.data.UiText
 import app.tellyscope.data.asUiText
 import app.tellyscope.data.isFireOs
+import app.tellyscope.data.InstallWarning
+import app.tellyscope.data.installWarnings
 import app.tellyscope.data.resolve
 import app.tellyscope.ui.theme.SmallNumber
 
@@ -114,11 +116,15 @@ internal fun hasAddedLauncher(apps: List<AppInfo>) = apps.any { it.listedLaunche
 internal fun fireInstall(device: Device, apps: List<AppInfo>, recommended: List<Recommended> = RECOMMENDED) =
     isFireOs(device, apps) && recommended.any { it.pkg == PROJECTIVY }
 
-/** [fire]: [fireInstall] holds, so the Play Store isn't needed. */
-internal fun offerChoose(apps: List<AppInfo>, fire: Boolean = false) = (hasPlayStore(apps) || fire) && !hasAddedLauncher(apps)
+/** A launcher on the list installs by its own download ([storeless]), so the Play Store isn't needed for it. */
+internal fun anyStoreless() = RECOMMENDED.any { storeless(it.pkg) }
 
-internal fun offerLauncher(apps: List<AppInfo>, hidden: Boolean, fire: Boolean = false) =
-    !hidden && offerChoose(apps, fire) && apps.none { it.homeInstead != null || it.homeBack != null }
+/** [fire]: [fireInstall] holds; [direct]: a launcher downloads itself ([anyStoreless]). Either way no Play Store is needed. */
+internal fun offerChoose(apps: List<AppInfo>, fire: Boolean = false, direct: Boolean = anyStoreless()) =
+    (hasPlayStore(apps) || fire || direct) && !hasAddedLauncher(apps)
+
+internal fun offerLauncher(apps: List<AppInfo>, hidden: Boolean, fire: Boolean = false, direct: Boolean = anyStoreless()) =
+    !hidden && offerChoose(apps, fire, direct) && apps.none { it.homeInstead != null || it.homeBack != null }
 
 /** Download directly is offered on [pkg]: only launchers whose download and signer are pinned ([directLauncher]). */
 internal fun downloadable(pkg: String) = directLauncher(pkg) != null
@@ -192,6 +198,9 @@ fun LauncherScreen(
     val app = apps.firstOrNull { it.packageName == if (picking) chosen else flow.pkg }
     val current = app?.let { homeLabel(apps, it) }
     val switch = { service: Boolean -> if (picking) actions.makeHome(chosen, service) else actions.switch(service) }
+    // Only for a launcher this app downloads and installs itself, before it is on the TV.
+    val warnings = if (picking && storeless(chosen) && installedLauncher(apps, chosen) == null) installWarnings(device, apps) else emptyList()
+    val tooOld = InstallWarning.OldAndroid in warnings
     // Fire OS's install, from the start; Download directly once it has read the release. The picker gives way to it.
     val fire = when {
         !picking -> null
@@ -247,7 +256,7 @@ fun LauncherScreen(
                     } else {
                         val have = installedLauncher(apps, chosen)
                         when {
-                            have == null && storeless(chosen) -> IconButtonText(LauncherIcons.Download, Copy.DOWNLOAD_AND_INSTALL.resolve(), Modifier.weight(1f), enabled = direct && flow.fire == null) { actions.directCheck(chosen) }
+                            have == null && storeless(chosen) -> IconButtonText(LauncherIcons.Download, Copy.DOWNLOAD_AND_INSTALL.resolve(), Modifier.weight(1f), enabled = direct && flow.fire == null && !tooOld) { actions.directCheck(chosen) }
                             have == null -> Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                                 val both = direct && downloadable(chosen)
                                 if (both) {
@@ -299,7 +308,12 @@ fun LauncherScreen(
             }
             val c = MaterialTheme.colorScheme
             when (flow.step) {
-                LauncherFlow.Step.Pick -> if (fire != null) FireBody(fire, flow.pkg, device, actions.firePick) else Picker(chosen, apps, direct) { chosen = it }
+                LauncherFlow.Step.Pick -> if (fire != null) {
+                    FireBody(fire, flow.pkg, device, actions.firePick)
+                } else {
+                    Picker(chosen, apps, direct) { chosen = it }
+                    warnings.forEach { InstallWarningCard(it, device, launcherName(chosen)) }
+                }
                 LauncherFlow.Step.Waiting -> {
                     Hero(LauncherIcons.Download, c.secondaryContainer, c.onSecondaryContainer)
                     Headed(Copy.INSTALL_IT.resolve(), bold(Copy.installItText(label).resolve(), label, stringResource(R.string.launcher_install_word)))
@@ -359,7 +373,8 @@ private fun IconButtonText(icon: ImageVector, text: String, modifier: Modifier =
 private fun Picker(chosen: String, apps: List<AppInfo>, direct: Boolean, onChoose: (String) -> Unit) {
     val c = MaterialTheme.colorScheme
     val others = otherLaunchers(apps)
-    val canDownload = direct && RECOMMENDED.any { downloadable(it.pkg) && installedLauncher(apps, it.pkg) == null }
+    // Said only for a launcher that could come from the Store instead; one that only downloads is in the text already.
+    val canDownload = direct && RECOMMENDED.any { downloadable(it.pkg) && !storeless(it.pkg) && installedLauncher(apps, it.pkg) == null }
     Text(
         if (canDownload) Copy.CHOOSE_HOME_TEXT.resolve() + " " + Copy.CAN_DOWNLOAD.resolve() else Copy.CHOOSE_HOME_TEXT.resolve(),
         style = MaterialTheme.typography.bodyLarge,
@@ -443,7 +458,8 @@ private fun FireBody(f: FireInstall, pkg: String, device: Device, onPick: () -> 
                     Text(Copy.WHERE_FROM.resolve(), style = MaterialTheme.typography.labelLarge, color = c.primary)
                     SourceRow(release, direct, openPage)
                 }
-                Text(Copy.signedCheck(label).resolve(), style = MaterialTheme.typography.bodySmall, color = c.onSurfaceVariant)
+                // WallHouse Launcher is this project's own (the only one that only downloads): no line about not being affiliated.
+                Text(Copy.signedCheck(label, own = storeless(pkg)).resolve(), style = MaterialTheme.typography.bodySmall, color = c.onSurfaceVariant)
             }
         }
         FireInstall.Step.Downloading, FireInstall.Step.Reading, FireInstall.Step.Installing -> {
@@ -650,6 +666,34 @@ private fun SourceRow(release: LauncherRelease?, direct: DirectLauncher?, onOpen
             }
             Spacer(Modifier.width(8.dp))
             Icon(OpenInNew, null, Modifier.size(18.dp), tint = c.primary)
+        }
+    }
+}
+
+/**
+ * One thing this TV reported that matters before installing ([installWarnings]): too old is in the error colours,
+ * as it stops the install; the others, which only change what Home does, in the tertiary ones.
+ */
+@Composable
+private fun InstallWarningCard(w: InstallWarning, device: Device, launcher: String) {
+    val c = MaterialTheme.colorScheme
+    val blocks = w == InstallWarning.OldAndroid
+    Surface(
+        shape = MaterialTheme.shapes.large,
+        color = if (blocks) c.errorContainer else c.tertiaryContainer,
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Row(Modifier.padding(16.dp), verticalAlignment = Alignment.Top) {
+            Icon(
+                if (blocks) LauncherIcons.ErrorOutline else LauncherIcons.InfoOutline, null, Modifier.size(22.dp),
+                tint = if (blocks) c.onErrorContainer else c.onTertiaryContainer,
+            )
+            Spacer(Modifier.width(12.dp))
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                val ink = if (blocks) c.onErrorContainer else c.onTertiaryContainer
+                Text(Copy.installWarningTitle(w, launcher).resolve(), style = MaterialTheme.typography.titleSmall, color = ink)
+                Text(Copy.installWarningText(w, launcher, device.android ?: device.lastKnown?.android).resolve(), style = MaterialTheme.typography.bodyMedium, color = ink)
+            }
         }
     }
 }

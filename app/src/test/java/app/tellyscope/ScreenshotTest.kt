@@ -770,8 +770,10 @@ class ScreenshotTest {
         shot("96_whats_new") { whatsNew(opened)() }
         compose.onNodeWithText("Installed").assertExists()
         compose.onAllNodesWithText("NEW")[0].assertExists()
-        compose.onAllNodes(SemanticsMatcher("opens #1") { it.config.getOrNull(SemanticsActions.OnClick)?.label == "#1" })[0].performClick()
-        assertEquals(listOf(Changelog.pullUrl(1)), opened)
+        // The newest release's first change links its PR, whichever release that is.
+        val pr = changelog.first().changes.first { it.pr != null }.pr!!
+        compose.onAllNodes(SemanticsMatcher("opens #$pr") { it.config.getOrNull(SemanticsActions.OnClick)?.label == "#$pr" })[0].performClick()
+        assertEquals(listOf(Changelog.pullUrl(pr)), opened)
     }
 
     @Test fun whatsNew_dark() = shot("96_whats_new", dark = true) { whatsNew()() }

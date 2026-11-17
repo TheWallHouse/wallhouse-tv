@@ -22,8 +22,8 @@ android {
         minSdk = 26
         targetSdk = 37
         // A PR into main must raise both past the latest v* tag (.github/workflows/release-check.yml).
-        versionCode = 100
-        versionName = "1.0.0"
+        versionCode = 101
+        versionName = "1.0.1"
 
         // An alpha tag (release.yml, vX.Y.Z-alpha.N on dev) passes -Ptellyscope.alpha=N:
         // a separate app ID, so it installs next to the release.
@@ -33,10 +33,10 @@ android {
         }
     }
 
-    // Only the languages Tellyscope is translated into: drops the ~80 other locales AndroidX and
-    // Material ship (about 440 KB). A new values-xx/strings.xml adds its code here too.
+    // Only the languages WallHouse TV keeps translated (English, Spanish, Galician): drops the ~80 other locales
+    // AndroidX and Material ship (about 440 KB). A new values-xx/strings.xml adds its code here too.
     androidResources {
-        localeFilters += listOf("en", "es", "gl", "zh-rCN", "ja", "ru", "hi")
+        localeFilters += listOf("en", "es", "gl")
         // Lists them for Android 13+'s per-app language setting (default locale: res/resources.properties).
         generateLocaleConfig = true
     }

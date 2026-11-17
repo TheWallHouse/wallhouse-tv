@@ -163,7 +163,13 @@ class FireOsTest {
         val fire = fireInstall(amazon, listOf(fireHome))
         assertTrue(offerChoose(listOf(fireHome), fire))
         assertTrue(offerLauncher(listOf(fireHome), hidden = false, fire = fire))
-        assertFalse(offerLauncher(listOf(fireHome), hidden = false))
+        assertFalse(offerLauncher(listOf(fireHome), hidden = false, direct = false))
+    }
+
+    @Test fun aLauncherThatDownloadsItselfIsOfferedOnFireOsToo() {
+        // WallHouse Launcher needs no Store; the picker then warns that Fire OS keeps Home.
+        assertTrue(offerChoose(listOf(fireHome), fire = false, direct = true))
+        assertTrue(offerLauncher(listOf(fireHome), hidden = false, direct = true))
     }
 
     @Test fun aListWithoutProjectivyLeavesFireOsAsToday() {
@@ -171,8 +177,8 @@ class FireOsTest {
         assertTrue(without.isNotEmpty())
         val fire = fireInstall(amazon, listOf(fireHome), without)
         assertFalse(fire)
-        assertFalse(offerChoose(listOf(fireHome), fire))
-        assertFalse(offerLauncher(listOf(fireHome), hidden = false, fire = fire))
+        assertFalse(offerChoose(listOf(fireHome), fire, direct = false))
+        assertFalse(offerLauncher(listOf(fireHome), hidden = false, fire = fire, direct = false))
     }
 
     @Test fun theLatestReleaseFromProjectivysRepo() {
