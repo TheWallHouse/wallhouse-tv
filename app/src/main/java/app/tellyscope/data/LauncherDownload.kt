@@ -34,7 +34,7 @@ val PROJECTIVY_SIGNERS = setOf("f6697bf4082ee97511e4de07863193884a015b7ab5860430
 private const val MAX_APK_BYTES = 64L shl 20
 
 /**
- * A launcher Tellyscope can download from its developer's GitHub releases and install itself: its package,
+ * A launcher this app can download from its developer's GitHub releases and install itself: its package,
  * the `owner/repo` its releases are on, and the SHA-256s of the certificates its APKs are signed with. A
  * download signed with anything else, or for another package, is never sent to the TV. [store]: it is on
  * the Play Store too, so the Store is offered first and Download directly after a warning.

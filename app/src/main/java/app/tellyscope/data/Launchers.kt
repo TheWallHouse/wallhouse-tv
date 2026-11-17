@@ -22,7 +22,7 @@ val ACCESSIBILITY_LAUNCHERS = mapOf(
 )
 
 /**
- * A third-party launcher Tellyscope knows, from `launchers.json`. [accessibility] is whether it is
+ * A third-party launcher this app knows, from `launchers.json`. [accessibility] is whether it is
  * one of [ACCESSIBILITY_LAUNCHERS], never what the list says. [about] is the line Install a home
  * screen shows; a launcher without one isn't offered there.
  */

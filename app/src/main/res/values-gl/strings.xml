@@ -685,7 +685,7 @@
     <string name="data_dns_stuck">a TV non puido buscar nada a través de %1$s, e non se puido restaurar o DNS privado anterior. Pode que a TV non teña conexión ata que o desfagas en Historial</string>
     <string name="data_lists_not_https">o enderezo ten que comezar por https://</string>
     <string name="data_lists_unreachable">non se puido conectar con ese enderezo. Revísao, xunto coa conexión a internet do teléfono</string>
-    <string name="data_lists_not_a_list">esta fonte non é unha lista de Tellyscope</string>
+    <string name="data_lists_not_a_list">esta fonte non é unha lista de dispositivos</string>
     <string name="data_app_names_system">Sistema Android</string>
     <string name="data_history_service_off">Desactivouse o servizo de accesibilidade de %1$s</string>
     <string name="data_history_reset_undone">Revertéronse os cambios de Restablecer TV</string>

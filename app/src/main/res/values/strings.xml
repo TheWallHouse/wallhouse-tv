@@ -803,7 +803,7 @@
 
     <string name="data_lists_not_https">the address has to start with https://</string>
     <string name="data_lists_unreachable">couldn\'t reach that address. Check it and the phone\'s internet</string>
-    <string name="data_lists_not_a_list">this source isn\'t a Tellyscope list</string>
+    <string name="data_lists_not_a_list">this source isn\'t a debloat list</string>
 
     <!-- Listed in place of an app name for native daemons and system uids. -->
     <string name="data_app_names_system">Android system</string>
@@ -1022,9 +1022,9 @@
     <string name="report_pick_stage">Pick how far you got to see the report.</string>
     <string name="report_pick_outcome">Pick what happened to see the report.</string>
     <string name="report_add_rest">Add the rest</string>
-    <!-- %1$s is a GitHub repository name, like tellyscope -->
+    <!-- %1$s is a GitHub repository name, like wallhouse-tv -->
     <string name="report_add_rest_subtitle">As a comment on your newest issue on %1$s</string>
-    <!-- %1$s is a GitHub repository, like owner/tellyscope -->
+    <!-- %1$s is a GitHub repository, like TheWallHouse/wallhouse-tv -->
     <string name="report_add_rest_note">Opens your newest issue on %1$s. If it’s not the right one, pick yours from the list there.</string>
     <string name="report_copy_and_open">Copy and open your issue</string>
     <string name="report_add_rest_text">This is the comment. GitHub can’t fill in a comment from a link, so WallHouse TV copies it and opens your issue: tap the comment box there and paste.</string>

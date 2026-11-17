@@ -34,7 +34,7 @@ class ReportsTest {
         assertEquals("Classic network debugging", q["connection"])
         assertEquals("0.8.0", q["app-version"])
         assertEquals("Connected, but something misbehaved", q["outcome"])
-        assertEquals("Remote keys lag\n\nTellyscope 0.8.0 on Pixel 7, Android 14\n\nLog:\n```\nline 1\n```", q["details"])
+        assertEquals("Remote keys lag\n\nWallHouse TV 0.8.0 on Pixel 7, Android 14\n\nLog:\n```\nline 1\n```", q["details"])
         assertNull(r.rest)
     }
 

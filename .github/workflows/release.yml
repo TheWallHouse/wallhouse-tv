@@ -49,7 +49,7 @@ jobs:
 
   # Alpha: publishes the next v<versionName>-alpha.N as a pre-release for a
   # [release] merge into dev; pushing such a tag on a dev commit by hand does the
-  # same for that tag. app.tellyscope.alpha installs next to the release build.
+  # same for that tag. io.github.thewallhouse.wallhousetv.alpha installs next to the release build.
   alpha:
     needs: alpha-gate
     # always(): a tag push skips the gate, and a skipped need would skip this job too.
@@ -134,19 +134,19 @@ jobs:
             git tag "$TAG" "$GITHUB_SHA"
             git push origin "$TAG"
           fi
-          APK="Tellyscope-$TAG.apk"
+          APK="WallHouse-TV-$TAG.apk"
           cp app/build/outputs/apk/release/app-release.apk "$APK"
           # The nearest tag before this commit, alpha or prod; a glob would find the tag just pushed.
           PREV=$(git describe --tags --abbrev=0 --match 'v*' "$GITHUB_SHA^" 2>/dev/null || true)
           {
-            echo "Alpha build $TAG from \`${GITHUB_SHA::7}\` on dev. Untested and may break; it installs as a separate app, \`app.tellyscope.alpha\`."
+            echo "Alpha build $TAG from \`${GITHUB_SHA::7}\` on dev. Untested and may break; it installs as a separate app, \`io.github.thewallhouse.wallhousetv.alpha\`."
             echo
             echo "### Commits since ${PREV:-the first commit}"
             echo
             git log --no-merges --pretty='- %s (%h)' ${PREV:+"$PREV.."}HEAD
           } > notes.md
           gh release create "$TAG" "$APK" --prerelease --verify-tag \
-            --title "Tellyscope $TAG" --notes-file notes.md
+            --title "WallHouse TV $TAG" --notes-file notes.md
 
   # Prod: a merge into main tags vX.Y.Z from versionName and publishes the
   # signed APK. release-check.yml has already made sure the version is new.

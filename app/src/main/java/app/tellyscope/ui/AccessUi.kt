@@ -439,7 +439,7 @@ private fun ConnectedRow(client: AccessClient, actions: AccessActions) {
             else -> client.address
         },
         chip = when (client.who) {
-            AccessClient.Who.Phone -> Chip.Tellyscope
+            AccessClient.Who.Phone -> Chip.App
             AccessClient.Who.Waiting -> Chip.Waiting
             else -> null
         },
@@ -478,7 +478,7 @@ private fun AllowedRow(key: AccessKey, now: Long, actions: AccessActions) {
             else -> AccessIcons.Desktop
         },
         title = if (key.phone) Copy.THIS_PHONE.resolve() else name ?: Copy.UNNAMED_COMPUTER.resolve(),
-        chip = if (key.phone) Chip.Tellyscope else if (key.new) Chip.New else null,
+        chip = if (key.phone) Chip.App else if (key.new) Chip.New else null,
     ) {
         Text(Copy.shortFingerprint(key.fingerprint), style = MaterialTheme.typography.bodyMedium.copy(fontFamily = FontFamily.Monospace), color = MaterialTheme.colorScheme.onSurfaceVariant)
         Sub(Copy.lastSeen(key.lastSeen, now).resolve())
@@ -491,8 +491,8 @@ private fun AllowedRow(key: AccessKey, now: Long, actions: AccessActions) {
     }
 }
 
-/** Beside a row's title: this phone is Tellyscope, filled; Waiting and New are neutral outlines, a state and not an alarm. */
-private enum class Chip(val text: UiText) { Tellyscope(Copy.TELLYSCOPE), Waiting(Copy.WAITING_CHIP), New(Copy.NEW_CHIP) }
+/** Beside a row's title: this phone is this app, filled; Waiting and New are neutral outlines, a state and not an alarm. */
+private enum class Chip(val text: UiText) { App(Copy.APP_NAME), Waiting(Copy.WAITING_CHIP), New(Copy.NEW_CHIP) }
 
 @Composable
 private fun AccessRow(icon: ImageVector, title: String, chip: Chip?, lines: @Composable () -> Unit) {
@@ -505,7 +505,7 @@ private fun AccessRow(icon: ImageVector, title: String, chip: Chip?, lines: @Com
                 Text(title, style = MaterialTheme.typography.titleMedium)
                 if (chip != null) {
                     Spacer(Modifier.width(8.dp))
-                    val filled = chip == Chip.Tellyscope
+                    val filled = chip == Chip.App
                     Surface(
                         shape = RoundedCornerShape(8.dp),
                         color = if (filled) c.secondaryContainer else Color.Transparent,

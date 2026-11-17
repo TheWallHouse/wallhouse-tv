@@ -260,7 +260,7 @@ data class SideloadUi(
     val kind: InstallKind? get() = app?.let { installKind(it.info, installed) }
 }
 
-/** Report a problem goes to Tellyscope's tracker; Help add this TV to cleanyourtv's. */
+/** Report a problem goes to WallHouse TV's tracker; Help add this TV to cleanyourtv's. */
 enum class ReportKind { Problem, NewTv }
 
 /** The report screen. The form itself (dropdowns, what the user writes) lives on the screen. */

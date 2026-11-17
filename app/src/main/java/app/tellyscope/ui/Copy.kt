@@ -799,7 +799,7 @@ object Copy {
     val ON_TV = UiText(R.string.copy_on_tv)
     val ACCESS_INTRO = UiText(R.string.copy_access_intro)
     val THIS_PHONE = UiText(R.string.copy_this_phone)
-    val TELLYSCOPE: UiText = UiText.Raw("Tellyscope")
+    val APP_NAME: UiText = UiText(R.string.app_name)
     val NOT_THIS_PHONE = UiText(R.string.copy_not_this_phone)
     val YOURS = UiText(R.string.copy_yours)
     val WAITING_CHIP = UiText(R.string.copy_waiting_chip)

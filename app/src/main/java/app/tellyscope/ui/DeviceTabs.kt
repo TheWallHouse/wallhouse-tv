@@ -541,7 +541,7 @@ private fun AppMenu(state: UiState, actions: DeviceActions) {
                 },
                 { MenuRow(Icons.Default.List, Copy.ADVANCED_MONITOR.resolve()) { pick(actions.advanced) } },
             )
-            Text("Tellyscope", style = MaterialTheme.typography.labelLarge, color = c.onSurfaceVariant, modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp))
+            Text(stringResource(R.string.app_name), style = MaterialTheme.typography.labelLarge, color = c.onSurfaceVariant, modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp))
             SheetGroup(
                 { MenuRow(Icons.Default.Settings, stringResource(R.string.tabs_settings)) { pick(actions.settings) } },
                 { MenuRow(Icons.Default.Share, Copy.SHARE.resolve()) { pick { shareTellyscope(context) } } },
