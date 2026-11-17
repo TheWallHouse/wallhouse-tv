@@ -12,6 +12,8 @@ until this file has a section for its version.
 
 ## Unreleased
 
+- **New:** Before installing, the picker warns when the TV is too old, a Fire TV, made for China or a Google TV that needs one more step.
+- **Improved:** WallHouse Launcher is offered on TVs without the Play Store too: it downloads itself.
 - **Improved:** The app speaks English, Spanish and Galician; the half-translated Russian, Hindi, Chinese and Japanese are gone, so those phones get it whole in English.
 
 ## 1.0.0 — 2026-11-16

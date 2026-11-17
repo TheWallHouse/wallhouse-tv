@@ -258,7 +258,8 @@ class LauncherScreenTest {
     @Test fun theCardShowsOnlyWithAStoreAndNoSecondLauncher() {
         assertTrue(offerLauncher(listOf(store, stock), hidden = false))
         assertFalse(offerLauncher(listOf(store, stock), hidden = true))
-        assertFalse(offerLauncher(listOf(stock), hidden = false)) // Fire TV: no Play Store
+        assertFalse(offerLauncher(listOf(stock), hidden = false, direct = false)) // no Play Store, nothing that downloads itself
+        assertTrue(offerLauncher(listOf(stock), hidden = false, direct = true)) // WallHouse Launcher downloads itself: no Store needed
         val other = AppInfo(PROJECTIVY, "Projectivy Launcher", null, false, true, null, "1.0", homeInstead = TV_HOME)
         assertFalse(offerLauncher(listOf(store, stock, other), hidden = false))
     }

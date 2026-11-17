@@ -88,6 +88,14 @@
     <string name="copy_not_affiliated">WallHouse TV no está afiliada a ninguno de estos launchers ni a sus desarrolladores.</string>
     <string name="copy_get_from_store">Conseguir en Play Store</string>
     <string name="copy_store_recommended">Se recomienda Play Store: se actualiza solo</string>
+    <string name="copy_warn_old_title">Esta tele es demasiado antigua para %1$s</string>
+    <string name="copy_warn_old_text">Tiene Android %1$s y %2$s necesita Android 8 o posterior. La tele rechazaría la instalación.</string>
+    <string name="copy_warn_fire_title">Fire TV se queda con su Inicio</string>
+    <string name="copy_warn_fire_text">Amazon no deja que otro launcher use el botón Inicio. %1$s se instala y se abre, pero Inicio sigue llevando a Fire TV.</string>
+    <string name="copy_warn_locked_title">Puede que esta tele no cambie de Inicio</string>
+    <string name="copy_warn_locked_text">Las teles hechas para China suelen aceptar solo las pantallas de inicio de su marca. %1$s se instala, pero puede que la tele no lo deje como Inicio.</string>
+    <string name="copy_warn_google_title">Google TV necesita un paso más</string>
+    <string name="copy_warn_google_text">Aquí %1$s se queda con el botón Inicio gracias a su servicio de accesibilidad. Después de instalarlo, la app te pide activarlo.</string>
     <string name="copy_download_directly">Descargar directamente</string>
     <string name="copy_install_home">Instala una pantalla de inicio</string>
     <string name="copy_install_it">Instálalo en tu TV</string>

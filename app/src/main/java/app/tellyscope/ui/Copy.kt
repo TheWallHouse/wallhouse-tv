@@ -10,6 +10,7 @@ import app.tellyscope.adb.TvFolder
 import app.tellyscope.data.Action
 import app.tellyscope.data.AppNames
 import app.tellyscope.data.DeviceState
+import app.tellyscope.data.InstallWarning
 import app.tellyscope.data.ResetPart
 import app.tellyscope.data.ResetProgress
 import app.tellyscope.data.Snapshot
@@ -216,6 +217,20 @@ object Copy {
     val NOT_AFFILIATED = UiText(R.string.copy_not_affiliated)
     val GET_FROM_STORE = UiText(R.string.copy_get_from_store)
     val STORE_RECOMMENDED = UiText(R.string.copy_store_recommended)
+
+    fun installWarningTitle(w: InstallWarning, launcher: String): UiText = when (w) {
+        InstallWarning.OldAndroid -> UiText(R.string.copy_warn_old_title, launcher)
+        InstallWarning.FireOs -> UiText(R.string.copy_warn_fire_title)
+        InstallWarning.LockedHome -> UiText(R.string.copy_warn_locked_title)
+        InstallWarning.GoogleTv -> UiText(R.string.copy_warn_google_title)
+    }
+
+    fun installWarningText(w: InstallWarning, launcher: String, android: String?): UiText = when (w) {
+        InstallWarning.OldAndroid -> UiText(R.string.copy_warn_old_text, android ?: "?", launcher)
+        InstallWarning.FireOs -> UiText(R.string.copy_warn_fire_text, launcher)
+        InstallWarning.LockedHome -> UiText(R.string.copy_warn_locked_text, launcher)
+        InstallWarning.GoogleTv -> UiText(R.string.copy_warn_google_text, launcher)
+    }
     val DOWNLOAD_DIRECTLY = UiText(R.string.copy_download_directly)
     val INSTALL_HOME = UiText(R.string.copy_install_home)
     val INSTALL_IT = UiText(R.string.copy_install_it)

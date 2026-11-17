@@ -118,6 +118,14 @@
     <string name="copy_not_affiliated">WallHouse TV isn\'t affiliated with any of these launchers or their developers.</string>
     <string name="copy_get_from_store">Get it from Play Store</string>
     <string name="copy_store_recommended">Play Store recommended: it updates itself</string>
+    <string name="copy_warn_old_title">This TV is too old for %1$s</string>
+    <string name="copy_warn_old_text">It runs Android %1$s, and %2$s needs Android 8 or later. The TV would refuse the install.</string>
+    <string name="copy_warn_fire_title">Fire TV keeps its own Home</string>
+    <string name="copy_warn_fire_text">Amazon doesn’t let another launcher take the Home button. %1$s installs and opens, but Home goes on showing Fire TV.</string>
+    <string name="copy_warn_locked_title">This TV may keep its own Home</string>
+    <string name="copy_warn_locked_text">TVs made for China often accept only their maker’s home screens. %1$s installs, but the TV may not let it be Home.</string>
+    <string name="copy_warn_google_title">Google TV needs one more step</string>
+    <string name="copy_warn_google_text">Here %1$s holds the Home button with its accessibility service. After installing, the app asks you to turn it on.</string>
     <string name="copy_download_directly">Download directly</string>
     <string name="copy_install_home">Install a home screen</string>
     <string name="copy_install_it">Install it on your TV</string>
