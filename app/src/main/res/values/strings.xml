@@ -52,7 +52,7 @@
     <string name="copy_keeps_home">Keeps Home with its accessibility service</string>
     <string name="copy_make_home">Make Home</string>
     <string name="copy_get_launcher">Get another launcher</string>
-    <string name="copy_get_launcher_text">Install one from the Play Store, like Projectivy or FLauncher. Switch back any time.</string>
+    <string name="copy_get_launcher_text">Install WallHouse Launcher: WallHouse TV downloads it from its GitHub page and checks its signature. Switch back any time.</string>
     <string name="copy_get_projectivy_text">Install Projectivy. Switch back any time.</string>
     <string name="copy_home_settings">Home screen settings</string>
     <string name="copy_make_home_title">Make %1$s the home screen?</string>
@@ -103,7 +103,7 @@
     <string name="copy_choose_one">Choose one</string>
     <string name="copy_install_one">Install it</string>
     <string name="copy_choose_home">Choose a home screen</string>
-    <string name="copy_choose_home_text">Each one replaces the TV\'s home screen. WallHouse TV opens it in the Play Store on the TV; you install it with the remote.</string>
+    <string name="copy_choose_home_text">Each one replaces the TV\'s home screen. WallHouse Launcher downloads straight from its GitHub page, checked against its developer\'s signature; the others open in the Play Store on the TV, where you install them with the remote.</string>
     <string name="copy_can_download">Some can also be downloaded directly.</string>
     <string name="copy_no_launcher_list">Couldn\'t load the list of home screens. Check the phone\'s internet and try again.</string>
     <string name="copy_recommended">Recommended</string>
@@ -115,7 +115,7 @@
     <string name="copy_no_service">Open source · no accessibility service</string>
     <!-- %1$s is copy_on_this_tv -->
     <string name="copy_other_launcher">Prefer another launcher? Install it from the Play Store on your TV, then come back here. It shows up under %1$s.</string>
-    <string name="copy_not_affiliated">WallHouse TV isn\'t affiliated with any of these launchers or their developers.</string>
+    <string name="copy_not_affiliated">Apart from WallHouse Launcher, WallHouse TV isn\'t affiliated with these launchers or their developers.</string>
     <string name="copy_get_from_store">Get it from Play Store</string>
     <string name="copy_store_recommended">Play Store recommended: it updates itself</string>
     <string name="copy_warn_old_title">This TV is too old for %1$s</string>
@@ -157,6 +157,7 @@
     <string name="copy_release">Release %1$s · %2$s</string>
     <string name="copy_where_from">Where it comes from</string>
     <string name="copy_signed_check">WallHouse TV checks it\'s signed by %1$s\'s developer before installing it on the TV. WallHouse TV isn\'t affiliated with %1$s.</string>
+    <string name="copy_signed_check_own">WallHouse TV checks it\'s signed by %1$s\'s developer before installing it on the TV.</string>
     <string name="copy_download_and_install">Download and install</string>
     <!-- Download directly, on a TV with the Play Store; %1$s the app's name -->
     <string name="copy_download_directly_title">Download %1$s directly?</string>
@@ -1417,10 +1418,10 @@
     <string name="launcher_style_mono_red">Black and white, reds kept</string>
     <string name="launcher_style_mono">Black and white</string>
     <string name="launcher_style_colour">Color</string>
-    <string name="launcher_name">Your name in red</string>
-    <string name="launcher_name_help">Shown after the greeting at the top of the home screen.</string>
+    <string name="launcher_name">Custom message</string>
+    <string name="launcher_name_help">Shown after the greeting on the home screen, in the style of the look.</string>
     <string name="launcher_save">Save</string>
-    <string name="launcher_name_remove">Remove name</string>
+    <string name="launcher_name_remove">Remove message</string>
     <string name="launcher_columns">Apps per row</string>
     <string name="launcher_rows">Rows below the dock</string>
     <string name="launcher_dock_opacity">Dock background</string>

@@ -277,7 +277,7 @@ object Copy {
     fun release(version: String, size: Long) = UiText(R.string.copy_release, version, bytes(size))
 
     val WHERE_FROM = UiText(R.string.copy_where_from)
-    fun signedCheck(name: String) = UiText(R.string.copy_signed_check, name)
+    fun signedCheck(name: String, own: Boolean = false) = UiText(if (own) R.string.copy_signed_check_own else R.string.copy_signed_check, name)
     val DOWNLOAD_AND_INSTALL = UiText(R.string.copy_download_and_install)
 
     /** Download directly on a TV with the Play Store: what Tellyscope checks, what it doesn't, and the safer way. */

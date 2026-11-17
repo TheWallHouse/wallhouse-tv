@@ -38,7 +38,7 @@
     <string name="copy_keeps_home">Mantiene Inicio con su servicio de accesibilidad</string>
     <string name="copy_make_home">Usar como inicio</string>
     <string name="copy_get_launcher">Conseguir otro launcher</string>
-    <string name="copy_get_launcher_text">Instala uno desde Play Store, como Projectivy o FLauncher. Puedes volver al anterior cuando quieras.</string>
+    <string name="copy_get_launcher_text">Instala WallHouse Launcher: WallHouse TV lo descarga de su página de GitHub y comprueba su firma. Puedes volver al anterior cuando quieras.</string>
     <string name="copy_get_projectivy_text">Instala Projectivy. Puedes volver al anterior cuando quieras.</string>
     <string name="copy_home_settings">Ajustes de la pantalla de inicio</string>
     <string name="copy_make_home_title">¿Usar %1$s como pantalla de inicio?</string>
@@ -74,7 +74,7 @@
     <string name="copy_choose_one">Elegir uno</string>
     <string name="copy_install_one">Instalarlo</string>
     <string name="copy_choose_home">Elige una pantalla de inicio</string>
-    <string name="copy_choose_home_text">Cada una reemplaza la pantalla de inicio de la TV. WallHouse TV la abre en Play Store en la TV; la instalas con el control remoto.</string>
+    <string name="copy_choose_home_text">Cada uno sustituye la pantalla de inicio de la TV. WallHouse Launcher se descarga directamente de su página de GitHub y se comprueba su firma; los demás se abren en Play Store en la TV, donde los instalas con el mando.</string>
     <string name="copy_can_download">Algunas también se pueden descargar directamente.</string>
     <string name="copy_no_launcher_list">No se pudo cargar la lista de pantallas de inicio. Revisa la conexión a internet del teléfono y vuelve a intentarlo.</string>
     <string name="copy_recommended">Recomendado</string>
@@ -85,7 +85,7 @@
     <string name="copy_uses_service">Usa un servicio de accesibilidad</string>
     <string name="copy_no_service">Código abierto · sin servicio de accesibilidad</string>
     <string name="copy_other_launcher">¿Prefieres otro launcher? Instálalo desde Play Store en tu TV y vuelve aquí. Aparecerá en %1$s.</string>
-    <string name="copy_not_affiliated">WallHouse TV no está afiliada a ninguno de estos launchers ni a sus desarrolladores.</string>
+    <string name="copy_not_affiliated">Salvo WallHouse Launcher, WallHouse TV no está afiliada a estos launchers ni a sus desarrolladores.</string>
     <string name="copy_get_from_store">Conseguir en Play Store</string>
     <string name="copy_store_recommended">Se recomienda Play Store: se actualiza solo</string>
     <string name="copy_warn_old_title">Esta tele es demasiado antigua para %1$s</string>
@@ -121,6 +121,7 @@
     <string name="copy_release">Versión %1$s · %2$s</string>
     <string name="copy_where_from">De dónde viene</string>
     <string name="copy_signed_check">WallHouse TV comprueba que esté firmado por el desarrollador de %1$s antes de instalarlo en la TV. WallHouse TV no está afiliada a %1$s.</string>
+    <string name="copy_signed_check_own">WallHouse TV comprueba que esté firmado por el desarrollador de %1$s antes de instalarlo en la TV.</string>
     <string name="copy_download_and_install">Descargar e instalar</string>
     <string name="copy_download_directly_title">¿Descargar %1$s directamente?</string>
     <string name="copy_direct_check">WallHouse TV comprueba que la app lleve la firma del desarrollador. No analiza la app en busca de código malicioso, y la app no se actualizará sola.</string>
@@ -1173,10 +1174,10 @@
     <string name="launcher_style_mono_red">Blanco y negro con rojos</string>
     <string name="launcher_style_mono">Blanco y negro</string>
     <string name="launcher_style_colour">Color</string>
-    <string name="launcher_name">Tu nombre en rojo</string>
-    <string name="launcher_name_help">Sale después del saludo, arriba en la pantalla de inicio.</string>
+    <string name="launcher_name">Mensaje personalizado</string>
+    <string name="launcher_name_help">Sale después del saludo en la pantalla de inicio, con el estilo del aspecto.</string>
     <string name="launcher_save">Guardar</string>
-    <string name="launcher_name_remove">Quitar nombre</string>
+    <string name="launcher_name_remove">Quitar mensaje</string>
     <string name="launcher_columns">Apps por fila</string>
     <string name="launcher_rows">Filas bajo el dock</string>
     <string name="launcher_dock_opacity">Fondo del dock</string>

@@ -373,7 +373,8 @@ private fun IconButtonText(icon: ImageVector, text: String, modifier: Modifier =
 private fun Picker(chosen: String, apps: List<AppInfo>, direct: Boolean, onChoose: (String) -> Unit) {
     val c = MaterialTheme.colorScheme
     val others = otherLaunchers(apps)
-    val canDownload = direct && RECOMMENDED.any { downloadable(it.pkg) && installedLauncher(apps, it.pkg) == null }
+    // Said only for a launcher that could come from the Store instead; one that only downloads is in the text already.
+    val canDownload = direct && RECOMMENDED.any { downloadable(it.pkg) && !storeless(it.pkg) && installedLauncher(apps, it.pkg) == null }
     Text(
         if (canDownload) Copy.CHOOSE_HOME_TEXT.resolve() + " " + Copy.CAN_DOWNLOAD.resolve() else Copy.CHOOSE_HOME_TEXT.resolve(),
         style = MaterialTheme.typography.bodyLarge,
@@ -457,7 +458,8 @@ private fun FireBody(f: FireInstall, pkg: String, device: Device, onPick: () -> 
                     Text(Copy.WHERE_FROM.resolve(), style = MaterialTheme.typography.labelLarge, color = c.primary)
                     SourceRow(release, direct, openPage)
                 }
-                Text(Copy.signedCheck(label).resolve(), style = MaterialTheme.typography.bodySmall, color = c.onSurfaceVariant)
+                // WallHouse Launcher is this project's own (the only one that only downloads): no line about not being affiliated.
+                Text(Copy.signedCheck(label, own = storeless(pkg)).resolve(), style = MaterialTheme.typography.bodySmall, color = c.onSurfaceVariant)
             }
         }
         FireInstall.Step.Downloading, FireInstall.Step.Reading, FireInstall.Step.Installing -> {

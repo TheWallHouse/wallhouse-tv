@@ -25,7 +25,7 @@ installs launchers that aren't on the Play Store, starting with
 Download the APK from the [latest release](https://github.com/TheWallHouse/wallhouse-tv/releases/latest) on your
 Android phone and open it. It installs beside Tellyscope.
 
-Step by step, with screenshots (Spanish): **[docs/guia](../docs/guia/README.md)**.
+Step by step, with screenshots: **[docs/guide](../docs/guide/README.md)**.
 
 ## Building
 

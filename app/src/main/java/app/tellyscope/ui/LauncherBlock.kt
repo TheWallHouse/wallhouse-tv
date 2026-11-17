@@ -153,7 +153,12 @@ fun LauncherBlock(ui: DeviceUi, actions: DeviceActions) {
             },
         ) { actions.launcherChoice(K.ORBIT_TONE, it) }
     }
-    Choices(
+    // As the launcher's own settings: each look shows only its choices. The apps style and the wallpapers are
+    // Nothing's; apps per row, rows under the dock and the dock's background belong to the looks with a grid.
+    val look = s.string(K.ASPECT) ?: "nothing"
+    val nothing = look == "nothing"
+    val grid = look in listOf("nothing", "windows", "orbit")
+    if (nothing) Choices(
         stringResource(R.string.launcher_apps_style),
         K.TILE_CHOICES, s.string(K.TILES), idle,
         label = {
@@ -167,14 +172,16 @@ fun LauncherBlock(ui: DeviceUi, actions: DeviceActions) {
         },
     ) { actions.launcherChoice(K.TILES, it) }
     NameRow(s.string(K.NAME).orEmpty(), idle) { actions.launcherChoice(K.NAME, it) }
-    Choices(stringResource(R.string.launcher_columns), K.COLUMN_CHOICES, s.int(K.COLUMNS), idle, label = { "$it" }) {
-        actions.launcherChoice(K.COLUMNS, it)
-    }
-    Choices(stringResource(R.string.launcher_rows), K.ROW_CHOICES, s.int(K.ROWS), idle, label = { "$it" }) {
-        actions.launcherChoice(K.ROWS, it)
-    }
-    Choices(stringResource(R.string.launcher_dock_opacity), K.OPACITY_CHOICES, s.int(K.DOCK_OPACITY), idle, label = { "$it %" }) {
-        actions.launcherChoice(K.DOCK_OPACITY, it)
+    if (grid) {
+        Choices(stringResource(R.string.launcher_columns), K.COLUMN_CHOICES, s.int(K.COLUMNS), idle, label = { "$it" }) {
+            actions.launcherChoice(K.COLUMNS, it)
+        }
+        Choices(stringResource(R.string.launcher_rows), K.ROW_CHOICES, s.int(K.ROWS), idle, label = { "$it" }) {
+            actions.launcherChoice(K.ROWS, it)
+        }
+        Choices(stringResource(R.string.launcher_dock_opacity), K.OPACITY_CHOICES, s.int(K.DOCK_OPACITY), idle, label = { "$it %" }) {
+            actions.launcherChoice(K.DOCK_OPACITY, it)
+        }
     }
     Choices(
         stringResource(R.string.launcher_clock), K.CLOCK_CHOICES, s.string(K.CLOCK), idle,
@@ -195,7 +202,7 @@ fun LauncherBlock(ui: DeviceUi, actions: DeviceActions) {
     }
     DockEditor(s, ui.apps, idle, actions.launcherDock)
     if ("font_file" in s.effective && !terminal && s.string(K.ASPECT) !in listOf("cyberpunk", "dune", "legend", "orbit")) FontPicker(s.fontName, idle, actions.launcherFont)
-    s.wallpaperImages?.let { WallpaperOptions(s, it, idle, actions) }
+    if (nothing) s.wallpaperImages?.let { WallpaperOptions(s, it, idle, actions) }
     PreviewRow(ui.tvPreview, idle, actions)
     CopiesRow(ui.launcherCopies, idle, actions)
     ThemeOptions(s, ui.apps, idle, actions)
