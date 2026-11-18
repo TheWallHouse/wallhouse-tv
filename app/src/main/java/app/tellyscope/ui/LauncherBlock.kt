@@ -42,6 +42,10 @@ import app.tellyscope.data.AppInfo
 import app.tellyscope.data.LauncherSettings
 import app.tellyscope.data.LauncherSettings.Keys as K
 import app.tellyscope.data.SharedLists
+import app.tellyscope.data.TvPart
+import app.tellyscope.data.TvReport
+import app.tellyscope.data.tvChanges
+import app.tellyscope.data.tvPart
 
 /** [DeviceUi.busy] while a launcher change is written. */
 const val LAUNCHER_SAVING = "launcher"
@@ -72,6 +76,7 @@ fun LauncherBlock(ui: DeviceUi, actions: DeviceActions) {
         FilledTonalButton(onClick = actions.installLauncher, enabled = idle) { Text(stringResource(R.string.launcher_update)) }
         return
     }
+    ui.tvReport?.let { TvReportCard(it, s, ui.apps, idle, actions.applyTvReport) }
     // The look comes first: the rest of the block is that look's settings. Always shown, so the looks are found
     // even on a launcher too old to have them: picking one there offers the update instead.
     var needsUpdate by rememberSaveable { mutableStateOf<String?>(null) }
@@ -310,6 +315,35 @@ fun DebuggingOffRow(enabled: Boolean, onConfirm: () -> Unit) {
             confirmButton = { Button(onClick = { ask = false; onConfirm() }) { Text(stringResource(R.string.debugging_off_button)) } },
             dismissButton = { TextButton(onClick = { ask = false }) { Text(stringResource(R.string.screen_cancel)) } },
         )
+    }
+}
+
+/**
+ * CleanYourTV's hardware settings for this TV ([TvReport]), while the launcher lacks some: one line per part of the TV
+ * they're for, and Apply. Gone once applied, as the theme then holds them all.
+ */
+@Composable
+private fun TvReportCard(report: TvReport, s: LauncherSettings, apps: List<AppInfo>, enabled: Boolean, onApply: (Map<String, Any>) -> Unit) {
+    val changes = tvChanges(report.values, s.tv, apps.map { it.packageName }.toSet())
+    if (changes.isEmpty()) return
+    fun label(pkg: String) = apps.firstOrNull { it.packageName == pkg }?.label ?: pkg
+    androidx.compose.material3.OutlinedCard(Modifier.fillMaxWidth().padding(vertical = 8.dp)) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text(stringResource(R.string.tv_report_title), style = MaterialTheme.typography.titleMedium)
+            Muted(stringResource(R.string.tv_report_text, report.name))
+            for (part in changes.keys.map(::tvPart).distinct().sorted()) {
+                val line = when (part) {
+                    TvPart.LIVE_TV -> (changes["live_tv_package"] as? String)?.let { stringResource(R.string.tv_report_live_tv, label(it)) }
+                        ?: stringResource(R.string.tv_report_live_tv_way)
+                    TvPart.INPUTS -> stringResource(R.string.tv_report_inputs)
+                    TvPart.SETTINGS_BUTTON -> stringResource(R.string.tv_report_settings_button)
+                    TvPart.HOME -> stringResource(R.string.tv_report_home, label(changes.getValue("stock_home_redirect") as String))
+                    TvPart.REMOTE -> stringResource(R.string.tv_report_remote)
+                }
+                Text("• $line", style = MaterialTheme.typography.bodyMedium)
+            }
+            FilledTonalButton(onClick = { onApply(changes) }, enabled = enabled) { Text(stringResource(R.string.tv_report_apply)) }
+        }
     }
 }
 

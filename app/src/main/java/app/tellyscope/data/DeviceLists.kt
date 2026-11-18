@@ -21,6 +21,9 @@ import java.security.MessageDigest
  */
 const val LISTS_BASE = "https://raw.githubusercontent.com/man15h/tellyscope-devices/main/"
 
+/** CleanYourTV's repo, whose `examples/` folders tellyscope-devices builds its lists from; a commit and path follow. */
+const val REPORTS_BASE = "https://raw.githubusercontent.com/Gathin23/cleanyourtv/"
+
 /** WallHouse TV's own launcher catalogue ([parseCatalogue]), in this app's repo; read beside the lists, whatever their source. */
 const val CATALOGUE_URL = "https://raw.githubusercontent.com/TheWallHouse/wallhouse-tv/main/app/src/main/resources/catalog/launchers.json"
 
@@ -319,6 +322,30 @@ class DeviceLists(
     /** The device file for [entry], from cache or the network. Null when the bytes don't match its sha256. */
     suspend fun list(entry: ListEntry): DeviceList? =
         file(entry.file, entry.sha256)?.let { parseList(it.decodeToString(), entry.id) }
+
+    private val reports = mutableMapOf<String, String?>()
+
+    /**
+     * The launcher config.json of CleanYourTV's report [id] (lists from tellyscope-devices are its `examples/`
+     * folders, by the same name), at the commit the index was built from, so it is the report the list came from.
+     * Cached on disk once read. Null with the user's own source or no index commit, and for a report without one
+     * (most have none) or when offline; such a miss isn't asked again until the app restarts.
+     */
+    suspend fun report(id: String): String? {
+        if (custom() != null || !LIST_ID.matches(id)) return null
+        val commit = index()?.commit ?: return null
+        val key = "$commit-$id"
+        synchronized(reports) { if (key in reports) return reports[key] }
+        val text = withContext(Dispatchers.IO) {
+            val cache = File(File(dir, "reports"), "$key.json")
+            cache.takeIf { it.exists() }?.readText()
+                ?: attempt { fetch("$REPORTS_BASE$commit/examples/$id/config.json") }?.decodeToString()
+                    ?.takeIf { it.trimStart().startsWith("{") }
+                    ?.also { cache.parentFile?.mkdirs(); cache.writeText(it) }
+        }
+        synchronized(reports) { reports[key] = text }
+        return text
+    }
 
     /**
      * The launcher, app name and streaming lists the index names, each from cache or the network.

@@ -157,6 +157,8 @@ data class DeviceUi(
     val tvPreview: ByteArray? = null,
     /** Launcher setups saved on this phone, newest first. */
     val launcherCopies: List<app.tellyscope.data.LauncherCopy> = emptyList(),
+    /** CleanYourTV's hardware settings for this TV, offered in Customize while the launcher lacks some; null for none. */
+    val tvReport: app.tellyscope.data.TvReport? = null,
 )
 
 /**
@@ -1224,7 +1226,8 @@ class TellyscopeViewModel(
             return
         }
         val copies = runCatching { source.launcherCopies() }.getOrDefault(emptyList())
-        updateDevice(id) { it.copy(launcherSettings = settings, launcherCopies = copies) }
+        val report = if (settings.supported) runCatching { source.tvReport(id) }.getOrNull() else null
+        updateDevice(id) { it.copy(launcherSettings = settings, launcherCopies = copies, tvReport = report) }
     }
 
     /** One of the launcher's own choices: [value] null puts the theme's back. */
@@ -1235,6 +1238,9 @@ class TellyscopeViewModel(
 
     /** A theme key of the launcher (hidden apps, remote buttons, greeting…): [value] null puts its default back. */
     fun setLauncherTheme(key: String, value: Any?) = launcherChange { id, pkg -> source.setLauncherTheme(id, pkg, mapOf(key to value)) }
+
+    /** CleanYourTV's hardware settings for this TV ([app.tellyscope.data.tvChanges]), written into the launcher's theme. */
+    fun applyTvReport(values: Map<String, Any>) = launcherChange { id, pkg -> source.setLauncherTheme(id, pkg, values) }
 
     /** The launcher's font: [font] downloaded from Google Fonts and checked, or its own Doto back with null. */
     fun setLauncherFont(font: app.tellyscope.data.GoogleFont?) = launcherChange { id, pkg ->

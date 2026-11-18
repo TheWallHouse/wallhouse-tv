@@ -1428,6 +1428,15 @@
     <string name="launcher_clock">Clock</string>
     <string name="launcher_clock_system">As the TV</string>
     <string name="launcher_animations">Animations</string>
+    <string name="tv_report_title">Settings for this TV</string>
+    <string name="tv_report_text">CleanYourTV\'s report for %1$s has these settings for its remote and inputs. Only technical ones: your look and apps stay as they are.</string>
+    <string name="tv_report_live_tv">Live TV opens %1$s</string>
+    <string name="tv_report_live_tv_way">Live TV opens the way this TV needs</string>
+    <string name="tv_report_inputs">Inputs open the way this TV needs</string>
+    <string name="tv_report_settings_button">The remote\'s Settings button opens Settings</string>
+    <string name="tv_report_home">Home comes back here when the TV brings back %1$s</string>
+    <string name="tv_report_remote">The remote\'s keys are handled the way this TV needs</string>
+    <string name="tv_report_apply">Apply</string>
     <string name="launcher_dock">Apps in the dock</string>
     <string name="launcher_dock_empty">The theme\'s dock: add an app to choose your own.</string>
     <string name="launcher_dock_remove">Remove</string>

@@ -1184,6 +1184,15 @@
     <string name="launcher_clock">Reloj</string>
     <string name="launcher_clock_system">Como la TV</string>
     <string name="launcher_animations">Animaciones</string>
+    <string name="tv_report_title">Ajustes para esta TV</string>
+    <string name="tv_report_text">El informe de CleanYourTV de %1$s trae estos ajustes para su mando y sus entradas. Solo son técnicos: tu aspecto y tus apps no cambian.</string>
+    <string name="tv_report_live_tv">La TV en directo abre %1$s</string>
+    <string name="tv_report_live_tv_way">La TV en directo se abre como necesita esta TV</string>
+    <string name="tv_report_inputs">Las entradas se abren como necesita esta TV</string>
+    <string name="tv_report_settings_button">El botón de Ajustes del mando abre los Ajustes</string>
+    <string name="tv_report_home">Inicio vuelve aquí cuando la TV recupera %1$s</string>
+    <string name="tv_report_remote">Las teclas del mando se tratan como necesita esta TV</string>
+    <string name="tv_report_apply">Aplicar</string>
     <string name="launcher_dock">Apps del dock</string>
     <string name="launcher_dock_empty">El dock del tema: añade una app para elegir las tuyas.</string>
     <string name="launcher_dock_remove">Quitar</string>
