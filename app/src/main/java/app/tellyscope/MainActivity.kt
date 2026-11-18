@@ -450,6 +450,7 @@ fun TellyscopeApp(vm: TellyscopeViewModel) {
                 launcherChoice = vm::setLauncherChoice,
                 launcherDock = vm::setLauncherDock,
                 launcherTheme = vm::setLauncherTheme,
+                applyTvReport = vm::applyTvReport,
                 repairRemote = vm::repairRemote,
                 launcherFont = vm::setLauncherFont,
                 launcherWallpapers = { uris -> vm.setLauncherWallpapers(uris) { app.tellyscope.data.WallpaperPrep.jpeg(context.applicationContext, it) } },

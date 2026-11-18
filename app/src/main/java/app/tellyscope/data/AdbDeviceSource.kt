@@ -639,7 +639,7 @@ class AdbDeviceSource(context: Context) : DeviceSource {
     }
 
     override suspend fun setLauncherTheme(deviceId: String, pkg: String, values: Map<String, Any?>): LauncherSettings = busy(deviceId) {
-        require(values.keys.all { it in THEME_KEYS }) { "not a theme key this app sets: ${values.keys}" }
+        require(values.keys.all { it in THEME_KEYS || it in TV_KEYS }) { "not a theme key this app sets: ${values.keys}" }
         themeChange(session(deviceId), pkg, values)
     }
 
@@ -772,9 +772,12 @@ class AdbDeviceSource(context: Context) : DeviceSource {
     private suspend fun readLauncher(session: AdbSession, pkg: String): LauncherSettings {
         require(PACKAGE.matches(pkg)) { "not a package name: $pkg" }
         val s = parseLauncherSettings(pkg, session.shell("content read --uri 'content://$pkg.theme/settings.json' 2>/dev/null").output)
-        if (!s.supported || "font_file" !in s.effective) return s
-        val name = runCatching { org.json.JSONObject(readTheme(session, pkg)).optString("font_name") }.getOrNull()
-        return s.copy(fontName = name?.takeIf { it.isNotEmpty() && s.bool("font_file") == true })
+        if (!s.supported) return s
+        val theme = readTheme(session, pkg)
+        val withTv = s.copy(tv = tvValues(theme))
+        if ("font_file" !in s.effective) return withTv
+        val name = runCatching { org.json.JSONObject(theme).optString("font_name") }.getOrNull()
+        return withTv.copy(fontName = name?.takeIf { it.isNotEmpty() && s.bool("font_file") == true })
     }
 
     private suspend fun writeSettings(session: AdbSession, pkg: String, values: Map<String, Any?>) {
@@ -1102,6 +1105,15 @@ class AdbDeviceSource(context: Context) : DeviceSource {
         throw e
     } catch (_: Exception) {
         Suggestions.Unavailable // the TV dropped mid-read
+    }
+
+    override suspend fun tvReport(deviceId: String): TvReport? = try {
+        val entry = (resolve(deviceId).match as? ListMatch.Model)?.entry
+        entry?.let { e -> tvValues(lists.report(e.id)).takeIf { it.isNotEmpty() }?.let { TvReport(e.id, e.name, it) } }
+    } catch (e: CancellationException) {
+        throw e
+    } catch (_: Exception) {
+        null // the TV dropped mid-read
     }
 
     override suspend fun pickList(deviceId: String, listId: String) {

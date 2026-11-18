@@ -31,6 +31,8 @@ data class LauncherSettings(
     val wallpaperImages: List<String>? = null,
     /** The looks this launcher build can draw (WallHouse Launcher 1208+), in its order; empty when it has one. */
     val aspects: List<String> = emptyList(),
+    /** The theme's hardware settings now ([tvValues] of its config.json), to tell what a [TvReport] would change. */
+    val tv: Map<String, Any> = emptyMap(),
 ) {
     fun int(key: String) = (effective[key] as? Number)?.toInt()
     fun bool(key: String) = effective[key] as? Boolean

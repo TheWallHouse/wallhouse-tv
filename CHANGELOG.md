@@ -12,6 +12,10 @@ until this file has a section for its version.
 
 ## Unreleased
 
+## 1.0.2 — 2026-11-18
+
+- **New:** Customize offers the remote and input settings CleanYourTV's report gives this TV. [#3](../../pull/3)
+
 ## 1.0.1 — 2026-11-17
 
 - **New:** Before installing, the picker warns when the TV is too old, a Fire TV, made for China or a Google TV that needs one more step. [#2](../../pull/2)

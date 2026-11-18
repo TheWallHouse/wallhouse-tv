@@ -127,6 +127,8 @@ data class DeviceActions(
     val launcherDock: (List<String>) -> Unit = {},
     /** One of the catalogue launcher's theme keys; a null puts its default back. */
     val launcherTheme: (String, Any?) -> Unit = { _, _ -> },
+    /** CleanYourTV's hardware settings for this TV, written into the catalogue launcher's theme. */
+    val applyTvReport: (Map<String, Any>) -> Unit = {},
     /** The catalogue launcher's font, from Google Fonts; null puts its own back. */
     val launcherFont: (app.tellyscope.data.GoogleFont?) -> Unit = {},
     /** Photos from the phone as the launcher's wallpapers; an empty list clears them. */

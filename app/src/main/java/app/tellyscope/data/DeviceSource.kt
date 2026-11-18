@@ -145,6 +145,12 @@ interface DeviceSource {
      */
     suspend fun suggestions(deviceId: String, apps: suspend () -> List<AppInfo>): Suggestions
 
+    /**
+     * The hardware settings ([TV_KEYS]) CleanYourTV's report for this TV's list gives its launcher; null when the TV
+     * has no list of its own (none, or only its maker's), the report has none, or it can't be read.
+     */
+    suspend fun tvReport(deviceId: String): TvReport? = null
+
     /** "Pick your TV": use list [listId] for this TV from now on. */
     suspend fun pickList(deviceId: String, listId: String)
 
